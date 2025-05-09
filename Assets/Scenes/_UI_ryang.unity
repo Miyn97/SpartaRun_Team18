@@ -1190,13 +1190,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13bcac9b2e9160c4b8ee54116ae70f79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentScoreText: {fileID: 529828402}
-  hpImages: []
-  heart_full: {fileID: 21300000, guid: a78e26d0bc6003243ab39446d1930f47, type: 3}
-  heart_half: {fileID: 21300000, guid: b190f7e1890bfe54ab158f150885554e, type: 3}
-  heart_empty: {fileID: 21300000, guid: 8f6012971a3aa0b4b959fffe5588fb94, type: 3}
-  optionPanel: {fileID: 1252128442}
-  pauseButton: {fileID: 1525023049}
 --- !u!1 &811609349
 GameObject:
   m_ObjectHideFlags: 0
@@ -1383,11 +1376,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d741d7284c7d554bb5390ad7b92c43e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameOverUI: {fileID: 967536922}
-  finalScoreText: {fileID: 445916525}
-  highScoreText: {fileID: 2116544388}
-  restartButton: {fileID: 104172923}
-  homeButton: {fileID: 327097891}
 --- !u!1 &1138415870
 GameObject:
   m_ObjectHideFlags: 0
