@@ -39,6 +39,13 @@ public class PlayerController : MonoBehaviour
         HandleSlide(); 
     }
 
+    //자동 이동을 위한 FixedUpdate
+    private void FixedUpdate()
+    {
+        // View에 이동 요청
+        playerView.Move(model.Speed); 
+    }
+
     //키 입력 처리하는 메서드
     private void HandleInput()
     {
