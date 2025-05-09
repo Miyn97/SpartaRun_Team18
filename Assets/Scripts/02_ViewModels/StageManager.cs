@@ -4,15 +4,11 @@ using UnityEngine;
 
 public class StageManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] private MapData testLevelData;
 
-    // Update is called once per frame
-    void Update()
+    //추후 여러 스테이지에 대응하도록 확장
+    public GameObject GenNextChunkPrefab()
     {
-        
+        return testLevelData.GetRandomChunk();
     }
 }
