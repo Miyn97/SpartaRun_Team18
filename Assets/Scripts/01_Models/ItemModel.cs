@@ -22,18 +22,15 @@ public enum ItemEnum
     Bomb,
     magnet,
     healpotion
-
 }
 
 
 public class ItemModel : MonoBehaviour
 {
-
     public ItemEnum itemenum;
     public float duration; // 지속시간 (필요 없는 경우는 0)
 
     public int healAmount; // 회복량 (힐 전용)
 
     public int Score;
-
 }

@@ -13,6 +13,10 @@ public class GameManager : MonoBehaviour
     public int Score { get; private set; }
     public int CurrentStage { get; private set; }
 
+    [SerializeField] private GameUI gameUI;
+
+    private bool isPaused = false;
+
     private void Awake()
     {
         //GameManager 2개 방지 + 싱글톤 원칙
@@ -32,6 +36,14 @@ public class GameManager : MonoBehaviour
     {
         //게임이 시작되면 Intro 상태로 전환
         ChangeState(GameState.Intro);
+        gameUI.OnPauseRequested += TogglePause;
+    }
+
+    private void TogglePause()
+    {
+        isPaused = !isPaused;
+        Time.timeScale = isPaused ? 0 : 1;
+        gameUI.ToggleOptionPanel(isPaused);
     }
 
     //게임 상태를 전환하는 메서드 (호출 가능)
