@@ -13,6 +13,10 @@ public class GameManager : MonoBehaviour
     public int Score { get; private set; }
     public int CurrentStage { get; private set; }
 
+    //인스펙터에서 연결 가능한 StartUI 참조
+    [SerializeField] private StartUI startUI;
+    //인스펙터에서 연결 가능한 IntroUI 참조
+    [SerializeField] private IntroUI introUI;
     //인스펙터에서 연결 가능한 GameUI 참조
     [SerializeField] private GameUI gameUI;
     //인스펙터에서 연결 가능한 GameOverUI 참조
@@ -48,6 +52,14 @@ public class GameManager : MonoBehaviour
         //UI는 버튼만 누르고 실제 로직은 GameManager가 처리
         gameOverUI.OnRestartRequested += RestartGame;
         gameOverUI.OnReturnHomeRequested += ReturnToHome;
+
+        //StartUI 이벤트 구독
+        startUI.OnStartRequested += HandleStartGame;
+        startUI.OnOptionRequested += HandleOption;
+        startUI.OnExitRequested += HandleExit;
+
+        //IntroUI 이벤트 구독
+        introUI.OnIntroComplete += HandleIntroComplete;
     }
 
     //실제 일시정지를 수행하는 메서드
@@ -70,6 +82,44 @@ public class GameManager : MonoBehaviour
         gameOverUI.Show(score, highScore);
         //상태를 GameOver로 전환
         ChangeState(GameState.GameOver);
+    }
+
+    //IntroUI에서 인트로(스토리)가 끝났을 때 호출되는 콜백 함수
+    //트리거되면 실행됨
+    private void HandleIntroComplete()
+    {
+        //현재 게임 상태를 Start로 전환
+        //즉, StartScene 또는 시작화면 UI로 넘어가는 역할을 수행
+        ChangeState(GameState.Start);
+    }
+
+    //StartUI에서 게임 시작 버튼을 누르면 이 함수가 호출
+    private void HandleStartGame()
+    {
+        //게임 상태를 InGame로 변경
+        //일반적으로 MainScene을 로드하고, 실제 게임 플레이를 시작하는 상태로 전환
+        ChangeState(GameState.InGame);
+    }
+
+    //StartUI에서 옵션 버튼을 누르면 이 함수가 호출
+    private void HandleOption()
+    {
+        Debug.Log("옵션 버튼 눌림 - 옵션 UI 처리 예정");
+        //추후 옵션 UI.Show() 등 달아주시면 됩니다 선량님
+    }
+
+    //게임 종료 버튼을 눌렸을 때 실행되는 함수
+    private void HandleExit()
+    {
+        //실행된 빌드 상태에서 게임을 종료
+        //Windows, Mac, Android 등에서 종료되며 에디터에서는 무시됨
+        Application.Quit();
+
+        //이 코드는 Unity 에디터에서 실행 중일 때만 작동하도록 조건부 컴파일 지시자입니다
+        //에디터에서도 종료 버튼을 누르면 Play모드가 꺼지도록 해줌
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
     }
 
     //게임 상태를 전환하는 메서드 (호출 가능)
