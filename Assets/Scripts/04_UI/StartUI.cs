@@ -1,18 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using UnityEngine.UI;
 
 public class StartUI : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    // ·Îºñ UI (StartUI.cs)
+    [Header("Start UI")]
+    [SerializeField] private GameObject startPanel;
+    [SerializeField] private Button startButton;
+    [SerializeField] private Button optionButton;
+    [SerializeField] private Button exitButton;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
 }

@@ -9,9 +9,16 @@ public class GameManager : MonoBehaviour
     public enum GameState { Intro, Start, InGame, GameOver }
     //현재 상태 저장 변수
     public GameState CurrentState { get; private set; }
+
     //점수와 현재 스테이지 정보를 저장하는 변수
+    private GameUI gameUI;
+    private GameOverUI gameOverUI;
     public int Score { get; private set; }
+    public int HighScore { get; private set; }
     public int CurrentStage { get; private set; }
+
+    private int currentHp;
+    private int maxHp = 6;
 
     private void Awake()
     {
@@ -26,10 +33,27 @@ public class GameManager : MonoBehaviour
         Instance = this;
         //씬 전환되어도 이 오브젝트는 사라지지 않도록 설정 (게임 흐름 유지)
         DontDestroyOnLoad(gameObject);
+
+        //씬에 GameUI 스크립트가 있는지 확인
+        gameUI = FindObjectOfType<GameUI>();
+        gameOverUI = FindObjectOfType<GameOverUI>();
+        
+        if (gameUI == null)
+        {
+            Debug.LogError("UIManager 스크립트가 없습니다. Inspector에서 연결해주세요");
+        }
     }
 
     private void Start()
     {
+        // 최고점 불러오기
+        HighScore = PlayerPrefs.GetInt("HighScore", 0);
+
+        // 게임시작 전 UI 초기화
+        //gameUI.UpdateScore(Score);
+        //gameUI.UpdateHpText(currentHp = maxHp, maxHp);
+        gameOverUI.ShowGameOverUI(Score, HighScore);
+
         //게임이 시작되면 Intro 상태로 전환
         ChangeState(GameState.Intro);
     }
@@ -56,7 +80,7 @@ public class GameManager : MonoBehaviour
             case GameState.GameOver:
                 //나중에 UIManager랑 연결 (이 라인 삭제가능)
                 //씬 전환X, UI만 표시
-                //UIManager.Instance?.ShowGameOverUI(); //(주석 처리 해제 가능)
+                gameOverUI.ShowGameOverUI(Score, HighScore);
                 break;
         }
     }
@@ -65,9 +89,32 @@ public class GameManager : MonoBehaviour
     public void AddScore(int value)
     {
         Score += value;
+        if (Score > HighScore)
+        {
+            HighScore = Score; // 최고점으로 갱신
+            PlayerPrefs.SetInt("HighScore", HighScore);
+        }
         //나중에 UIManager랑 연결 (이 라인 삭제가능)
         //점수 증가 후, UIManager에 현재 점수 업데이트 요청
-        //UIManager.Instance?.UpdateScore(Score); //(주석 처리 해제 가능)
+        //gameUI.UpdateScore(Score); //(주석 처리 해제 가능)
+    }
+
+    public void TakeDamage(int damage)
+    {
+        currentHp -= damage; //체력 감소
+        //gameUI.UpdateHpText(currentHp, maxHp); //UI 업데이트
+
+        if (currentHp <= 0)
+        {
+            currentHp = 0;
+            ChangeState(GameState.GameOver); //게임오버 상태로 전환
+        }
+    }
+
+    public void CurrentHp(int hp)
+    {
+        currentHp = hp; //체력 초기화
+        //gameUI.UpdateHpText(currentHp, maxHp); //UI 업데이트
     }
 
     //난이도 증가나 다음 맵 전환에 사용
