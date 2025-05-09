@@ -13,8 +13,11 @@ public class GameManager : MonoBehaviour
     public int Score { get; private set; }
     public int CurrentStage { get; private set; }
 
+    //인스펙터에서 연결 가능한 GameUI 참조
     [SerializeField] private GameUI gameUI;
 
+    //현재 게임이 일시정지 상태인지 나타내는 변수.
+    //상태를 토글할 때 사용됨
     private bool isPaused = false;
 
     private void Awake()
@@ -39,10 +42,16 @@ public class GameManager : MonoBehaviour
         gameUI.OnPauseRequested += TogglePause;
     }
 
+    //실제 일시정지를 수행하는 메서드
     private void TogglePause()
     {
+        //현재 일시정지 상태를 반전시킴
         isPaused = !isPaused;
+        //Unity의 시간 속도를 조절하는 변수
+        //0으로 설정하면 모든 Update나 FixedUpdate 실행이 멈춤
         Time.timeScale = isPaused ? 0 : 1;
+        //옵션창 UI를 켜거나 끄는 명령
+        //View에게 명령만 내림
         gameUI.ToggleOptionPanel(isPaused);
     }
 
