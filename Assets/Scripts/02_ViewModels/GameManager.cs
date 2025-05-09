@@ -15,6 +15,8 @@ public class GameManager : MonoBehaviour
 
     //인스펙터에서 연결 가능한 GameUI 참조
     [SerializeField] private GameUI gameUI;
+    //인스펙터에서 연결 가능한 GameOverUI 참조
+    [SerializeField] private GameOverUI gameOverUI;
 
     //현재 게임이 일시정지 상태인지 나타내는 변수.
     //상태를 토글할 때 사용됨
@@ -39,7 +41,13 @@ public class GameManager : MonoBehaviour
     {
         //게임이 시작되면 Intro 상태로 전환
         ChangeState(GameState.Intro);
+
+        //GameUI가 보낸 이벤트를 구독
         gameUI.OnPauseRequested += TogglePause;
+        //GameOverUI가 보낸 이벤트를 구독
+        //UI는 버튼만 누르고 실제 로직은 GameManager가 처리
+        gameOverUI.OnRestartRequested += RestartGame;
+        gameOverUI.OnReturnHomeRequested += ReturnToHome;
     }
 
     //실제 일시정지를 수행하는 메서드
@@ -53,6 +61,15 @@ public class GameManager : MonoBehaviour
         //옵션창 UI를 켜거나 끄는 명령
         //View에게 명령만 내림
         gameUI.ToggleOptionPanel(isPaused);
+    }
+
+    //게임 오버 상황을 호출할 때 외부에서 사용할 수 있는 함수
+    public void TriggerGameOver(int score, int highScore)
+    {
+        //점수와 최고 점수를 전달 + GameOverUI를 보여줌
+        gameOverUI.Show(score, highScore);
+        //상태를 GameOver로 전환
+        ChangeState(GameState.GameOver);
     }
 
     //게임 상태를 전환하는 메서드 (호출 가능)
@@ -86,6 +103,7 @@ public class GameManager : MonoBehaviour
     public void AddScore(int value)
     {
         Score += value;
+        gameUI.SetScore(Score);
         //나중에 UIManager랑 연결 (이 라인 삭제가능)
         //점수 증가 후, UIManager에 현재 점수 업데이트 요청
         //UIManager.Instance?.UpdateScore(Score); //(주석 처리 해제 가능)
@@ -100,15 +118,27 @@ public class GameManager : MonoBehaviour
     //게임 재시작 관련 메서드
     public void RestartGame()
     {
-        SceneManager.LoadScene("MainScene"); //MainScene을 로드
+        Score = 0;
+        SetStage(1); //스테이지 초기화 예시
+        //SceneManager.LoadScene("MainScene"); //MainScene을 로드
         ChangeState(GameState.InGame); //상태를 InGame으로 변경
     }
 
-    //게임 종료
-    public void QuitGame()
+    //홈으로 돌아가기 버튼이 눌렸을 때 실행
+    private void ReturnToHome()
     {
-        Application.Quit();
+        //상태 초기화
+        Score = 0;
+        SetStage(0);
+        //Start 씬으로 이동
+        ChangeState(GameState.Start);
     }
+
+    //게임 종료
+    //public void QuitGame()
+    //{
+    //    Application.Quit();
+    //}
 
 
 }
