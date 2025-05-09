@@ -11,14 +11,16 @@ public class GameManager : MonoBehaviour
     public GameState CurrentState { get; private set; }
 
     //점수와 현재 스테이지 정보를 저장하는 변수
-    private GameUI gameUI;
-    private GameOverUI gameOverUI;
     public int Score { get; private set; }
     public int HighScore { get; private set; }
     public int CurrentStage { get; private set; }
 
     private int currentHp;
     private int maxHp = 6;
+
+    private GameUI gameUI;
+    private GameOverUI gameOverUI;
+
 
     private void Awake()
     {
@@ -33,27 +35,12 @@ public class GameManager : MonoBehaviour
         Instance = this;
         //씬 전환되어도 이 오브젝트는 사라지지 않도록 설정 (게임 흐름 유지)
         DontDestroyOnLoad(gameObject);
-
-        //씬에 GameUI 스크립트가 있는지 확인
-        gameUI = FindObjectOfType<GameUI>();
-        gameOverUI = FindObjectOfType<GameOverUI>();
-        
-        if (gameUI == null)
-        {
-            Debug.LogError("UIManager 스크립트가 없습니다. Inspector에서 연결해주세요");
-        }
     }
 
     private void Start()
     {
         // 최고점 불러오기
         HighScore = PlayerPrefs.GetInt("HighScore", 0);
-
-        // 게임시작 전 UI 초기화
-        //gameUI.UpdateScore(Score);
-        //gameUI.UpdateHpText(currentHp = maxHp, maxHp);
-        gameOverUI.ShowGameOverUI(Score, HighScore);
-
         //게임이 시작되면 Intro 상태로 전환
         ChangeState(GameState.Intro);
     }
@@ -71,12 +58,23 @@ public class GameManager : MonoBehaviour
                 //using UnityEngine.SceneManagement; 유징문만 추가하면 호출 가능
                 SceneManager.LoadScene("IntroScene");
                 break;
+
             case GameState.Start:
                 SceneManager.LoadScene("StartScene");
                 break;
+
             case GameState.InGame:
                 SceneManager.LoadScene("MainScene");
+                //**UI.cs 찾고 초기화
+                gameUI = FindObjectOfType<GameUI>();
+                gameOverUI = FindObjectOfType<GameOverUI>();
+                //초기화
+                Score = 0;
+                currentHp = maxHp;
+                gameUI.UpdateScore(Score);
+                gameUI.UpdateHpText(currentHp);
                 break;
+
             case GameState.GameOver:
                 //나중에 UIManager랑 연결 (이 라인 삭제가능)
                 //씬 전환X, UI만 표시
@@ -94,15 +92,14 @@ public class GameManager : MonoBehaviour
             HighScore = Score; // 최고점으로 갱신
             PlayerPrefs.SetInt("HighScore", HighScore);
         }
-        //나중에 UIManager랑 연결 (이 라인 삭제가능)
-        //점수 증가 후, UIManager에 현재 점수 업데이트 요청
-        //gameUI.UpdateScore(Score); //(주석 처리 해제 가능)
+        
+        gameUI.UpdateScore(Score);
     }
 
     public void TakeDamage(int damage)
     {
         currentHp -= damage; //체력 감소
-        //gameUI.UpdateHpText(currentHp, maxHp); //UI 업데이트
+        gameUI.UpdateHpText(currentHp); //UI 업데이트
 
         if (currentHp <= 0)
         {
