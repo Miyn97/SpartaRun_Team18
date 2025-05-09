@@ -5,17 +5,13 @@ using UnityEngine.UI;
 
 public class IntroUI : MonoBehaviour
 {
-    // Start UI로 가는 버튼만 구현.
+    //// Start UI로 가는 버튼만 구현.
+    //[Header("Intro UI")]
+    //[SerializeField] private Button skipButton;
 
-    [Header("Intro UI")]
-    [SerializeField] private GameObject introCanvas;
-    [SerializeField] private Button skipButton;
-
-    public void SkipIntroButton()
-    {
-        // 인트로 UI 비활성화
-        introCanvas.SetActive(false);
-        // StartUI 활성화
-        GameManager.Instance.ChangeState(GameManager.GameState.Start);
-    }
+    //private void Awake()
+    //{
+    //    // 버튼 클릭 시, Start 상태로 전환 // TODO: 버튼 영역 설정필요
+    //    skipButton.onClick.AddListener(() => GameManager.Instance.ChangeState(GameManager.GameState.Start));
+    //}
 }

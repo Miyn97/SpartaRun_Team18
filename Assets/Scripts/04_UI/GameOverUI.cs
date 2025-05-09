@@ -12,6 +12,7 @@ public class GameOverUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI finalScoreText;
     [SerializeField] private TextMeshProUGUI highScoreText;
 
+    // 버튼
     [Header("Button")]
     [SerializeField] private Button restartButton;
     [SerializeField] private Button homeButton; // 로비로 돌아가는 버튼 이름 바꿔도 좋음
