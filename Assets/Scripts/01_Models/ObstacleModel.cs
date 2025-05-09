@@ -11,9 +11,39 @@ public enum ObstacleType    // 장애물 종류
     UnhandledExceptionBox   // 처리되지 않은 예외 박스 장애물
 }
 
-
+//장애물 하나의 데이터만 저장하는 클래스
+//에디터에 붙이기 x, 코드로만 사용
+//MonoBehaviour 제거
 public class ObstacleModel : MonoBehaviour
 {
+    ////장애물의 종류를 보관하는 속성
+    ////생성자에서만 값을 설정할 수 있어서 데이터 안정성 유지
+    //public ObstacleType Type {  get; private set; }
+    ////이 장애물이 플레이어에게 줄 피해량
+    //public int Damage {  get; private set; }
+
+    ////ObstacleModel이 생성될 때 장애물의 종류를 받아서 내부 데이터를 자동으로 초기화
+    ////즉, 누군가가 이건 SyntaxErrorBox입니다 라고 주면 아~ 그럼 데미지는 1이네 하고 자동 세팅되는 구조
+    //public ObstacleModel(ObstacleType obstacleType)
+    //{
+    //    //전달받은 type값을 내부의 Type 프로퍼티에 저장
+    //    //이후 이 데이터를 기반으로 외형 결정, 데미지 적용 등에 사용 가능
+    //    obstacleType = Type;
+
+    //    //장애물 종류에 따라 데미지를 자동으로 지정해주는 코드
+    //    Damage = Type switch
+    //    {
+    //        //ObstacleType가 들어오면 데미지는 1로 저장
+    //        ObstacleType.SyntaxErrorBox => 1,
+    //        //2로 저장
+    //        ObstacleType.CompileErrorWall => 2,
+    //        //3으로 저장
+    //        ObstacleType.RedLineTrap => 3,
+    //        //4로 저장
+    //        ObstacleType.UnhandledExceptionBox => 4,
+    //        _ => 0 //예상하지 못한 값이면 0으로 안전하게 처리
+    //    };
+    //}
     // 스프라이트 이미지 받아오기
     public Sprite spriteSyntaxError;         // SyntaxError 이미지
     public Sprite spriteCompileError;        // CompileError 이미지
