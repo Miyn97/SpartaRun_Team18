@@ -23,7 +23,8 @@ public class PlayerController : MonoBehaviour
     //슬라이딩을 했는가?
     private bool isSliding = false;
     //남은 슬라이드 시간 저장용 변수
-    private float slideTimer = 0f; 
+    private float slideTimer = 0f;
+    public bool IsInvincible { get; private set; }
 
     private void Start()
     {
@@ -103,6 +104,7 @@ public class PlayerController : MonoBehaviour
     // 데미지를 받을 경우
     public void TakeDamage(int damage)
     {
+
         //데미지를 받았을 때 체력 감소
         model.TakeDamage(damage); 
 
@@ -143,5 +145,9 @@ public class PlayerController : MonoBehaviour
     {
         //속도 아이템을 먹었을 때 현재 이동 속도 변경
         model.SetSpeed(newSpeed);
+    }
+    public void SetInvincible(bool value)
+    {
+        IsInvincible = value;
     }
 }
