@@ -9,9 +9,10 @@ public class GameManager : MonoBehaviour
     public enum GameState { Intro, Start, InGame, GameOver }
     //현재 상태 저장 변수
     public GameState CurrentState { get; private set; }
-    //점수와 현재 스테이지 정보를 저장하는 변수
+    //점수, 체력과 현재 스테이지 정보를 저장하는 변수
     public int Score { get; private set; }
     public int BestScore { get; private set; } // 최고 점수
+    public int CurrentHp { get; private set; } // 현재 체력
     public int CurrentStage { get; private set; }
 
     //인스펙터에서 연결 가능한 StartUI 참조
@@ -142,7 +143,6 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.InGame:
                 SceneManager.LoadScene("MainScene");
-                //UIManager.OnSceneLoad() 가 자동으로 호출되고 있어 추가하지 않음_ryang
                 break;
             case GameState.GameOver:
                 //씬 전환X, UI만 표시
@@ -184,6 +184,18 @@ public class GameManager : MonoBehaviour
         SetStage(0);
         //Start 씬으로 이동
         ChangeState(GameState.Start);
+    }
+
+    // 체력 깎기 테스트용 _ryang
+    public void TakeDamage(int damage)
+    {
+        CurrentHp -= damage;
+        gameUI.SetHealth(CurrentHp); // ChangeState()에서 GameOverUI 실행
+
+        if (CurrentHp <= 0)
+        {
+            ChangeState(GameState.GameOver);
+        }
     }
 
     //게임 종료

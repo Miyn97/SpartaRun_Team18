@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-[RequireComponent(typeof(Animator))]
+//[RequireComponent(typeof(Animator))]
 /*
 [RequireComponent]란?
 이 스크립트가 붙어 있는 GameObject에는
@@ -16,7 +16,8 @@ public class PlayerView : MonoBehaviour
     //리지드바디 (물리적 이동, 속도, 점프) 컴포넌트
     private Rigidbody2D _rigidbody;
     //애니메이션 실행을 위한 컴포넌트
-    private Animator animator;
+    //private Animator animator;
+    
 
     // 슬라이드용 크기 조절에 사용
     [SerializeField] private Transform spriteTransform;
@@ -30,7 +31,7 @@ public class PlayerView : MonoBehaviour
     {
         //오브젝트에 붙은 리지드바디 + 애니메이터 가져옴
         _rigidbody = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
+        //animator = GetComponent<Animator>();
 
         //SpriteTransform이 있다면
         if (spriteTransform != null)
@@ -43,6 +44,9 @@ public class PlayerView : MonoBehaviour
     {
         //x축으로 Speed만큼 이동시킴 (y축은 속도 유지)
         _rigidbody.velocity = new Vector2(speed, _rigidbody.velocity.y);
+
+        //애니메이터에게 속도 전달
+        //animator.SetFloat("Speed", speed);
     }
 
     //점프 처리
@@ -85,6 +89,6 @@ public class PlayerView : MonoBehaviour
     {
         //죽었을 때 실행되는 애니메이션 트리거 "Die"를 Animator에게 전달
         //예로들어서 넘어짐, 폭발, 비틀거림 등 설정된 애니메이션 재생
-        animator.SetTrigger("Die");
+        //animator.SetTrigger("Die");
     }
 }

@@ -12,11 +12,14 @@ public class PlayerController : MonoBehaviour
     //initialHealth는 초기값을 [결정]해서 [전달]하는 구조
     //PlayerModel에 MaxHealth는 초기값을 [보유]하는 구조
     //한마디로 외부에서 초기값을 주기위해 = 스테이지별로 체력이 다를 수 있다는걸 고려
+    [Header("Model Data")]
     [SerializeField] private int initialHealth = 6; // 체력 6칸 _ryang
     //기본 이동 속도
     [SerializeField] private float initialSpeed = 5f;
     //점프할 때 위로 가해지는 힘
-    // [SerializeField] private float jumpForce = 8f;
+    [SerializeField] private float jumpForce = 8f;
+
+    [Header("Slide")]
     //슬라이드 지속 시간
     [SerializeField] private float slideDuration = 1f; 
 
@@ -25,8 +28,13 @@ public class PlayerController : MonoBehaviour
     //남은 슬라이드 시간 저장용 변수
     private float slideTimer = 0f; 
 
+    private bool ground = false; //땅에 닿았는가?
+
     private void Start()
     {
+        // 플레이어 뷰를 가져옴
+        playerView = GetComponent<PlayerView>();
+
         // 모델 생성 및 초기화 (체력과 속도를 설정)
         model = new PlayerModel(initialHealth, initialSpeed);
     }

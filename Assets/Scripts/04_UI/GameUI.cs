@@ -46,8 +46,8 @@ public class GameUI : MonoBehaviour
         //정지 버튼을 클릭하면 NotifyPauseRequested() 함수가 호출되도록 연결
         optionButton.onClick.AddListener(NotifyPauseRequested);
 
-        //일시정지 버튼 클릭 시 일시정지 요청 이벤트 발생
-        OnPauseRequested += () => ToggleOptionPanel(true);
+        //일시정지 버튼 클릭 시 일시정지 요청 이벤트 발생 (구독자에게 알림)
+        OnPauseRequested += () => optionPanel.SetActive(true);
     }
 
     public void SetScore(int score)
