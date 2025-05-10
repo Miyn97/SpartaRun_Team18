@@ -51,7 +51,7 @@ public class IntroUI : MonoBehaviour
     private void ShowLine()
     {
         //기존에 타이핑 중이던 코루틴이 있으면 중단
-        if (typingCoroutine != null)
+        if (typingCoroutine != null || storyLines.Length == 0)
             StopCoroutine(typingCoroutine);
 
         //새로 현재 줄을 타이핑 시작

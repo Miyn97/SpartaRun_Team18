@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
@@ -28,6 +29,42 @@ public class UIManager : MonoBehaviour
         DontDestroyOnLoad(gameObject); // 씬 전환되어도 사라지지 않도록 설정 (게임 흐름 유지) _ryang
     }
 
+
+    //씬이 로드될 때마다 자동으로 OnSceneLoaded()를 실행
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    //씬이 비활성화될 때 자동으로 OnSceneLoaded()를 해제
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        switch (scene.name)
+        {
+            case "03_IntroScene":
+                //씬이 로드되면 UIManager의 각 UI를 찾아서 초기화
+                introUI = FindObjectOfType<IntroUI>();
+                introUI?.gameObject.SetActive(true);
+                break;
+            case "01_StartScene":
+                //시작 화면 UI를 찾고 활성화
+                startUI = FindObjectOfType<StartUI>();
+                startUI?.gameObject.SetActive(true);
+                break;
+            case "02_MainScene":
+                //게임 중 UI를 찾고 활성화
+                gameUI = FindObjectOfType<GameUI>();
+                gameOverUI = FindObjectOfType<GameOverUI>();
+                gameUI?.gameObject.SetActive(true);
+                gameOverUI?.gameObject.SetActive(false); // 게임 오버 UI는 비활성화
+                break;
+        }
+    }
 
     //Intro 화면을 보여주는 함수
     public void ShowIntroUI()

@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
     //IntroUI 참조
     private IntroUI introUI;
     //GameUI 참조
-    [SerializeField] private GameUI gameUI;
+    private GameUI gameUI;
     //GameOverUI 참조
     private GameOverUI gameOverUI;
 
@@ -134,15 +134,15 @@ public class GameManager : MonoBehaviour
         switch (newState)
         {
             case GameState.Intro:
-                SceneManager.LoadScene("IntroScene");
+                SceneManager.LoadScene("03_IntroScene");
                 UIManager.Instance?.ShowIntroUI(); //IntroUI를 보여줌_ryang
                 break;
             case GameState.Start:
-                SceneManager.LoadScene("StartScene");
+                SceneManager.LoadScene("01_StartScene");
                 UIManager.Instance?.ShowIntroUI(); //StartUI를 보여줌_ryang
                 break;
             case GameState.InGame:
-                SceneManager.LoadScene("MainScene");
+                SceneManager.LoadScene("02_MainScene");
                 break;
             case GameState.GameOver:
                 //씬 전환X, UI만 표시
