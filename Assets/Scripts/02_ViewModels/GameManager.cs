@@ -13,6 +13,19 @@ public class GameManager : MonoBehaviour
     public int Score { get; private set; }
     public int CurrentStage { get; private set; }
 
+    //인스펙터에서 연결 가능한 StartUI 참조
+    [SerializeField] private StartUI startUI;
+    //인스펙터에서 연결 가능한 IntroUI 참조
+    [SerializeField] private IntroUI introUI;
+    //인스펙터에서 연결 가능한 GameUI 참조
+    [SerializeField] private GameUI gameUI;
+    //인스펙터에서 연결 가능한 GameOverUI 참조
+    [SerializeField] private GameOverUI gameOverUI;
+
+    //현재 게임이 일시정지 상태인지 나타내는 변수.
+    //상태를 토글할 때 사용됨
+    private bool isPaused = false;
+
     private void Awake()
     {
         //GameManager 2개 방지 + 싱글톤 원칙
@@ -32,6 +45,81 @@ public class GameManager : MonoBehaviour
     {
         //게임이 시작되면 Intro 상태로 전환
         ChangeState(GameState.Intro);
+
+        //GameUI가 보낸 이벤트를 구독
+        gameUI.OnPauseRequested += TogglePause;
+        //GameOverUI가 보낸 이벤트를 구독
+        //UI는 버튼만 누르고 실제 로직은 GameManager가 처리
+        gameOverUI.OnRestartRequested += RestartGame;
+        gameOverUI.OnReturnHomeRequested += ReturnToHome;
+
+        //StartUI 이벤트 구독
+        startUI.OnStartRequested += HandleStartGame;
+        startUI.OnOptionRequested += HandleOption;
+        startUI.OnExitRequested += HandleExit;
+
+        //IntroUI 이벤트 구독
+        introUI.OnIntroComplete += HandleIntroComplete;
+    }
+
+    //실제 일시정지를 수행하는 메서드
+    private void TogglePause()
+    {
+        //현재 일시정지 상태를 반전시킴
+        isPaused = !isPaused;
+        //Unity의 시간 속도를 조절하는 변수
+        //0으로 설정하면 모든 Update나 FixedUpdate 실행이 멈춤
+        Time.timeScale = isPaused ? 0 : 1;
+        //옵션창 UI를 켜거나 끄는 명령
+        //View에게 명령만 내림
+        gameUI.ToggleOptionPanel(isPaused);
+    }
+
+    //게임 오버 상황을 호출할 때 외부에서 사용할 수 있는 함수
+    public void TriggerGameOver(int score, int highScore)
+    {
+        //점수와 최고 점수를 전달 + GameOverUI를 보여줌
+        gameOverUI.Show(score, highScore);
+        //상태를 GameOver로 전환
+        ChangeState(GameState.GameOver);
+    }
+
+    //IntroUI에서 인트로(스토리)가 끝났을 때 호출되는 콜백 함수
+    //트리거되면 실행됨
+    private void HandleIntroComplete()
+    {
+        //현재 게임 상태를 Start로 전환
+        //즉, StartScene 또는 시작화면 UI로 넘어가는 역할을 수행
+        ChangeState(GameState.Start);
+    }
+
+    //StartUI에서 게임 시작 버튼을 누르면 이 함수가 호출
+    private void HandleStartGame()
+    {
+        //게임 상태를 InGame로 변경
+        //일반적으로 MainScene을 로드하고, 실제 게임 플레이를 시작하는 상태로 전환
+        ChangeState(GameState.InGame);
+    }
+
+    //StartUI에서 옵션 버튼을 누르면 이 함수가 호출
+    private void HandleOption()
+    {
+        Debug.Log("옵션 버튼 눌림 - 옵션 UI 처리 예정");
+        //추후 옵션 UI.Show() 등 달아주시면 됩니다 선량님
+    }
+
+    //게임 종료 버튼을 눌렸을 때 실행되는 함수
+    private void HandleExit()
+    {
+        //실행된 빌드 상태에서 게임을 종료
+        //Windows, Mac, Android 등에서 종료되며 에디터에서는 무시됨
+        Application.Quit();
+
+        //이 코드는 Unity 에디터에서 실행 중일 때만 작동하도록 조건부 컴파일 지시자입니다
+        //에디터에서도 종료 버튼을 누르면 Play모드가 꺼지도록 해줌
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
     }
 
     //게임 상태를 전환하는 메서드 (호출 가능)
@@ -65,6 +153,7 @@ public class GameManager : MonoBehaviour
     public void AddScore(int value)
     {
         Score += value;
+        gameUI.SetScore(Score);
         //나중에 UIManager랑 연결 (이 라인 삭제가능)
         //점수 증가 후, UIManager에 현재 점수 업데이트 요청
         //UIManager.Instance?.UpdateScore(Score); //(주석 처리 해제 가능)
@@ -79,15 +168,27 @@ public class GameManager : MonoBehaviour
     //게임 재시작 관련 메서드
     public void RestartGame()
     {
-        SceneManager.LoadScene("MainScene"); //MainScene을 로드
+        Score = 0;
+        SetStage(1); //스테이지 초기화 예시
+        //SceneManager.LoadScene("MainScene"); //MainScene을 로드
         ChangeState(GameState.InGame); //상태를 InGame으로 변경
     }
 
-    //게임 종료
-    public void QuitGame()
+    //홈으로 돌아가기 버튼이 눌렸을 때 실행
+    private void ReturnToHome()
     {
-        Application.Quit();
+        //상태 초기화
+        Score = 0;
+        SetStage(0);
+        //Start 씬으로 이동
+        ChangeState(GameState.Start);
     }
+
+    //게임 종료
+    //public void QuitGame()
+    //{
+    //    Application.Quit();
+    //}
 
 
 }
