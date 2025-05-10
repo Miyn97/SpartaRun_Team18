@@ -54,11 +54,5 @@ public class ObstacleModel
         
     }
 
-    //IEnumerator SpeedDown(PlayerModel player, float originalSpeed)     // 장애물에 부딪쳤을 떄 잠시동안 속도를 감소 시키는 코루틴 함수 
-    //{                                                                  // 속도가 감소 됐다가 서서히 원래 속도로 돌아온다.
-    //    Debug.Log("속도 감소 코루틴");                                 // 속도 감소 메서드 작동 확인용 메시지
-    //    // player.speed = 0.5f;
-    //    yield return new WaitForSeconds(0.5f);
-    //    // player.speed = originalSpeed;
-    //}
+    
 }
