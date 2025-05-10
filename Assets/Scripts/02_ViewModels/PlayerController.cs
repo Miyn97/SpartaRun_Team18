@@ -21,12 +21,12 @@ public class PlayerController : MonoBehaviour
 
     [Header("Jump/Slide")]
     //점프할 때 위로 가해지는 힘
-    [SerializeField] private float jumpForce = 8f;
+    [SerializeField] private float jumpForce = 7f;
     //슬라이드 지속 시간
     [SerializeField] private float slideDuration = 1f;
 
-    private bool isJumping = false; //점프를 했는가?
-    private bool isDoubleJump = false; //더블 점프를 했는가?
+    private bool isGround = true; // 땅에 있는 상태
+    private bool isDoubleJump = false; //더블 점프 가능 상태
 
     //슬라이딩을 했는가?
     private bool isSliding = false;
@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour
     private float slideTimer = 0f;
     public bool IsInvincible { get; private set; }
 
-    private void Start()
+    private void Awake() //update보다 먼저 실행
     {
         // 플레이어 뷰를 가져옴
         playerView = GetComponent<PlayerView>();
@@ -47,8 +47,6 @@ public class PlayerController : MonoBehaviour
     {
         //키 입력 처리 확인
         HandleInput();
-        //슬라이드 지속 시간 처리 확인
-        SlideTime();
     }
 
     //자동 이동을 위한 FixedUpdate
@@ -70,72 +68,79 @@ public class PlayerController : MonoBehaviour
         {
             Slide(); //슬라이드 키는 Shift
         }
+        if (isSliding)
+        {
+            SlideTime(); // 슬라이드 지속 시간 처리
+        }
 
         //체력감소 테스트
         if (Input.GetKeyDown(KeyCode.H))
         {
-            TakeDamage(1); //체력 감소 테스트
+            GameManager.Instance.TakeDamage(1); //체력 감소 테스트
         }
         //점수 증가 테스트
         if (Input.GetKeyDown(KeyCode.S))
         {
-            AddScore(36); //점수 증가 테스트
+            GameManager.Instance.AddScore(36); //점수 증가 테스트
         }
     }
 
     //점프 조작
     private void Jump()
     {
-        if (isJumping)
+        if (isGround)
         {
             playerView.Jump(jumpForce); //점프 애니메이션 요청
             //playerView.Jump(jumpForce); //애니메이션 생성 시 주석처리 해제
             // 뷰에게 점프 애니메이션/물리 적용 명령
-            isJumping = false; //점프 상태 해제
+            isGround = false; //점프!
             isDoubleJump = true; //더블 점프 가능
         }
         else if (isDoubleJump)
         {
             playerView.Jump(jumpForce); //더블 점프 애니메이션 요청
             //playerView.Jump(jumpForce); //애니메이션 생성 시 주석처리 해제
-            isDoubleJump = false; //더블 점프 상태 해제
+            isDoubleJump = false; //더블 점프!
         }
-        //else
-        //{
-        //    // 점프 불가 상태
-        //}
+        else
+        {
+            Debug.Log("더블 점프까지만 가능합니다.");
+        }
     }
 
     //슬라이드 조작
     private void Slide()
     {
-        if (isSliding)
-        {
-            //프레임 시간만큼 슬라이드 시간 감소
-            slideTimer -= Time.deltaTime;
-            //슬라이드 시간이 끝나면
-            if (slideTimer <= 0)
-            {
-                //슬라이드 false
-                isSliding = false;
-                //뷰에게 종료 애니메이션 요청
-                //playerView.EndSlide(); //애니메이션 생성 시 주석처리 해제
-            }
-        }
+        Debug.Log("슬라이드 중입니다.");
+        isSliding = true; //슬라이드 중 상태
+        slideTimer = slideDuration; //슬라이드 지속 시간 설정
+        playerView.Slide(); //슬라이드 애니메이션 요청
+
+        //뷰에게 종료 애니메이션 요청
+        //playerView.EndSlide(); //애니메이션 생성 시 주석처리 해제
     }
 
     //슬라이드
     private void SlideTime()
     {
-        //슬라이드 중이 아닐 때
-        if (!isSliding)
+        //슬라이드 지속 시간 처리
+        slideTimer -= Time.deltaTime;
+
+        if (slideTimer <= 0f)
         {
-            //슬라이드 true
-            isSliding = true;
-            //슬라이드 타이머 설정
-            slideTimer = slideDuration;
-            //뷰에게 애니메이션 요청
-            //playerView.Slide(); //애니메이션 생성 시 주석처리 해제
+            Debug.Log("슬라이드 종료");
+            isSliding = false;
+            playerView.EndSlide(); //슬라이드 종료 애니메이션 요청
+        }
+    }
+
+    // 땅에 닿았는지 확인
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.collider.CompareTag("Ground"))
+        {
+            isGround = true; //땅에 닿았을 때
+            isDoubleJump = false; //더블 점프 초기화
         }
     }
 

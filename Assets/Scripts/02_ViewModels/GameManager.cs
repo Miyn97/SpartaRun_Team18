@@ -135,11 +135,11 @@ public class GameManager : MonoBehaviour
         {
             case GameState.Intro:
                 SceneManager.LoadScene("03_IntroScene");
-                UIManager.Instance?.ShowIntroUI(); //IntroUI∏¶ ∫∏ø©¡‹_ryang
+                UIManager.Instance.ShowIntroUI(); //IntroUI∏¶ ∫∏ø©¡‹_ryang
                 break;
             case GameState.Start:
                 SceneManager.LoadScene("01_StartScene");
-                UIManager.Instance?.ShowIntroUI(); //StartUI∏¶ ∫∏ø©¡‹_ryang
+                UIManager.Instance.ShowIntroUI(); //StartUI∏¶ ∫∏ø©¡‹_ryang
                 break;
             case GameState.InGame:
                 SceneManager.LoadScene("02_MainScene");
