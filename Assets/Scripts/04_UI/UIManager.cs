@@ -95,10 +95,10 @@ public class UIManager : MonoBehaviour
     }
 
     //GameUI의 점수 표시 갱신을 요청
-    public void UpdateScore(int score)
+    public void UpdateScore(int score, int bestScore)
     {
         //gameUI가 null이 아닐 때만 실행됨
-        gameUI?.SetScore(score);
+        gameUI?.SetScore(score, bestScore);
     }
 
     //체력 UI를 갱신하는 함수

@@ -50,10 +50,11 @@ public class GameUI : MonoBehaviour
         OnPauseRequested += () => optionPanel.SetActive(true);
     }
 
-    public void SetScore(int score)
+    public void SetScore(int score, int bestScore)
     {
         // 진행 점수 문자열로 바꿔서 화면에 표시
         currentScoreText.text = score.ToString();
+        // 게임중에는 최고 점수 표시 안함
     }
 
     public void SetHealth(int currentHp)

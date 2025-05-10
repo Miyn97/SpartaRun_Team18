@@ -16,13 +16,13 @@ public class GameManager : MonoBehaviour
     public int CurrentStage { get; private set; }
 
     //StartUI 참조
-    private StartUI startUI;
+    [SerializeField] private StartUI startUI;
     //IntroUI 참조
-    private IntroUI introUI;
+    [SerializeField] private IntroUI introUI;
     //GameUI 참조
-    private GameUI gameUI;
+    [SerializeField] private GameUI gameUI;
     //GameOverUI 참조
-    private GameOverUI gameOverUI;
+    [SerializeField] private GameOverUI gameOverUI;
 
     //현재 게임이 일시정지 상태인지 나타내는 변수.
     //상태를 토글할 때 사용됨
@@ -135,18 +135,21 @@ public class GameManager : MonoBehaviour
         {
             case GameState.Intro:
                 SceneManager.LoadScene("03_IntroScene");
-                UIManager.Instance.ShowIntroUI(); //IntroUI를 보여줌_ryang
+                introUI?.gameObject.SetActive(true); //IntroUI를 활성화
                 break;
             case GameState.Start:
                 SceneManager.LoadScene("01_StartScene");
-                UIManager.Instance.ShowIntroUI(); //StartUI를 보여줌_ryang
+                startUI?.gameObject.SetActive(true); //StartUI를 활성화
                 break;
             case GameState.InGame:
                 SceneManager.LoadScene("02_MainScene");
+                gameUI?.gameObject.SetActive(true); //GameUI를 활성화
+                gameOverUI?.gameObject.SetActive(false); //GameOverUI를 비활성화
                 break;
             case GameState.GameOver:
                 //씬 전환X, UI만 표시
-                UIManager.Instance.ShowGameOverUI(Score, BestScore);
+                gameUI?.gameObject.SetActive(false); //GameUI를 비활성화
+                gameOverUI?.gameObject.SetActive(true); //GameOverUI를 활성화
                 break;
         }
     }
@@ -155,10 +158,9 @@ public class GameManager : MonoBehaviour
     public void AddScore(int value)
     {
         Score += value;
-        gameUI.SetScore(Score);
         //나중에 UIManager랑 연결 (이 라인 삭제가능)
         //점수 증가 후, UIManager에 현재 점수 업데이트 요청
-        //UIManager.Instance?.UpdateScore(Score); //(주석 처리 해제 가능)
+        UIManager.Instance?.UpdateScore(Score, BestScore);
     }
 
     //난이도 증가나 다음 맵 전환에 사용
@@ -190,7 +192,7 @@ public class GameManager : MonoBehaviour
     public void TakeDamage(int damage)
     {
         CurrentHp -= damage;
-        gameUI.SetHealth(CurrentHp); // ChangeState()에서 GameOverUI 실행
+        UIManager.Instance.UpdateHealth(CurrentHp); //UIManager에 체력 업데이트 요청
 
         if (CurrentHp <= 0)
         {
