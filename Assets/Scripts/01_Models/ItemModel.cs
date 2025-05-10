@@ -2,10 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 /*
 아이템 종류, 효과수치 등
 아이템 종류 밑 임의수치

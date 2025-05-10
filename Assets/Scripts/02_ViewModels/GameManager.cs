@@ -15,14 +15,14 @@ public class GameManager : MonoBehaviour
     public int CurrentHp { get; private set; } // 현재 체력
     public int CurrentStage { get; private set; }
 
-    //인스펙터에서 연결 가능한 StartUI 참조
-    [SerializeField] private StartUI startUI;
-    //인스펙터에서 연결 가능한 IntroUI 참조
-    [SerializeField] private IntroUI introUI;
-    //인스펙터에서 연결 가능한 GameUI 참조
+    //StartUI 참조
+    private StartUI startUI;
+    //IntroUI 참조
+    private IntroUI introUI;
+    //GameUI 참조
     [SerializeField] private GameUI gameUI;
-    //인스펙터에서 연결 가능한 GameOverUI 참조
-    [SerializeField] private GameOverUI gameOverUI;
+    //GameOverUI 참조
+    private GameOverUI gameOverUI;
 
     //현재 게임이 일시정지 상태인지 나타내는 변수.
     //상태를 토글할 때 사용됨
@@ -186,7 +186,7 @@ public class GameManager : MonoBehaviour
         ChangeState(GameState.Start);
     }
 
-    // 체력 깎기 테스트용 _ryang
+    // 체력감소 테스트용 _ryang
     public void TakeDamage(int damage)
     {
         CurrentHp -= damage;
@@ -198,7 +198,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    //게임 종료
+    ////게임 종료
     //public void QuitGame()
     //{
     //    Application.Quit();
