@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour
     //기본 이동 속도
     [SerializeField] private float initialSpeed = 5f;
     //점프할 때 위로 가해지는 힘
-    [SerializeField] private float jumpForce = 8f;
+    // [SerializeField] private float jumpForce = 8f;
     //슬라이드 지속 시간
     [SerializeField] private float slideDuration = 1f; 
 
