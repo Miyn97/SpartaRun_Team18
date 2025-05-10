@@ -4,12 +4,14 @@ using UnityEngine.UI;
 
 public class GameOverUI : MonoBehaviour
 {
+    [SerializeField] private GameObject gameOverPanel; // 게임 오버 패널 _ryang
+
     //인스펙터 상에서 Core라는 섹션으로 구분
     [Header("Score")]
     //이번 플레이의 최종 점수를 출력할 텍스트
     [SerializeField] private TextMeshProUGUI finalScoreText;
     //저장된 최고 점수를 출력할 텍스트
-    [SerializeField] private TextMeshProUGUI highScoreText;
+    [SerializeField] private TextMeshProUGUI bestScoreText;
 
     //인스펙터에서 Button이라는 그룹으로 묶어서 표시
     [Header("Button")]
@@ -42,7 +44,7 @@ public class GameOverUI : MonoBehaviour
     {
         //전달받은 점수들을 텍스트로 변환해서 UI에 표시함
         finalScoreText.text = finalScore.ToString();
-        highScoreText.text = highScore.ToString();
+        bestScoreText.text = highScore.ToString();
 
         //이 GameOverUI 오브젝트를 활성화해서 실제 화면에 나타나게 함
         gameObject.SetActive(true);

@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     public GameState CurrentState { get; private set; }
     //점수와 현재 스테이지 정보를 저장하는 변수
     public int Score { get; private set; }
+    public int BestScore { get; private set; } // 최고 점수
     public int CurrentStage { get; private set; }
 
     //인스펙터에서 연결 가능한 StartUI 참조
@@ -132,19 +133,20 @@ public class GameManager : MonoBehaviour
         switch (newState)
         {
             case GameState.Intro:
-                //using UnityEngine.SceneManagement; 유징문만 추가하면 호출 가능
                 SceneManager.LoadScene("IntroScene");
+                UIManager.Instance?.ShowIntroUI(); //IntroUI를 보여줌_ryang
                 break;
             case GameState.Start:
                 SceneManager.LoadScene("StartScene");
+                UIManager.Instance?.ShowIntroUI(); //StartUI를 보여줌_ryang
                 break;
             case GameState.InGame:
                 SceneManager.LoadScene("MainScene");
+                //UIManager.OnSceneLoad() 가 자동으로 호출되고 있어 추가하지 않음_ryang
                 break;
             case GameState.GameOver:
-                //나중에 UIManager랑 연결 (이 라인 삭제가능)
                 //씬 전환X, UI만 표시
-                //UIManager.Instance?.ShowGameOverUI(); //(주석 처리 해제 가능)
+                UIManager.Instance.ShowGameOverUI(Score, BestScore);
                 break;
         }
     }

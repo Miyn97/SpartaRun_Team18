@@ -10,10 +10,10 @@ public class UIManager : MonoBehaviour
     [Header("UI Screens")]
 
     //각 UI를 활성화/비활성화하거나 데이터 전달할 때 사용
-    [SerializeField] private IntroUI introUI;
-    [SerializeField] private StartUI startUI;
-    [SerializeField] private GameUI gameUI;
-    [SerializeField] private GameOverUI gameOverUI;
+    private IntroUI introUI;
+    private StartUI startUI;
+    private GameUI gameUI;
+    private GameOverUI gameOverUI; // [SerializeField] 지움_ryang
 
     private void Awake()
     {
@@ -25,6 +25,30 @@ public class UIManager : MonoBehaviour
         }
         //UIManager를 인스턴스로 등록
         Instance = this;
+        DontDestroyOnLoad(gameObject); // 씬 전환되어도 사라지지 않도록 설정 (게임 흐름 유지) _ryang
+    }
+
+    // 씬 이름에 따라 UI를 찾아서 필요한 것만 찾아서 연결_ryang
+    private void SceneLoad()
+    {
+        //씬 이름에 따라 UI를 찾아서 연결
+        switch (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name)
+        {
+            case "03_IntroScene":
+                introUI = FindObjectOfType<IntroUI>();
+                introUI?.gameObject.SetActive(true); //IntroUI가 null이 아닐 때만 활성화
+                break;
+            case "01_StartScene":
+                startUI = FindObjectOfType<StartUI>();
+                startUI?.gameObject.SetActive(true); //StartUI가 null이 아닐 때만 활성화
+                break;
+            case "02_MainScene":
+                gameUI = FindObjectOfType<GameUI>();
+                gameOverUI = FindObjectOfType<GameOverUI>();
+                gameUI.gameObject.SetActive(true);
+                gameOverUI.gameObject.SetActive(false); //GameUI는 활성화, GameOverUI는 비활성화
+                break;
+        }
     }
 
     //Intro 화면을 보여주는 함수
@@ -49,10 +73,10 @@ public class UIManager : MonoBehaviour
     }
 
     //GameOverUI 화면을 보여주는 함수
-    public void ShowGameOverUI()
+    public void ShowGameOverUI(int finalScore, int highScore)
     {
         //게임 오버 상황에서만 보여주는 UI를 켬
-        SetOnlyActive(gameOverUI);
+        gameOverUI.Show(finalScore, highScore);
     }
 
     //GameUI의 점수 표시 갱신을 요청

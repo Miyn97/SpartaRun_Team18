@@ -20,12 +20,18 @@ public class GameUI : MonoBehaviour
     //하트가 0 HP일 때
     [SerializeField] private Sprite heart_empty;
 
-    [Header("Pause/Option")]
-    //일시정지 메뉴창과 정지 버튼을 연결할 변수
-    // 단순 게임 일시정지기능만 or 옵션메뉴 판넬로 해도 괜찮음,
-    // 시작-> 옵션 과 동일한 곳으로 이동하는 방식도 괜찮음
+    [Header("Option")]
+    //설정창 (일시정지 됨)
+    [SerializeField] private Button optionButton;
     [SerializeField] private GameObject optionPanel;
-    [SerializeField] private Button pauseButton;
+
+    [Header("PanelButtons")]
+    [SerializeField] private Button resumeButton;
+    //[SerializeField] private Button volumeSetting; // 슬라이더 / 소 중 대 / on, off
+    [SerializeField] private Button startScene;
+
+    //[Header("Audio")]
+    //[SerializeField] private Button pauseScene;
 
     //delegate는 이벤트를 외부에 전달할 수 있는 형식
     public delegate void PauseRequestedHandler();
@@ -36,8 +42,12 @@ public class GameUI : MonoBehaviour
     {
         // 옵션패널 처음부터 보여주지 않음.
         optionPanel.SetActive(false);
+
         //정지 버튼을 클릭하면 NotifyPauseRequested() 함수가 호출되도록 연결
-        pauseButton.onClick.AddListener(NotifyPauseRequested);
+        optionButton.onClick.AddListener(NotifyPauseRequested);
+
+        //일시정지 버튼 클릭 시 일시정지 요청 이벤트 발생
+        OnPauseRequested += () => ToggleOptionPanel(true);
     }
 
     public void SetScore(int score)
@@ -78,5 +88,6 @@ public class GameUI : MonoBehaviour
     {
         //직접 일시정지 하지 않고, 요청만 보내는 구조
         OnPauseRequested?.Invoke();
+       
     }
 }
