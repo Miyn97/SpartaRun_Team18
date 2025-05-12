@@ -45,8 +45,12 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        BestScore = PlayerPrefs.GetInt("BestScore", 0); // 최고 점수 불러오기
+        Score = 0; // 점수 리셋
+        CurrentHp = 6; // 체력 리셋 (6으로 설정)
+
         //게임이 시작되면 Intro 상태로 전환
-        ChangeState(GameState.Intro);
+        //ChangeState(GameState.Intro); // 최종본에서는 필요함
 
         //GameUI가 보낸 이벤트를 구독
         gameUI.OnPauseRequested += TogglePause;
@@ -135,21 +139,21 @@ public class GameManager : MonoBehaviour
         {
             case GameState.Intro:
                 SceneManager.LoadScene("03_IntroScene");
-                introUI?.gameObject.SetActive(true); //IntroUI를 활성화
                 break;
             case GameState.Start:
                 SceneManager.LoadScene("01_StartScene");
-                startUI?.gameObject.SetActive(true); //StartUI를 활성화
                 break;
             case GameState.InGame:
                 SceneManager.LoadScene("02_MainScene");
-                gameUI?.gameObject.SetActive(true); //GameUI를 활성화
-                gameOverUI?.gameObject.SetActive(false); //GameOverUI를 비활성화
+                // 새 게임 시작시 체력, 점수 다시 초기화
+                Score = 0; // 점수 리셋
+                CurrentHp = 6; // 체력 리셋 (6으로 설정)
+                UIManager.Instance.UpdateHealth(CurrentHp); // UIManager에 체력 업데이트 요청
+                UIManager.Instance.UpdateScore(Score, BestScore); // UIManager에 점수 업데이트 요청
                 break;
             case GameState.GameOver:
                 //씬 전환X, UI만 표시
-                gameUI?.gameObject.SetActive(false); //GameUI를 비활성화
-                gameOverUI?.gameObject.SetActive(true); //GameOverUI를 활성화
+                UIManager.Instance.ShowGameOverUI(Score, BestScore);
                 break;
         }
     }
@@ -158,9 +162,25 @@ public class GameManager : MonoBehaviour
     public void AddScore(int value)
     {
         Score += value;
-        //나중에 UIManager랑 연결 (이 라인 삭제가능)
+        if (Score > BestScore)
+        {
+            BestScore = Score; //최고 점수 갱신
+            PlayerPrefs.SetInt("BestScore", BestScore); //최고 점수 저장
+        }
         //점수 증가 후, UIManager에 현재 점수 업데이트 요청
         UIManager.Instance?.UpdateScore(Score, BestScore);
+    }
+
+    // 체력감소 테스트용 _ryang
+    public void TakeDamage(int damage)
+    {
+        CurrentHp = Mathf.Max(CurrentHp - damage, 0); //체력 감소 (최소 0)
+        UIManager.Instance.UpdateHealth(CurrentHp); //UIManager에 체력 업데이트 요청
+
+        if (CurrentHp <= 0)
+        {
+            ChangeState(GameState.GameOver);
+        }
     }
 
     //난이도 증가나 다음 맵 전환에 사용
@@ -186,18 +206,6 @@ public class GameManager : MonoBehaviour
         SetStage(0);
         //Start 씬으로 이동
         ChangeState(GameState.Start);
-    }
-
-    // 체력감소 테스트용 _ryang
-    public void TakeDamage(int damage)
-    {
-        CurrentHp -= damage;
-        UIManager.Instance.UpdateHealth(CurrentHp); //UIManager에 체력 업데이트 요청
-
-        if (CurrentHp <= 0)
-        {
-            ChangeState(GameState.GameOver);
-        }
     }
 
     ////게임 종료
