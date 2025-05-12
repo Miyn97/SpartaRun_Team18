@@ -97,4 +97,13 @@ public class PlayerView : MonoBehaviour
         //예로들어서 넘어짐, 폭발, 비틀거림 등 설정된 애니메이션 재생
         //animator.SetTrigger("Die");
     }
+
+    //애니메이션 정지용 메서드
+    public void StopMovementAnimation()
+    {
+        animator.SetFloat("Speed", 0); // ← 움직임 애니메이션 정지
+        _rigidbody.velocity = Vector2.zero; // 혹시나 모를 물리 이동도 강제로 정지
+    }
+
+
 }

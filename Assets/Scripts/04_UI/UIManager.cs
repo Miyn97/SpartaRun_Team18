@@ -16,6 +16,9 @@ public class UIManager : MonoBehaviour
     private GameUI gameUI;
     private GameOverUI gameOverUI; // [SerializeField] 지움_ryang
 
+    public event System.Action OnRestartRequested;
+    public event System.Action OnReturnHomeRequested;
+
     private void Awake()
     {
         //UIManager 2개 방지 + 싱글톤 원칙
@@ -69,11 +72,15 @@ public class UIManager : MonoBehaviour
                 gameOverUI?.Hide(); // UI는 비활성화
 
                 //게임 UI의 버튼 클릭 이벤트를 연결 (GameOverIU는 UImanager에서만 연결!)
-                gameOverUI.OnRestartRequested -= GameManager.Instance.RestartGame;
-                gameOverUI.OnReturnHomeRequested -= GameManager.Instance.ReturnToHome;
+                gameOverUI.OnRestartRequested += () => OnRestartRequested?.Invoke();
+                gameOverUI.OnReturnHomeRequested += () => OnReturnHomeRequested?.Invoke();
 
-                gameOverUI.OnRestartRequested += GameManager.Instance.RestartGame;
-                gameOverUI.OnReturnHomeRequested += GameManager.Instance.ReturnToHome;
+
+                //gameOverUI.OnRestartRequested -= GameManager.Instance.RestartGame;
+                //gameOverUI.OnReturnHomeRequested -= GameManager.Instance.ReturnToHome;
+
+                //gameOverUI.OnRestartRequested += GameManager.Instance.RestartGame;
+                //gameOverUI.OnReturnHomeRequested += GameManager.Instance.ReturnToHome;
                 break;
         }
     }
