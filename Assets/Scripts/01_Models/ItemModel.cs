@@ -138,66 +138,7 @@ public class ItemModel : MonoBehaviour
     }
 }
 
-/*
-PlayerController.cs에 추가할것? 추가하면 오류 없어짐...
-
-public bool IsInvincible { get; set; } = false; // ----------추가 무적인지 확인용 bool
-
-
-public void TakeDamage(int damage)
-{
-    if (IsInvincible)//-----------이 줄과 아랫줄 추가
-        return; // 무적 상태면 리턴으로 데미지 무시
-
-    model.TakeDamage(damage);
-
-    if (model.CurrentHealth <= 0)
-    {
-        Die();
-    }
-}
-
-
-
-
-
-
-
-*/
-
-
-
-
 //public class ItemModel : MonoBehaviour//아래쪽은 지피티가 추천해준 코드
-//{
-
-//    public ItemEnum itemEnum;
-//    public float duration; // 지속시간 (필요 없는 경우는 0)
-//    public int healAmount; // 회복량 (힐 전용)
-//    public int itemScore;//아이템 획득시 점수 추가?
-
-//    public void ApplyEffect(PlayerController player)
-//    {
-//        switch (itemEnum)
-//        {
-//            case ItemEnum.GiantPotion:
-//                StartCoroutine(GiantEffect(player));
-//                break;
-//            case ItemEnum.SpeedPotion:
-//                StartCoroutine(SpeedEffect(player));
-//                break;
-//            case ItemEnum.HealPotion:
-//                player.Heal(healAmount);
-//                break;
-//            case ItemEnum.Bomb:
-//                StartCoroutine(BombEffect(player)); 
-//                break;
-//            case ItemEnum.Magnet:
-//                StartCoroutine(MagnetEffect(player)); 
-//                break;
-//        }
-//    }
-
 
 //   private IEnumerator GiantEffect(PlayerController player)
 //    {
