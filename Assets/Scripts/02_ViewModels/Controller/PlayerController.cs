@@ -182,7 +182,8 @@ public class PlayerController : MonoBehaviour
     {
         //playerView.SetAnimatorSpeed(0f);
         //죽었을 때 애니메이션 실행
-        //playerView.PlayDeathAnimation(); //애니메이션 생성 시 주석처리 해제
+        playerView.PlayDeathAnimation(); //애니메이션 생성 시 주석처리 해제
+        playerView.StopMovementAnimation(); // 움직임 강제 정지
         //View는 죽는 연출 + 게임매니저는 상태변화
         GameManager.Instance.ChangeState(GameManager.GameState.GameOver);
         playerView.StopMovementAnimation();

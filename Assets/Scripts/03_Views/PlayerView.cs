@@ -95,7 +95,7 @@ public class PlayerView : MonoBehaviour
     {
         //죽었을 때 실행되는 애니메이션 트리거 "Die"를 Animator에게 전달
         //예로들어서 넘어짐, 폭발, 비틀거림 등 설정된 애니메이션 재생
-        //animator.SetTrigger("Die");
+        animator.SetTrigger("Die");
     }
 
     //애니메이션 정지용 메서드
