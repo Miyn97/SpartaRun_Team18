@@ -12,7 +12,7 @@ public enum ObstacleType    // 장애물 종류 enum
 
 }
 
-public enum AvoidType       // 장애물 회피 방법 eum
+public enum AvoidType       // 장애물 회피 방법 enum
 {
     Jump,                   // 점프로 피하는 장애물
     DoubleJump,             // 더블 점프로 피하는 장애물
