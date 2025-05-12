@@ -18,6 +18,7 @@ using UnityEngine;
 
 public enum ItemEnum
 {
+    Coin,
     HealPotion,
     SpeedPotion,
     GiantPotion/*,
@@ -40,6 +41,9 @@ public class ItemModel : MonoBehaviour
 
         switch (itemEnum)
         {
+            case ItemEnum.Coin:
+                GameManager.Instance.AddScore(100);
+                break;
             case ItemEnum.HealPotion:
                 HealPotion();
                 break;
