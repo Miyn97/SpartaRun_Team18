@@ -97,15 +97,6 @@ public class GameManager : MonoBehaviour
                 gameUI.OnReturnHomeRequested += ReturnToHome;
                 //gameUI.OnVolumeChanged += SoundManager.Instance.SetVolume; // (연결 되면 주석처리 해제하고 적용)
             }
-
-            gameOverUI = FindObjectOfType<GameOverUI>();
-            if (gameOverUI != null)
-            {
-                gameOverUI.OnRestartRequested += RestartGame;
-                gameOverUI.OnReturnHomeRequested += ReturnToHome;
-                //나중에 Soundmanager랑 연결
-                //gameUI.OnVolumeChanged += SoundManager.Instance.SetVolume; (연결 되면 주석처리 해제하고 적용)
-            }
         }
     }
 
@@ -191,8 +182,6 @@ public class GameManager : MonoBehaviour
                 // 새 게임 시작시 체력, 점수 다시 초기화
                 Score = 0; // 점수 리셋
                 CurrentHp = 6; // 체력 리셋 (6으로 설정)
-                UIManager.Instance.UpdateHealth(CurrentHp); // UIManager에 체력 업데이트 요청
-                UIManager.Instance.UpdateScore(Score, BestScore); // UIManager에 점수 업데이트 요청
                 break;
             case GameState.GameOver:
                 //씬 전환X, UI만 표시
@@ -244,7 +233,7 @@ public class GameManager : MonoBehaviour
     }
 
     //홈으로 돌아가기 버튼이 눌렸을 때 실행
-    private void ReturnToHome()
+    public void ReturnToHome()
     {
         Time.timeScale = 1; // 시간 흐르게
         isPaused = false; // 일시정지 해제

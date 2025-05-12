@@ -62,10 +62,18 @@ public class UIManager : MonoBehaviour
                 // GameOverUI 찾기 / null오류 방지용
                 var all = Resources.FindObjectsOfTypeAll<GameOverUI>();
                 gameOverUI = System.Array.Find(all, ui => ui.gameObject.scene == scene);
+
                 // 게임 오버 UI는 비활성화
                 gameUI?.gameObject.SetActive(true);
                 gameOverUI?.gameObject.SetActive(true); // 스크립트는 활성화
                 gameOverUI?.Hide(); // UI는 비활성화
+
+                //게임 UI의 버튼 클릭 이벤트를 연결 (GameOverIU는 UImanager에서만 연결!)
+                gameOverUI.OnRestartRequested -= GameManager.Instance.RestartGame;
+                gameOverUI.OnReturnHomeRequested -= GameManager.Instance.ReturnToHome;
+
+                gameOverUI.OnRestartRequested += GameManager.Instance.RestartGame;
+                gameOverUI.OnReturnHomeRequested += GameManager.Instance.ReturnToHome;
                 break;
         }
     }
