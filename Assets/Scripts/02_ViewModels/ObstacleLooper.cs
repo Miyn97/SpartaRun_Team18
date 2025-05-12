@@ -9,7 +9,7 @@ public class ObstacleLooper : MonoBehaviour
     {
         if (collision.CompareTag("Obstacle"))
         {
-            ObstacleManager.Instance.RepositionObstacle(collision.gameObject);
+            // ObstacleManager.Instance.RepositionObstacle(collision.gameObject);
         }
     }
 }

@@ -172,4 +172,6 @@ public class ObstacleManager : MonoBehaviour
             _ => null // 혹시라도 값이 잘못 들어오면 null 반환 (예외 처리용)
         };
     }
+
+
 }
