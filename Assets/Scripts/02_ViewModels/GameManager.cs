@@ -52,20 +52,35 @@ public class GameManager : MonoBehaviour
         //게임이 시작되면 Intro 상태로 전환
         //ChangeState(GameState.Intro); // 최종본에서는 필요함
 
-        //GameUI가 보낸 이벤트를 구독
-        gameUI.OnPauseRequested += TogglePause;
-        //GameOverUI가 보낸 이벤트를 구독
-        //UI는 버튼만 누르고 실제 로직은 GameManager가 처리
-        gameOverUI.OnRestartRequested += RestartGame;
-        gameOverUI.OnReturnHomeRequested += ReturnToHome;
+        // null 오류 방지용
+        if (gameUI != null)
+        {
+            //GameUI가 보낸 이벤트를 구독
+            gameUI.OnPauseRequested += TogglePause;
+        }
 
-        //StartUI 이벤트 구독
-        startUI.OnStartRequested += HandleStartGame;
-        startUI.OnOptionRequested += HandleOption;
-        startUI.OnExitRequested += HandleExit;
+        if (gameOverUI != null)
+        {
+            //GameOverUI가 보낸 이벤트를 구독
+            //UI는 버튼만 누르고 실제 로직은 GameManager가 처리
+            gameOverUI.OnRestartRequested += RestartGame;
+            gameOverUI.OnReturnHomeRequested += ReturnToHome;
+        }
 
-        //IntroUI 이벤트 구독
-        introUI.OnIntroComplete += HandleIntroComplete;
+        if (startUI != null)
+        {
+            //StartUI 이벤트 구독
+            startUI.OnStartRequested += HandleStartGame;
+            startUI.OnOptionRequested += HandleOption;
+            startUI.OnExitRequested += HandleExit;
+        }
+
+        if (introUI != null)
+        {
+            //IntroUI 이벤트 구독
+            introUI.OnIntroComplete += HandleIntroComplete;
+        }
+
     }
 
     //실제 일시정지를 수행하는 메서드

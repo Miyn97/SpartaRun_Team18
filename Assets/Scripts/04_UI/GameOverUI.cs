@@ -25,10 +25,10 @@ public class GameOverUI : MonoBehaviour
     public event System.Action OnRestartRequested;
     public event System.Action OnReturnHomeRequested;
 
-    private void Awake()
+    void Awake()
     {
         //시작 시 비활성화 상태로 숨겨져 있어야 하므로 꺼둠
-        gameObject.SetActive(false);
+        gameOverPanel.SetActive(false);
 
         //다시 시작 버튼을 클릭하면 OnRestartRequested 이벤트를 호출
         //이 이벤트에 연결된 구독자가 있을 때만 안전하게 호출
@@ -40,20 +40,20 @@ public class GameOverUI : MonoBehaviour
 
     //게임 오버가 발생하면 외부가 이 메서드를 호출
     //점수를 전달하고 UI를 보여주게 됨
-    public void Show(int finalScore, int highScore)
+    public void Show(int finalScore, int bestScore)
     {
         //전달받은 점수들을 텍스트로 변환해서 UI에 표시함
         finalScoreText.text = finalScore.ToString();
-        bestScoreText.text = highScore.ToString();
+        bestScoreText.text = bestScore.ToString();
 
         //이 GameOverUI 오브젝트를 활성화해서 실제 화면에 나타나게 함
-        gameObject.SetActive(true);
+        gameOverPanel.SetActive(true);
     }
 
     //게임을 다시 시작하거나,
     //홈으로 돌아갈 때 UI를 숨기기 위한 함수
     public void Hide()
     {
-        gameObject.SetActive(false);
+        gameOverPanel.SetActive(false);
     }
 }
