@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
@@ -10,10 +11,10 @@ public class UIManager : MonoBehaviour
     [Header("UI Screens")]
 
     //각 UI를 활성화/비활성화하거나 데이터 전달할 때 사용
-    [SerializeField] private IntroUI introUI;
-    [SerializeField] private StartUI startUI;
-    [SerializeField] private GameUI gameUI;
-    [SerializeField] private GameOverUI gameOverUI;
+    private IntroUI introUI;
+    private StartUI startUI;
+    private GameUI gameUI;
+    private GameOverUI gameOverUI; // [SerializeField] 지움_ryang
 
     private void Awake()
     {
@@ -25,6 +26,44 @@ public class UIManager : MonoBehaviour
         }
         //UIManager를 인스턴스로 등록
         Instance = this;
+        DontDestroyOnLoad(gameObject); // 씬 전환되어도 사라지지 않도록 설정 (게임 흐름 유지) _ryang
+    }
+
+
+    //씬이 로드될 때마다 자동으로 OnSceneLoaded()를 실행
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    //씬이 비활성화될 때 자동으로 OnSceneLoaded()를 해제
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        switch (scene.name)
+        {
+            case "03_IntroScene":
+                //씬이 로드되면 UIManager의 각 UI를 찾아서 초기화
+                introUI = FindObjectOfType<IntroUI>();
+                introUI?.gameObject.SetActive(true);
+                break;
+            case "01_StartScene":
+                //시작 화면 UI를 찾고 활성화
+                startUI = FindObjectOfType<StartUI>();
+                startUI?.gameObject.SetActive(true);
+                break;
+            case "02_MainScene":
+                //게임 중 UI를 찾고 활성화
+                gameUI = FindObjectOfType<GameUI>();
+                gameOverUI = FindObjectOfType<GameOverUI>();
+                gameUI?.gameObject.SetActive(true);
+                gameOverUI?.gameObject.SetActive(false); // 게임 오버 UI는 비활성화
+                break;
+        }
     }
 
     //Intro 화면을 보여주는 함수
@@ -49,17 +88,17 @@ public class UIManager : MonoBehaviour
     }
 
     //GameOverUI 화면을 보여주는 함수
-    public void ShowGameOverUI()
+    public void ShowGameOverUI(int finalScore, int highScore)
     {
         //게임 오버 상황에서만 보여주는 UI를 켬
-        SetOnlyActive(gameOverUI);
+        gameOverUI.Show(finalScore, highScore);
     }
 
     //GameUI의 점수 표시 갱신을 요청
-    public void UpdateScore(int score)
+    public void UpdateScore(int score, int bestScore)
     {
         //gameUI가 null이 아닐 때만 실행됨
-        gameUI?.SetScore(score);
+        gameUI?.SetScore(score, bestScore);
     }
 
     //체력 UI를 갱신하는 함수

@@ -9,17 +9,19 @@ public class GameManager : MonoBehaviour
     public enum GameState { Intro, Start, InGame, GameOver }
     //현재 상태 저장 변수
     public GameState CurrentState { get; private set; }
-    //점수와 현재 스테이지 정보를 저장하는 변수
+    //점수, 체력과 현재 스테이지 정보를 저장하는 변수
     public int Score { get; private set; }
+    public int BestScore { get; private set; } // 최고 점수
+    public int CurrentHp { get; private set; } // 현재 체력
     public int CurrentStage { get; private set; }
 
-    //인스펙터에서 연결 가능한 StartUI 참조
+    //StartUI 참조
     [SerializeField] private StartUI startUI;
-    //인스펙터에서 연결 가능한 IntroUI 참조
+    //IntroUI 참조
     [SerializeField] private IntroUI introUI;
-    //인스펙터에서 연결 가능한 GameUI 참조
+    //GameUI 참조
     [SerializeField] private GameUI gameUI;
-    //인스펙터에서 연결 가능한 GameOverUI 참조
+    //GameOverUI 참조
     [SerializeField] private GameOverUI gameOverUI;
 
     //현재 게임이 일시정지 상태인지 나타내는 변수.
@@ -43,8 +45,12 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        BestScore = PlayerPrefs.GetInt("BestScore", 0); // 최고 점수 불러오기
+        Score = 0; // 점수 리셋
+        CurrentHp = 6; // 체력 리셋 (6으로 설정)
+
         //게임이 시작되면 Intro 상태로 전환
-        ChangeState(GameState.Intro);
+        //ChangeState(GameState.Intro); // 최종본에서는 필요함
 
         //GameUI가 보낸 이벤트를 구독
         gameUI.OnPauseRequested += TogglePause;
@@ -132,19 +138,22 @@ public class GameManager : MonoBehaviour
         switch (newState)
         {
             case GameState.Intro:
-                //using UnityEngine.SceneManagement; 유징문만 추가하면 호출 가능
-                SceneManager.LoadScene("IntroScene");
+                SceneManager.LoadScene("03_IntroScene");
                 break;
             case GameState.Start:
-                SceneManager.LoadScene("StartScene");
+                SceneManager.LoadScene("01_StartScene");
                 break;
             case GameState.InGame:
-                SceneManager.LoadScene("MainScene");
+                SceneManager.LoadScene("02_MainScene");
+                // 새 게임 시작시 체력, 점수 다시 초기화
+                Score = 0; // 점수 리셋
+                CurrentHp = 6; // 체력 리셋 (6으로 설정)
+                UIManager.Instance.UpdateHealth(CurrentHp); // UIManager에 체력 업데이트 요청
+                UIManager.Instance.UpdateScore(Score, BestScore); // UIManager에 점수 업데이트 요청
                 break;
             case GameState.GameOver:
-                //나중에 UIManager랑 연결 (이 라인 삭제가능)
                 //씬 전환X, UI만 표시
-                //UIManager.Instance?.ShowGameOverUI(); //(주석 처리 해제 가능)
+                UIManager.Instance.ShowGameOverUI(Score, BestScore);
                 break;
         }
     }
@@ -153,10 +162,25 @@ public class GameManager : MonoBehaviour
     public void AddScore(int value)
     {
         Score += value;
-        gameUI.SetScore(Score);
-        //나중에 UIManager랑 연결 (이 라인 삭제가능)
+        if (Score > BestScore)
+        {
+            BestScore = Score; //최고 점수 갱신
+            PlayerPrefs.SetInt("BestScore", BestScore); //최고 점수 저장
+        }
         //점수 증가 후, UIManager에 현재 점수 업데이트 요청
-        //UIManager.Instance?.UpdateScore(Score); //(주석 처리 해제 가능)
+        UIManager.Instance?.UpdateScore(Score, BestScore);
+    }
+
+    // 체력감소 테스트용 _ryang
+    public void TakeDamage(int damage)
+    {
+        CurrentHp = Mathf.Max(CurrentHp - damage, 0); //체력 감소 (최소 0)
+        UIManager.Instance.UpdateHealth(CurrentHp); //UIManager에 체력 업데이트 요청
+
+        if (CurrentHp <= 0)
+        {
+            ChangeState(GameState.GameOver);
+        }
     }
 
     //난이도 증가나 다음 맵 전환에 사용
@@ -184,7 +208,7 @@ public class GameManager : MonoBehaviour
         ChangeState(GameState.Start);
     }
 
-    //게임 종료
+    ////게임 종료
     //public void QuitGame()
     //{
     //    Application.Quit();
