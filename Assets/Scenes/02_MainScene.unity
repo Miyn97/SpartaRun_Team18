@@ -1753,7 +1753,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initialHealth: 6
   initialSpeed: 5
-  jumpForce: 20
+  jumpForce: 30
   slideDuration: 1
 --- !u!212 &1083998794
 SpriteRenderer:
