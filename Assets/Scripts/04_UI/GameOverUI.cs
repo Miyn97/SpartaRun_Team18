@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class GameOverUI : MonoBehaviour
 {
-    [SerializeField] private GameObject gameOverPanel; // 게임 오버 패널 _ryang
+    [SerializeField] private GameObject gameOverUI; // 게임 오버 패널 _ryang
 
     //인스펙터 상에서 Core라는 섹션으로 구분
     [Header("Score")]
@@ -28,7 +28,7 @@ public class GameOverUI : MonoBehaviour
     void Awake()
     {
         //시작 시 비활성화 상태로 숨겨져 있어야 하므로 꺼둠
-        gameOverPanel.SetActive(false);
+        gameOverUI.SetActive(false);
 
         //다시 시작 버튼을 클릭하면 OnRestartRequested 이벤트를 호출
         //이 이벤트에 연결된 구독자가 있을 때만 안전하게 호출
@@ -47,13 +47,13 @@ public class GameOverUI : MonoBehaviour
         bestScoreText.text = bestScore.ToString();
 
         //이 GameOverUI 오브젝트를 활성화해서 실제 화면에 나타나게 함
-        gameOverPanel.SetActive(true);
+        gameOverUI.SetActive(true);
     }
 
     //게임을 다시 시작하거나,
     //홈으로 돌아갈 때 UI를 숨기기 위한 함수
     public void Hide()
     {
-        gameOverPanel.SetActive(false);
+        gameOverUI.SetActive(false);
     }
 }

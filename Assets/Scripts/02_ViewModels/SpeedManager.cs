@@ -67,10 +67,10 @@ public class SpeedManager : MonoBehaviour
         {
             currentSpeed += speedIncrement; // 난이도 별로 이동속도 값(0.005)이 증가
 
-            if(currentSpeed >= MaxSpeed) // currentSpeed 가 증가를 반복하여 MaxSpeed 보다 넘게 됫을 경우
+            if (currentSpeed >= MaxSpeed) // currentSpeed 가 증가를 반복하여 MaxSpeed 보다 넘게 됫을 경우
                 currentSpeed = MaxSpeed; // MaxSpeed보다 증가 되지 않도록 보정
 
-                yield return new WaitForSeconds(speedIncreaseInterval); // 다시 0.5초 대기 후 이동속도 값이 다시 증가
+            yield return new WaitForSeconds(speedIncreaseInterval); // 다시 0.5초 대기 후 이동속도 값이 다시 증가
         }
         speedCoroutine = null; // 중복 실행 방지를 위해 값이 증가 된 후 null값 적용
     }

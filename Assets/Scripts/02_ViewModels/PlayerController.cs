@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 [RequireComponent(typeof(PlayerView))]
 public class PlayerController : MonoBehaviour
@@ -21,7 +22,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Jump/Slide")]
     //점프할 때 위로 가해지는 힘
-    [SerializeField] private float jumpForce = 7f;
+    [SerializeField] private float jumpForce = 13f;
     //슬라이드 지속 시간
     [SerializeField] private float slideDuration = 1f;
 
@@ -91,7 +92,7 @@ public class PlayerController : MonoBehaviour
         if (isGround)
         {
             playerView.Jump(jumpForce); //점프 애니메이션 요청
-            //playerView.Jump(jumpForce); //애니메이션 생성 시 주석처리 해제
+            playerView.SetGrounded(false); // 점프 직후 공중 상태 전달
             // 뷰에게 점프 애니메이션/물리 적용 명령
             isGround = false; //점프!
             isDoubleJump = true; //더블 점프 가능
@@ -99,8 +100,8 @@ public class PlayerController : MonoBehaviour
         else if (isDoubleJump)
         {
             playerView.Jump(jumpForce); //더블 점프 애니메이션 요청
-            //playerView.Jump(jumpForce); //애니메이션 생성 시 주석처리 해제
             isDoubleJump = false; //더블 점프!
+            playerView.SetGrounded(false); // 더블 점프 직후 공중 상태 전달
         }
         else
         {
@@ -141,6 +142,7 @@ public class PlayerController : MonoBehaviour
         {
             isGround = true; //땅에 닿았을 때
             isDoubleJump = false; //더블 점프 초기화
+            playerView.SetGrounded(true); //착지했는지를 PlayerView에게 알림
         }
     }
 
@@ -150,11 +152,22 @@ public class PlayerController : MonoBehaviour
 
         //데미지를 받았을 때 체력 감소
         model.TakeDamage(damage);
+        int updateHp = model.CurrentHealth;
+
+        UIManager.Instance.UpdateHealth(updateHp); //UI 업데이트
 
         //체력이 0 이하이면
-        if (model.CurrentHealth <= 0)
+        if (model.CurrentHealth == 0)
         {
-            Die(); //사망
+            Debug.Log("죽었습니다.");
+            //죽었을 때 애니메이션 실행
+            //playerView.PlayDeathAnimation(); //애니메이션 생성 시 주석처리 해제
+            //사망처리 메서드 호출
+            Die();
+        }
+        else
+        {
+            Debug.Log("체력 : " + model.CurrentHealth);
         }
     }
 
