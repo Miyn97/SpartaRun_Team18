@@ -110,7 +110,7 @@ update에         StartCoroutine(SpawnRandomItem(15f));//시작할때 코루틴도 시작, 
         {
             yield return new WaitForSeconds(nowCoolTime);//현재쿨타임만큼 기다리기
 
-            ItemEnum randomItem = (ItemEnum)Random.Range(0, System.Enum.GetValues(typeof(ItemEnum)).Length);//소환될 아이템을 정하고 
+            ItemEnum randomItem = (ItemEnum)Random.Range(1, System.Enum.GetValues(typeof(ItemEnum)).Length);//소환될 아이템을 정하고 
             itemManager.SpawnItem(randomItem);//아이템 매니저에 스폰아이템
 
             playTime += nowCoolTime;//플레이타임에 현재 쿨타임만큼 더해서 플레이타임을 갱신.
