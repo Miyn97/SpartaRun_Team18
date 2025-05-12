@@ -92,7 +92,7 @@ public class PlayerController : MonoBehaviour
         if (isGround)
         {
             playerView.Jump(jumpForce); //점프 애니메이션 요청
-            //playerView.Jump(jumpForce); //애니메이션 생성 시 주석처리 해제
+            playerView.SetGrounded(false); // 점프 직후 공중 상태 전달
             // 뷰에게 점프 애니메이션/물리 적용 명령
             isGround = false; //점프!
             isDoubleJump = true; //더블 점프 가능
@@ -100,8 +100,8 @@ public class PlayerController : MonoBehaviour
         else if (isDoubleJump)
         {
             playerView.Jump(jumpForce); //더블 점프 애니메이션 요청
-            //playerView.Jump(jumpForce); //애니메이션 생성 시 주석처리 해제
             isDoubleJump = false; //더블 점프!
+            playerView.SetGrounded(false); // 더블 점프 직후 공중 상태 전달
         }
         else
         {
@@ -142,6 +142,7 @@ public class PlayerController : MonoBehaviour
         {
             isGround = true; //땅에 닿았을 때
             isDoubleJump = false; //더블 점프 초기화
+            playerView.SetGrounded(true); //착지했는지를 PlayerView에게 알림
         }
     }
 
