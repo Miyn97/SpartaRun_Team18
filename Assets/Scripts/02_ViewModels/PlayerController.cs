@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 [RequireComponent(typeof(PlayerView))]
 public class PlayerController : MonoBehaviour
@@ -150,11 +151,22 @@ public class PlayerController : MonoBehaviour
 
         //데미지를 받았을 때 체력 감소
         model.TakeDamage(damage);
+        int updateHp = model.CurrentHealth;
+
+        UIManager.Instance.UpdateHealth(updateHp); //UI 업데이트
 
         //체력이 0 이하이면
-        if (model.CurrentHealth <= 0)
+        if (model.CurrentHealth == 0)
         {
-            Die(); //사망
+            Debug.Log("죽었습니다.");
+            //죽었을 때 애니메이션 실행
+            //playerView.PlayDeathAnimation(); //애니메이션 생성 시 주석처리 해제
+            //사망처리 메서드 호출
+            Die();
+        }
+        else
+        {
+            Debug.Log("체력 : " + model.CurrentHealth);
         }
     }
 
