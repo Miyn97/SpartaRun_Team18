@@ -94,6 +94,8 @@ public class GameManager : MonoBehaviour
             if (gameUI != null)
             {
                 gameUI.OnPauseRequested += TogglePause;
+                gameUI.OnReturnHomeRequested += ReturnToHome;
+                //gameUI.OnVolumeChanged += SoundManager.Instance.SetVolume; // (연결 되면 주석처리 해제하고 적용)
             }
 
             gameOverUI = FindObjectOfType<GameOverUI>();
@@ -101,6 +103,8 @@ public class GameManager : MonoBehaviour
             {
                 gameOverUI.OnRestartRequested += RestartGame;
                 gameOverUI.OnReturnHomeRequested += ReturnToHome;
+                //나중에 Soundmanager랑 연결
+                //gameUI.OnVolumeChanged += SoundManager.Instance.SetVolume; (연결 되면 주석처리 해제하고 적용)
             }
         }
     }
@@ -119,10 +123,12 @@ public class GameManager : MonoBehaviour
     }
 
     //게임 오버 상황을 호출할 때 외부에서 사용할 수 있는 함수
-    public void TriggerGameOver(int score, int highScore)
+    public void TriggerGameOver(int score, int bestScore)
     {
+        //게임 오버시 플레이 정지.
+        Time.timeScale = 0;
         //점수와 최고 점수를 전달 + GameOverUI를 보여줌
-        gameOverUI.Show(score, highScore);
+        gameOverUI.Show(score, bestScore);
         //상태를 GameOver로 전환
         ChangeState(GameState.GameOver);
     }
@@ -229,6 +235,8 @@ public class GameManager : MonoBehaviour
     //게임 재시작 관련 메서드
     public void RestartGame()
     {
+        // 재시작시 시간 다시 흐르게
+        Time.timeScale = 1;
         Score = 0;
         SetStage(1); //스테이지 초기화 예시
                      //SceneManager.LoadScene("MainScene"); //MainScene을 로드
@@ -238,6 +246,7 @@ public class GameManager : MonoBehaviour
     //홈으로 돌아가기 버튼이 눌렸을 때 실행
     private void ReturnToHome()
     {
+
         //상태 초기화
         Score = 0;
         SetStage(0);
