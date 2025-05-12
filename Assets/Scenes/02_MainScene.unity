@@ -616,10 +616,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de6774081a53c944cbe25151cf957fad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startUI: {fileID: 0}
-  introUI: {fileID: 0}
-  gameUI: {fileID: 1993471672}
-  gameOverUI: {fileID: 769016497}
 --- !u!4 &408840787
 Transform:
   m_ObjectHideFlags: 0
@@ -648,7 +644,7 @@ GameObject:
   - component: {fileID: 497288315}
   - component: {fileID: 497288314}
   m_Layer: 5
-  m_Name: StartScene_Button
+  m_Name: Home_Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -767,8 +763,10 @@ GameObject:
   - component: {fileID: 519420032}
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
+  - component: {fileID: 519420034}
+  - component: {fileID: 519420033}
   m_Layer: 0
-  m_Name: Main Camera
+  m_Name: MainCamera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -848,6 +846,34 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &519420033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c92523d48cc300d41b58ecc2ed279518, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraView: {fileID: 519420034}
+  playerTarget: {fileID: 1083998795}
+  offset: {x: 0, y: 2, z: -10}
+  followSpeed: 5
+--- !u!114 &519420034
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7e07444dd608c34c995a017dc88acd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &578157795
 GameObject:
   m_ObjectHideFlags: 0
@@ -1267,7 +1293,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d741d7284c7d554bb5390ad7b92c43e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameOverPanel: {fileID: 769016495}
+  gameOverUI: {fileID: 769016495}
   finalScoreText: {fileID: 1487037382}
   bestScoreText: {fileID: 1655848014}
   restartButton: {fileID: 233456801}
@@ -1702,9 +1728,9 @@ GameObject:
   - component: {fileID: 1083998795}
   - component: {fileID: 1083998794}
   - component: {fileID: 1083998793}
+  - component: {fileID: 1083998797}
   - component: {fileID: 1083998796}
   - component: {fileID: 1083998798}
-  - component: {fileID: 1083998797}
   - component: {fileID: 1083998799}
   m_Layer: 0
   m_Name: MainSprite
@@ -1727,7 +1753,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initialHealth: 6
   initialSpeed: 5
-  jumpForce: 7
+  jumpForce: 20
   slideDuration: 1
 --- !u!212 &1083998794
 SpriteRenderer:
@@ -1769,7 +1795,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 100
   m_Sprite: {fileID: 21300000, guid: f82090f0ef327aa468a8cb000753ebda, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1870,7 +1896,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 8
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -2833,16 +2859,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentScoreText: {fileID: 1954617453}
   hpImages:
-  - {fileID: 977187918}
-  - {fileID: 684209135}
   - {fileID: 1259856014}
+  - {fileID: 684209135}
+  - {fileID: 977187918}
   heart_full: {fileID: 21300000, guid: a78e26d0bc6003243ab39446d1930f47, type: 3}
   heart_half: {fileID: 21300000, guid: b190f7e1890bfe54ab158f150885554e, type: 3}
   heart_empty: {fileID: 21300000, guid: 8f6012971a3aa0b4b959fffe5588fb94, type: 3}
   optionButton: {fileID: 234685940}
   optionPanel: {fileID: 902099970}
   resumeButton: {fileID: 953711892}
-  startScene: {fileID: 497288314}
+  homeButton: {fileID: 497288314}
 --- !u!1 &2005173527
 GameObject:
   m_ObjectHideFlags: 0

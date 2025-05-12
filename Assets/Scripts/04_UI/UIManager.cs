@@ -91,10 +91,10 @@ public class UIManager : MonoBehaviour
     }
 
     //GameOverUI 화면을 보여주는 함수
-    public void ShowGameOverUI(int finalScore, int highScore)
+    public void ShowGameOverUI(int finalScore, int bestScore)
     {
         //게임 오버 상황에서만 보여주는 UI를 켬
-        gameOverUI.Show(finalScore, highScore);
+        gameOverUI.Show(finalScore, bestScore);
     }
 
     //GameUI의 점수 표시 갱신을 요청
