@@ -64,7 +64,8 @@ public class UIManager : MonoBehaviour
                 gameOverUI = System.Array.Find(all, ui => ui.gameObject.scene == scene);
                 // 게임 오버 UI는 비활성화
                 gameUI?.gameObject.SetActive(true);
-                gameOverUI?.gameObject.SetActive(false); // 게임 오버 UI는 비활성화
+                gameOverUI?.gameObject.SetActive(true); // 스크립트는 활성화
+                gameOverUI?.Hide(); // UI는 비활성화
                 break;
         }
     }
