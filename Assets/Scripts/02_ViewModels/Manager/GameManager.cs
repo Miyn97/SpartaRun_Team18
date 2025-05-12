@@ -246,6 +246,8 @@ public class GameManager : MonoBehaviour
     //홈으로 돌아가기 버튼이 눌렸을 때 실행
     private void ReturnToHome()
     {
+        Time.timeScale = 1; // 시간 흐르게
+        isPaused = false; // 일시정지 해제
 
         //상태 초기화
         Score = 0;
