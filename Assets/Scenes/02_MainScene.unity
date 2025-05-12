@@ -2859,9 +2859,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentScoreText: {fileID: 1954617453}
   hpImages:
-  - {fileID: 977187918}
-  - {fileID: 684209135}
   - {fileID: 1259856014}
+  - {fileID: 684209135}
+  - {fileID: 977187918}
   heart_full: {fileID: 21300000, guid: a78e26d0bc6003243ab39446d1930f47, type: 3}
   heart_half: {fileID: 21300000, guid: b190f7e1890bfe54ab158f150885554e, type: 3}
   heart_empty: {fileID: 21300000, guid: 8f6012971a3aa0b4b959fffe5588fb94, type: 3}
