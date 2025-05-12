@@ -53,14 +53,14 @@ public class ObstacleManager : MonoBehaviour
                 Vector3 placePosition = obstacleLastPosition + new Vector3(randomX, 0f, 0f);    // 장애물 위치 정보로 쓸 변수의 값을 randomX값으로 설정
 
                 // 장애물 종류에 따라 Y값 설정
-                switch (model.Type)     
+                switch (model.Type)
                 {
                     // 점프로 넘는 장애물일 경우 Y값을 땅쪽으로 설정
                     case ObstacleType.RedLineTrap:
                     case ObstacleType.SyntaxErrorBox:
                         placePosition.y = groundObstacleY;
                         break;
-                    
+
                     // 슬라이드로 피하는 장애물일 경우 Y값을 위쪽으로 설정
                     case ObstacleType.CompileErrorWall:
                         placePosition.y = airObstacleY;
@@ -91,20 +91,20 @@ public class ObstacleManager : MonoBehaviour
     {
         patternTimer += Time.deltaTime;
 
-        if(patternTimer >= patternSpawnInterval) // 패턴 지속 시간이 patternSpawnInterval의 값인 2를 넘겻을 경우
+        if (patternTimer >= patternSpawnInterval) // 패턴 지속 시간이 patternSpawnInterval의 값인 2를 넘겻을 경우
         {
             SpawnNextPatternObstacle(); // 다음 패턴 시전
             patternTimer = 0; // SpawnNextPatternObstacle이 시전 후 patternTimer의 값을 초기화 하여 
         }
     }
 
-  
+
 
     private void InitPatterns() // 장애물 패턴 로직
     {
         //패턴별 예시 정의
         obstaclePatterns.Add(new ObstacleType[]{
-            ObstacleType.CompileErrorWall,ObstacleType.RedLineTrap,ObstacleType.SyntaxErrorBox 
+            ObstacleType.CompileErrorWall,ObstacleType.RedLineTrap,ObstacleType.SyntaxErrorBox
         });
 
         obstaclePatterns.Add(new ObstacleType[]{
@@ -172,4 +172,6 @@ public class ObstacleManager : MonoBehaviour
             _ => null // 혹시라도 값이 잘못 들어오면 null 반환 (예외 처리용)
         };
     }
+
+
 }
