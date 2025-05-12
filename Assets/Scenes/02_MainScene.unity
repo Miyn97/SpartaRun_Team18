@@ -616,10 +616,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de6774081a53c944cbe25151cf957fad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startUI: {fileID: 0}
-  introUI: {fileID: 0}
-  gameUI: {fileID: 1993471672}
-  gameOverUI: {fileID: 769016497}
 --- !u!4 &408840787
 Transform:
   m_ObjectHideFlags: 0
@@ -648,7 +644,7 @@ GameObject:
   - component: {fileID: 497288315}
   - component: {fileID: 497288314}
   m_Layer: 5
-  m_Name: StartScene_Button
+  m_Name: Home_Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1297,7 +1293,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d741d7284c7d554bb5390ad7b92c43e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameOverPanel: {fileID: 769016495}
+  gameOverUI: {fileID: 769016495}
   finalScoreText: {fileID: 1487037382}
   bestScoreText: {fileID: 1655848014}
   restartButton: {fileID: 233456801}
@@ -1757,7 +1753,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initialHealth: 6
   initialSpeed: 5
-  jumpForce: 7
+  jumpForce: 20
   slideDuration: 1
 --- !u!212 &1083998794
 SpriteRenderer:
@@ -1900,7 +1896,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 8
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -2872,7 +2868,7 @@ MonoBehaviour:
   optionButton: {fileID: 234685940}
   optionPanel: {fileID: 902099970}
   resumeButton: {fileID: 953711892}
-  startScene: {fileID: 497288314}
+  homeButton: {fileID: 497288314}
 --- !u!1 &2005173527
 GameObject:
   m_ObjectHideFlags: 0
