@@ -31,7 +31,12 @@ public class ObstacleManager : MonoBehaviour
     public float patternSpawnInterval = 2f; // 패턴 간 시간 간격
     private float patternTimer = 0f; // 패턴이 작동하는 시간
 
+    public static ObstacleManager Instance { get; private set; }    // 싱글톤 설정
 
+    public void Awake()
+    {
+        Instance = this;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -44,40 +49,7 @@ public class ObstacleManager : MonoBehaviour
         {
             for (int i = 0; i < countPerType; i++)                                  // countPerType에서 설정된 개수만큼 반복해서 생성
             {
-                ObstacleModel model = new ObstacleModel(type);                      // 모델을 생성해서 장애물의 정보를 저장(장에물 종류, 데미지, 회피 방법)
-                GameObject prefab = GetPrefabByType(type);                          // 장애물 종류에 맞는 프리팹 가져오기
-                GameObject instance = Instantiate(prefab);                          // 프리팹 생성하기
-
-                // 장애물의 X 위치는 이전 장애물 위치 + 랜덤한 거리로 설정
-                float randomX = Random.Range(minXpadding, maxXPadding);                         // randomX의 값을 최소~최대 간격 중 랜덤한 값으로 설정
-                Vector3 placePosition = obstacleLastPosition + new Vector3(randomX, 0f, 0f);    // 장애물 위치 정보로 쓸 변수의 값을 randomX값으로 설정
-
-                // 장애물 종류에 따라 Y값 설정
-                switch (model.Type)
-                {
-                    // 점프로 넘는 장애물일 경우 Y값을 땅쪽으로 설정
-                    case ObstacleType.RedLineTrap:
-                    case ObstacleType.SyntaxErrorBox:
-                        placePosition.y = groundObstacleY;
-                        break;
-
-                    // 슬라이드로 피하는 장애물일 경우 Y값을 위쪽으로 설정
-                    case ObstacleType.CompileErrorWall:
-                        placePosition.y = airObstacleY;
-                        break;
-                }
-
-                //ObstacleView view = instance.GetComponent<ObstacleView>();
-                //if (view != null)
-                //{
-                //    view.SetupView(model); // View에 모델 전달 (View에서 구현해야 하는 부분)
-                //}
-
-                instance.transform.position = placePosition;        // 위치를 실제로 적용시켜주기
-                obstacleLastPosition = placePosition;               // 다음 장애물 위치를 지정할 때 참고할 위치 정보
-
-
-                obstaclePool.Add(instance); // 생성된 장애물을 리스트에 저장
+                SpawnObstacle(type);
             }
         }
 
@@ -125,7 +97,7 @@ public class ObstacleManager : MonoBehaviour
 
         ObstacleType typeToSpawn = currentPattern[currentObstacleInPattern]; // 현재 몇 번째 장애물 패턴이 시전 중인지 추적 후 그 패턴에 대한 타입을 가져옴
 
-        //SpawnObstacle(typeToSpawn); // SpawnObstacle 추가 할 시 들어가야 됨
+        SpawnObstacle(typeToSpawn); // SpawnObstacle 추가 할 시 들어가야 됨 (완료)
 
         currentObstacleInPattern++; // 패턴 시전 후 currentObstacleInPattern의 값이 증가
 
@@ -136,31 +108,80 @@ public class ObstacleManager : MonoBehaviour
         }
     }
 
-    //private void SpawnObstacle(ObstacleType type) 지피티 햄 왈 start에 있던 기존 Obstacle 로직을 SpawnObstacle로 따로 만들어 로직을 불러오라 함
-    //{
-    //    ObstacleModel model = new ObstacleModel(type);
-    //    GameObject prefab = GetPrefabByType(type);
-    //    GameObject instance = Instantiate(prefab);
+    private void SpawnObstacle(ObstacleType type)   // 장애물 생성 함수
+    {
+        ObstacleModel model = new ObstacleModel(type);                               // 모델 객체를 생성해서 장애물의 정보를 저장 (장애물 종류, 데미지, 회피 방법)
+        GameObject prefab = GetPrefabByType(type);                                   // GetPrefabByType(type);
+        GameObject instance = Instantiate(prefab);                                   // 프리팹 생성하기
 
-    //    float randomX = Random.Range(minXpadding, maxXPadding);
-    //    Vector3 placePosition = obstacleLastPosition + new Vector3(randomX, 0f, 0f);
+        float randomX = Random.Range(minXpadding, maxXPadding);                      // randomX의 값을 min~max 범위에서 랜덤한 값으로 설정
+        Vector3 placePosition = obstacleLastPosition + new Vector3(randomX, 0f, 0f); // 장애물 위치 변수의 값을 randomX값으로 설정
 
-    //    switch (model.Type)
-    //    {
-    //        case ObstacleType.RedLineTrap:
-    //        case ObstacleType.SyntaxErrorBox:
-    //            placePosition.y = groundObstacleY;
-    //            break;
-    //        case ObstacleType.CompileErrorWall:
-    //            placePosition.y = airObstacleY;
-    //            break;
-    //    }
+        // 장애물 종류에 따라 Y값 설정
+        switch (model.Type)
+        {
+            // 점프로 넘는 장애물일 경우 Y값을 땅쪽으로 설정
+            case ObstacleType.RedLineTrap:
+            case ObstacleType.SyntaxErrorBox:
+                placePosition.y = groundObstacleY;
+                break;
+            // 슬라이드로 피하는 장애물일 경우 Y값을 위쪽으로 설정
+            case ObstacleType.CompileErrorWall:
+                placePosition.y = airObstacleY;
+                break;
+        }
+        // ObstacleView view = instance.GetComponent<ObstacleView>();
+        // if (view != null)
+        // {
+        //    view.SetupView(model); // View에 모델 전달 (View에서 구현해야 하는 부분)
+        // }
 
-    //    instance.transform.position = placePosition;
-    //    obstacleLastPosition = placePosition;
+        instance.transform.position = placePosition;    // 장애물 오브젝트의 위치를 실제로 적용시켜주기
+        obstacleLastPosition = placePosition;           // 다음 장애물 위치를 지정할 때 참고할 위치 저장
 
-    //    obstaclePool.Add(instance);
-    //}
+        obstaclePool.Add(instance);
+    }
+
+    public void RepositionObstacle(GameObject obstacle) // 장애물을 앞으로 다시 보내는 함수 
+    {
+        ObstacleType type = ObstacleType.RedLineTrap;   // 현재는 View가 없기 때문에 장애물 이름을 보고 어떤 종류인지 유추한다. 
+
+        if (obstacle.name.Contains("RedLine"))
+        {
+            type = ObstacleType.RedLineTrap;
+        }
+        else if (obstacle.name.Contains("Syntax"))
+        {
+            type = ObstacleType.SyntaxErrorBox;
+        }
+        else if (obstacle.name.Contains("Compile"))
+        {
+            type = ObstacleType.CompileErrorWall;
+        }
+
+        // 전 장애물 위치에서 X축으로 일정 간격을 띄운 위치를 계산한다.
+        float randomX = Random.Range(minXpadding, maxXPadding);                     // randomX 변수를 min ~max 범위에서 랜덤 간격 생성
+        Vector3 newPosition = obstacleLastPosition + new Vector3(randomX, 0f, 0f);  // X만 이동
+
+        // 장애물의 종류에 따라 Y 위치를 설정한다. 
+        switch (type)
+        {
+            // 점프 또는 더블점프 장애물은 땅에 배치
+            case ObstacleType.RedLineTrap:
+            case ObstacleType.SyntaxErrorBox:
+                newPosition.y = groundObstacleY;   
+                break;
+
+            // 슬라이드 장애물은 위쪽에 배치
+            case ObstacleType.CompileErrorWall:
+                newPosition.y = airObstacleY;      
+                break;
+        }
+
+        obstacle.transform.position = newPosition;  // 장애물 오브젝트의 위치를 실제 적용시켜주기 
+        obstacleLastPosition = newPosition;         // 다음 장애물 위치를 지정할 때 참고할 위치 저장
+    }
+
 
     GameObject GetPrefabByType(ObstacleType type)                                           // 프리팹을 반환하는 메서드
     {
