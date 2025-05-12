@@ -37,7 +37,7 @@ public class GameUI : MonoBehaviour
     //OnpauseRequested는 정지 버튼이 눌렸다 라는 사실만 외부 ViewModel에게 알림
     public event PauseRequestedHandler OnPauseRequested;
     //StartScene으로 돌아가고 싶다 라는 요청을 외부에 알림
-    public event System.Action OnrReturnHomeRequested;
+    public event System.Action OnReturnHomeRequested;
 
     //AudioManager에게 볼륨을 조절하라고 요청
     // 슬라이더 값이 바뀔 때마다 해당 값 호출 => 나중에 SoundManager에서 해당 값 받아서 볼륨 변경되도록 구현해야함.
@@ -64,7 +64,7 @@ public class GameUI : MonoBehaviour
         {
             //게임을 종료하고, 시작 화면으로 돌아가야함
             optionPanel.SetActive(false);
-            OnrReturnHomeRequested?.Invoke();
+            OnReturnHomeRequested?.Invoke();
         });
 
         // 볼륨 슬라이더의 값이 바뀔 때마다 OnVolumeChanged 이벤트를 호출

@@ -94,6 +94,8 @@ public class GameManager : MonoBehaviour
             if (gameUI != null)
             {
                 gameUI.OnPauseRequested += TogglePause;
+                gameUI.OnReturnHomeRequested += ReturnToHome;
+                //gameUI.OnVolumeChanged += SoundManager.Instance.SetVolume; // (연결 되면 주석처리 해제하고 적용)
             }
 
             gameOverUI = FindObjectOfType<GameOverUI>();
