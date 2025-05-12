@@ -97,15 +97,6 @@ public class GameManager : MonoBehaviour
                 gameUI.OnReturnHomeRequested += ReturnToHome;
                 //gameUI.OnVolumeChanged += SoundManager.Instance.SetVolume; // (연결 되면 주석처리 해제하고 적용)
             }
-
-            gameOverUI = FindObjectOfType<GameOverUI>();
-            if (gameOverUI != null)
-            {
-                gameOverUI.OnRestartRequested += RestartGame;
-                gameOverUI.OnReturnHomeRequested += ReturnToHome;
-                //나중에 Soundmanager랑 연결
-                //gameUI.OnVolumeChanged += SoundManager.Instance.SetVolume; (연결 되면 주석처리 해제하고 적용)
-            }
         }
     }
 
@@ -244,7 +235,7 @@ public class GameManager : MonoBehaviour
     }
 
     //홈으로 돌아가기 버튼이 눌렸을 때 실행
-    private void ReturnToHome()
+    public void ReturnToHome()
     {
         Time.timeScale = 1; // 시간 흐르게
         isPaused = false; // 일시정지 해제
