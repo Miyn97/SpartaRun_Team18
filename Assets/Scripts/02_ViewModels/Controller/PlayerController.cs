@@ -46,6 +46,9 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        //GameOver 상태면 입력 막기
+        if (GameManager.Instance.CurrentState == GameManager.GameState.GameOver)
+            return;
         //키 입력 처리 확인
         HandleInput();
     }
@@ -53,6 +56,9 @@ public class PlayerController : MonoBehaviour
     //자동 이동을 위한 FixedUpdate
     private void FixedUpdate()
     {
+        //GameOver 상태일 땐 자동 이동 막기
+        if (GameManager.Instance.CurrentState == GameManager.GameState.GameOver)
+            return;
         // View에 이동 요청
         playerView.Move(model.Speed);
     }
@@ -174,10 +180,12 @@ public class PlayerController : MonoBehaviour
     //사망처리 메서드
     private void Die()
     {
+        //playerView.SetAnimatorSpeed(0f);
         //죽었을 때 애니메이션 실행
         //playerView.PlayDeathAnimation(); //애니메이션 생성 시 주석처리 해제
         //View는 죽는 연출 + 게임매니저는 상태변화
         GameManager.Instance.ChangeState(GameManager.GameState.GameOver);
+        playerView.StopMovementAnimation();
     }
 
     // 아이템 획득 등 외부에서 호출

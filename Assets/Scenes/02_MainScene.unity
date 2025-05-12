@@ -861,7 +861,7 @@ MonoBehaviour:
   cameraView: {fileID: 519420034}
   playerTarget: {fileID: 1083998795}
   offset: {x: 0, y: 2, z: -10}
-  followSpeed: 5
+  followSpeed: 8
 --- !u!114 &519420034
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1752,7 +1752,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialHealth: 6
-  initialSpeed: 5
+  initialSpeed: 9
   jumpForce: 30
   slideDuration: 1
 --- !u!212 &1083998794
@@ -1796,12 +1796,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 100
-  m_Sprite: {fileID: 21300000, guid: f82090f0ef327aa468a8cb000753ebda, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d4cca42cdf4c2144780420d357116cc0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1.75}
+  m_Size: {x: 0.3, y: 0.5}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -1858,8 +1858,8 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.875, y: 3.125}
-    newSize: {x: 1, y: 1.75}
+    oldSize: {x: 1.7647059, y: 2.9411764}
+    newSize: {x: 0.3, y: 0.5}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0

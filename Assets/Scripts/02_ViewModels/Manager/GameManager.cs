@@ -125,7 +125,7 @@ public class GameManager : MonoBehaviour
         //게임 오버시 플레이 정지.
         Time.timeScale = 0;
         //점수와 최고 점수를 전달 + GameOverUI를 보여줌
-        //gameOverUI.Show(score, bestScore);
+        //gameOverUI.Show(score, bestScore); // <<이거 주석 해제하면 GameOverUI 두번 호출
         //상태를 GameOver로 전환
         ChangeState(GameState.GameOver);
     }
