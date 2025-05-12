@@ -27,10 +27,10 @@ public class GameUI : MonoBehaviour
 
     [Header("PanelButtons")]
     [SerializeField] private Button resumeButton;
-    [SerializeField] private Button startScene;
+    [SerializeField] private Button homeButton;
 
     //[Header("Audio")]
-    [SerializeField] private Slider volumeSetting; // 음량 슬라이더
+    //[SerializeField] private Slider volumeSlider; // 음량 슬라이더(연결 되면 주석처리 해제하고 적용)
 
     //delegate는 이벤트를 외부에 전달할 수 있는 형식
     public delegate void PauseRequestedHandler();
@@ -59,13 +59,16 @@ public class GameUI : MonoBehaviour
             NotifyPauseRequested();
         });
 
-        //Lobby버튼 : StartScene으로 돌아가기
-        startScene.onClick.AddListener(() =>
+        //home버튼 : StartScene으로 돌아가기
+        homeButton.onClick.AddListener(() =>
         {
             //게임을 종료하고, 시작 화면으로 돌아가야함
             optionPanel.SetActive(false);
             OnrReturnHomeRequested?.Invoke();
         });
+
+        // 볼륨 슬라이더의 값이 바뀔 때마다 OnVolumeChanged 이벤트를 호출
+        //volumeSlider.onValueChanged.AddListener(value => OnVolumeChanged?.Invoke(value));
     }
 
     public void SetScore(int score, int bestScore)
