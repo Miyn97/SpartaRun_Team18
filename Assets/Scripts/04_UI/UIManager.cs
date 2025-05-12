@@ -59,7 +59,10 @@ public class UIManager : MonoBehaviour
             case "02_MainScene":
                 //게임 중 UI를 찾고 활성화
                 gameUI = FindObjectOfType<GameUI>();
-                gameOverUI = FindObjectOfType<GameOverUI>();
+                // GameOverUI 찾기 / null오류 방지용
+                var all = Resources.FindObjectsOfTypeAll<GameOverUI>();
+                gameOverUI = System.Array.Find(all, ui => ui.gameObject.scene == scene);
+                // 게임 오버 UI는 비활성화
                 gameUI?.gameObject.SetActive(true);
                 gameOverUI?.gameObject.SetActive(false); // 게임 오버 UI는 비활성화
                 break;

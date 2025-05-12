@@ -16,13 +16,13 @@ public class GameManager : MonoBehaviour
     public int CurrentStage { get; private set; }
 
     //StartUI 참조
-    [SerializeField] private StartUI startUI;
+    private StartUI startUI;
     //IntroUI 참조
-    [SerializeField] private IntroUI introUI;
+    private IntroUI introUI;
     //GameUI 참조
-    [SerializeField] private GameUI gameUI;
+    private GameUI gameUI;
     //GameOverUI 참조
-    [SerializeField] private GameOverUI gameOverUI;
+    private GameOverUI gameOverUI;
 
     //현재 게임이 일시정지 상태인지 나타내는 변수.
     //상태를 토글할 때 사용됨
@@ -51,21 +51,58 @@ public class GameManager : MonoBehaviour
 
         //게임이 시작되면 Intro 상태로 전환
         //ChangeState(GameState.Intro); // 최종본에서는 필요함
+    }
 
-        //GameUI가 보낸 이벤트를 구독
-        gameUI.OnPauseRequested += TogglePause;
-        //GameOverUI가 보낸 이벤트를 구독
-        //UI는 버튼만 누르고 실제 로직은 GameManager가 처리
-        gameOverUI.OnRestartRequested += RestartGame;
-        gameOverUI.OnReturnHomeRequested += ReturnToHome;
+    private void OnEnable()
+    {
+        //씬이 로드될 때마다 자동으로 OnSceneLoaded()를 실행
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+    private void OnDisable()
+    {
+        //씬이 비활성화될 때 자동으로 OnSceneLoaded()를 해제
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
 
-        //StartUI 이벤트 구독
-        startUI.OnStartRequested += HandleStartGame;
-        startUI.OnOptionRequested += HandleOption;
-        startUI.OnExitRequested += HandleExit;
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "03_IntroScene")
+        {
+            //IntroUI 찾고 활성화
+            introUI = FindObjectOfType<IntroUI>();
+            if (introUI != null)
+            {
+                introUI.OnIntroComplete += HandleIntroComplete;
+            }
+        }
 
-        //IntroUI 이벤트 구독
-        introUI.OnIntroComplete += HandleIntroComplete;
+        if (scene.name == "01_StartScene")
+        {
+            //StartUI 찾고 활성화
+            startUI = FindObjectOfType<StartUI>();
+            if (startUI != null)
+            {
+                startUI.OnStartRequested += HandleStartGame;
+                startUI.OnOptionRequested += HandleOption;
+                startUI.OnExitRequested += HandleExit;
+            }
+        }
+
+        if (scene.name == "02_MainScene")
+        {
+            gameUI = FindObjectOfType<GameUI>();
+            if (gameUI != null)
+            {
+                gameUI.OnPauseRequested += TogglePause;
+            }
+
+            gameOverUI = FindObjectOfType<GameOverUI>();
+            if (gameOverUI != null)
+            {
+                gameOverUI.OnRestartRequested += RestartGame;
+                gameOverUI.OnReturnHomeRequested += ReturnToHome;
+            }
+        }
     }
 
     //실제 일시정지를 수행하는 메서드
@@ -194,7 +231,7 @@ public class GameManager : MonoBehaviour
     {
         Score = 0;
         SetStage(1); //스테이지 초기화 예시
-        //SceneManager.LoadScene("MainScene"); //MainScene을 로드
+                     //SceneManager.LoadScene("MainScene"); //MainScene을 로드
         ChangeState(GameState.InGame); //상태를 InGame으로 변경
     }
 

@@ -64,12 +64,12 @@ public class GameUI : MonoBehaviour
         {
             //하나의 하트가 2체력 담당하니까
             //i번째의 하트가 현재 남은 체력을 얼마나 표현해야 하는지 계산
-            int heartIndex = Mathf.Clamp(currentHp - i * 2, 0, 2);
-            Sprite sprite = heartIndex switch
+            int hpHeart = Mathf.Clamp(currentHp - i * 2, 0, 2);
+            Sprite sprite = hpHeart switch
             {
-                0 => heart_full,
+                0 => heart_empty,
                 1 => heart_half,
-                _ => heart_empty
+                _ => heart_full
             };
             // hp UI에 스프라이트(하트이미지) 적용
             hpImages[i].sprite = sprite;
