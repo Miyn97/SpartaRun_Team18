@@ -9,18 +9,16 @@ public class ObstacleManager : MonoBehaviour
     public GameObject syntaxErrorBoxPrefab;     // SyntaxErrorBox 프리팹
     public GameObject compileErrorWallPrefab;   // CompileErrorWall 프리팹
 
-    public Transform spawnPoint;                // 장애물이 생성될 위치를 담을 변수
-
 
     private List<GameObject> obstaclePool = new List<GameObject>();     // 장애물을 종류별로 여러 개 생성해 담아둘 리스트
     private Vector3 obstacleLastPosition = Vector3.zero;                // 장애물을 어디에 놓을지 마지막 위치를 기억해 둘 변수 
     public int countPerType = 3;                                        // 장애물을 종류별로 몇개씩 만들지에 대한 변수 (지금은 3개씩)
 
 
-    public float groundObstacleY = 0f;  // 점프/더블 점프 장애물의 Y위치
-    public float airObstacleY = 2.5f;   // 슬라이드용 장애물의 Y위치 
+    public float groundObstacleY = -2f;  // 점프/더블 점프 장애물의 Y위치
+    public float airObstacleY = 1.5f;   // 슬라이드용 장애물의 Y위치 
 
-    public float minXpadding = 4f;      // 장애물 간 최소 간격
+    public float minXPadding = 4f;      // 장애물 간 최소 간격
     public float maxXPadding = 7f;      // 장애물 간 최대 간격
 
 
@@ -114,7 +112,7 @@ public class ObstacleManager : MonoBehaviour
         GameObject prefab = GetPrefabByType(type);                                   // GetPrefabByType(type);
         GameObject instance = Instantiate(prefab);                                   // 프리팹 생성하기
 
-        float randomX = Random.Range(minXpadding, maxXPadding);                      // randomX의 값을 min~max 범위에서 랜덤한 값으로 설정
+        float randomX = Random.Range(minXPadding, maxXPadding);                      // randomX의 값을 min~max 범위에서 랜덤한 값으로 설정
         Vector3 placePosition = obstacleLastPosition + new Vector3(randomX, 0f, 0f); // 장애물 위치 변수의 값을 randomX값으로 설정
 
         // 장애물 종류에 따라 Y값 설정
@@ -144,7 +142,8 @@ public class ObstacleManager : MonoBehaviour
 
     public void RepositionObstacle(GameObject obstacle) // 장애물을 앞으로 다시 보내는 함수 
     {
-        ObstacleType type = ObstacleType.RedLineTrap;   // 현재는 View가 없기 때문에 장애물 이름을 보고 어떤 종류인지 유추한다. 
+        // 현재는 View가 없기 때문에 장애물 이름을 보고 어떤 종류인지 유추한다. 
+        ObstacleType type = ObstacleType.RedLineTrap;   // 기본값으로 RedLineTrap 설정
 
         if (obstacle.name.Contains("RedLine"))
         {
@@ -160,7 +159,7 @@ public class ObstacleManager : MonoBehaviour
         }
 
         // 전 장애물 위치에서 X축으로 일정 간격을 띄운 위치를 계산한다.
-        float randomX = Random.Range(minXpadding, maxXPadding);                     // randomX 변수를 min ~max 범위에서 랜덤 간격 생성
+        float randomX = Random.Range(minXPadding, maxXPadding);                     // randomX 변수를 min ~max 범위에서 랜덤 간격 생성
         Vector3 newPosition = obstacleLastPosition + new Vector3(randomX, 0f, 0f);  // X만 이동
 
         // 장애물의 종류에 따라 Y 위치를 설정한다. 
