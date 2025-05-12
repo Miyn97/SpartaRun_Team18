@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3683858601674005792}
   - component: {fileID: 1685531062675941628}
   - component: {fileID: 8570779664716801938}
-  - component: {fileID: 5037369465613188318}
+  - component: {fileID: 5681905249001570130}
   m_Layer: 0
   m_Name: SyntaxErrorBox
   m_TagString: Obstacle
@@ -159,7 +159,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &5037369465613188318
+--- !u!114 &5681905249001570130
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -168,6 +168,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 2184221484011828788}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 226191b63a998414d996faf614ba926b, type: 3}
+  m_Script: {fileID: 11500000, guid: 497f721aa8560954d8cac0650e8561f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
