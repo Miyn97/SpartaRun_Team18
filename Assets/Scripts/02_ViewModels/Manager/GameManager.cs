@@ -182,8 +182,6 @@ public class GameManager : MonoBehaviour
                 // 새 게임 시작시 체력, 점수 다시 초기화
                 Score = 0; // 점수 리셋
                 CurrentHp = 6; // 체력 리셋 (6으로 설정)
-                UIManager.Instance.UpdateHealth(CurrentHp); // UIManager에 체력 업데이트 요청
-                UIManager.Instance.UpdateScore(Score, BestScore); // UIManager에 점수 업데이트 요청
                 break;
             case GameState.GameOver:
                 //씬 전환X, UI만 표시
