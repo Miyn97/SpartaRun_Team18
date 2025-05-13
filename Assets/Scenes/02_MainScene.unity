@@ -909,6 +909,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de6774081a53c944cbe25151cf957fad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemManager: {fileID: 532559187}
 --- !u!4 &408840787
 Transform:
   m_ObjectHideFlags: 0
@@ -1168,6 +1169,66 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7e07444dd608c34c995a017dc88acd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &532559186
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 532559188}
+  - component: {fileID: 532559187}
+  m_Layer: 0
+  m_Name: ItemManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &532559187
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 532559186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d02a188d0e812149a28a6bd8c7dadde, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemPrefabs:
+  - type: 0
+    prefab: {fileID: 5748354604842384851, guid: a816c00e825f039449bac281da8da5f2, type: 3}
+  - type: 1
+    prefab: {fileID: 3877681020837683989, guid: d83fb8dc940ebee4ea6ded3474d42b8d, type: 3}
+  - type: 2
+    prefab: {fileID: 1315613758775527033, guid: 8f5656842a8da484bbbc7019a84dabbd, type: 3}
+  - type: 3
+    prefab: {fileID: 8228531426416595722, guid: 314a0ed027be46c44b64e2b01c94d49c, type: 3}
+  - type: 4
+    prefab: {fileID: 6114264948723355549, guid: 38fb970891e40914db411d2b8077cf34, type: 3}
+  poolSize: 3
+  player: {fileID: 1083998795}
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 0
+--- !u!4 &532559188
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 532559186}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -467.5025, y: 415.19574, z: -15.913524}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &578157795
 GameObject:
   m_ObjectHideFlags: 0
@@ -2956,15 +3017,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68545ed675eb61745a5a03afa04f2d77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  countPerType: 1
   redLinePrefab: {fileID: 4565103189964499219, guid: 91ef75a540db7c9478c2e02605d3af3a, type: 3}
   syntaxErrorBoxPrefab: {fileID: 2184221484011828788, guid: 88ec28c112ee0ed42b9f1a1da38a3606, type: 3}
   compileErrorWallPrefab: {fileID: 8560573066561155159, guid: 6bcac34abc8c13c48860aee4c6db2e87, type: 3}
-  countPerType: 1
+  batchSize: 3
+  hiddenThreshold: 3
+  groupSpacing: 7
+  innerSpacing: 6
+  player: {fileID: 0}
+  spawnAhead: 20
   groundObstacleY: -2.5
   airObstacleY: 2
-  minXPadding: 4
-  maxXPadding: 7
-  patternSpawnInterval: 2
 --- !u!4 &1830982750
 Transform:
   m_ObjectHideFlags: 0
@@ -3799,3 +3863,4 @@ SceneRoots:
   - {fileID: 578157797}
   - {fileID: 1830982750}
   - {fileID: 365828294}
+  - {fileID: 532559188}
