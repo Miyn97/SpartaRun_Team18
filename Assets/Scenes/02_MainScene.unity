@@ -3025,7 +3025,7 @@ MonoBehaviour:
   hiddenThreshold: 3
   groupSpacing: 7
   innerSpacing: 6
-  player: {fileID: 0}
+  player: {fileID: 220529794}
   spawnAhead: 20
   groundObstacleY: -2.5
   airObstacleY: 2
