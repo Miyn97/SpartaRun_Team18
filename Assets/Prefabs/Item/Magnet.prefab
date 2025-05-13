@@ -10,9 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2791650957111107190}
   - component: {fileID: 3926924648356767644}
-  - component: {fileID: 4327340330326522819}
-  - component: {fileID: 2597615968586677743}
   - component: {fileID: 4380551253822879518}
+  - component: {fileID: 6922934884462249188}
   m_Layer: 0
   m_Name: Magnet
   m_TagString: Collectable
@@ -80,32 +79,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.4737928, y: 0.6321216}
   m_EdgeRadius: 0
---- !u!114 &4327340330326522819
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6114264948723355549}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 60a370d7b9733204580b28fa5920be50, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemEnum: 4
-  playerController: {fileID: 0}
---- !u!114 &2597615968586677743
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6114264948723355549}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77953441d13248849b30b452590827ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!212 &4380551253822879518
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -158,3 +131,16 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &6922934884462249188
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6114264948723355549}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2dfeadb36575cb74e89b1d6acaa3850e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemType: 0
