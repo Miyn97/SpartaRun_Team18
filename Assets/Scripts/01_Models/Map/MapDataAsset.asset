@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 794ef95e8237fab4eb454402e7612be2, type: 3}
-  m_Name: TestLevelData
+  m_Name: MapDataAsset
   m_EditorClassIdentifier: 
   chunks:
   - chunkPrefab: {fileID: 4081261823314264042, guid: 2822a3123b6fd8046bee1b2089bdd945, type: 3}
