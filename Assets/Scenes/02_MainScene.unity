@@ -2863,9 +2863,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   countPerType: 5
-  redLinePrefab: {fileID: 9120857436961055974, guid: 5b204b3a4098c9e48bbc8d81d593a7a4, type: 3}
-  syntaxErrorBoxPrefab: {fileID: 823901195161814766, guid: 6263a4b52b257ba48bc398495a104229, type: 3}
-  compileErrorWallPrefab: {fileID: 7120145286101456948, guid: 09cc28c4f5e63824da3a2a35497a50a4, type: 3}
+  redLinePrefab: {fileID: 4565103189964499219, guid: 91ef75a540db7c9478c2e02605d3af3a, type: 3}
+  syntaxErrorBoxPrefab: {fileID: 2184221484011828788, guid: 88ec28c112ee0ed42b9f1a1da38a3606, type: 3}
+  compileErrorWallPrefab: {fileID: 8560573066561155159, guid: 6bcac34abc8c13c48860aee4c6db2e87, type: 3}
   batchSize: 3
   hiddenThreshold: 3
   groupSpacing: 7
@@ -3806,9 +3806,9 @@ SceneRoots:
   - {fileID: 408840787}
   - {fileID: 578157797}
   - {fileID: 1830982750}
-  - {fileID: 365828294}
   - {fileID: 1796048640}
   - {fileID: 1959329720}
   - {fileID: 1187664389}
   - {fileID: 1169550093}
   - {fileID: 465285770}
+  - {fileID: 664417962}
