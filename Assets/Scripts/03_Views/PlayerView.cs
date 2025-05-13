@@ -13,6 +13,17 @@ using UnityEngine;
 
 public class PlayerView : MonoBehaviour
 {
+    [SerializeField] private BoxCollider2D boxCollider;
+
+    // 슬라이드용 콜라이더 설정값
+    [SerializeField] private Vector2 slideColliderSize = new Vector2(1.6f, 0.8f);
+    [SerializeField] private Vector2 slideColliderOffset = new Vector2(-0.5f, 0.4f);
+
+    // 원래 콜라이더 설정값
+    private Vector2 defaultColliderSize;
+    private Vector2 defaultColliderOffset;
+
+
     //리지드바디 (물리적 이동, 속도, 점프) 컴포넌트
     private Rigidbody2D _rigidbody;
     //애니메이션 실행을 위한 컴포넌트
@@ -37,6 +48,13 @@ public class PlayerView : MonoBehaviour
         if (spriteTransform != null)
             //현재 Y 크기를 저장 = 슬라이드 후 원래 크기로 되돌릴 때 사용
             defaultScaleY = spriteTransform.localScale.y;
+
+        //boxCollider가 있다면
+        if (boxCollider != null)
+        {
+            defaultColliderSize = boxCollider.size;
+            defaultColliderOffset = boxCollider.offset;
+        }
     }
 
     //자동 이동 처리
@@ -72,9 +90,23 @@ public class PlayerView : MonoBehaviour
         {
             //시각적으로 몸을 낮추기 위해 Sprite의 Y 스케일을 줄임
             spriteTransform.localScale = new Vector3(1f, slideScaleY, 1f);
+
+            //위치 보정 (Y축 위로 올림, 예: +0.25f)
+            spriteTransform.localPosition = new Vector3(0f, 0.25f, 0f);
+
         }
         //Animator에서 IsSliding을 true로 설정
-        //animator.SetBool("IsSliding", true); //애니메이션 생성 시 주석처리 해제
+        animator.SetBool("IsSliding", true); //애니메이션 생성 시 주석처리 해제
+
+        // 중력에 의한 낙하 방지
+        _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, 0);
+
+        //콜라이더 변경
+        if (boxCollider != null)
+        {
+            boxCollider.size = slideColliderSize;
+            boxCollider.offset = slideColliderOffset;
+        }
     }
 
     //슬라이드 종료 처리
@@ -85,9 +117,18 @@ public class PlayerView : MonoBehaviour
         {
             //슬라이드 종료 시 원래 크기로 되돌림
             spriteTransform.localScale = new Vector3(1f, defaultScaleY, 1f);
+            spriteTransform.localPosition = Vector3.zero; //원래 위치 복귀
         }
         //IsSliding 애니메이션 Bool을 꺼서 애니메이션 종료
-        //animator.SetBool("IsSliding", false); //애니메이션 생성 시 주석처리 해제
+        animator.SetBool("IsSliding", false); //애니메이션 생성 시 주석처리 해제
+
+        //콜라이더 복원
+        if (boxCollider != null)
+        {
+            boxCollider.size = defaultColliderSize;
+            boxCollider.offset = defaultColliderOffset;
+        }
+
     }
 
     //사망 애니메이션 재생
@@ -95,7 +136,7 @@ public class PlayerView : MonoBehaviour
     {
         //죽었을 때 실행되는 애니메이션 트리거 "Die"를 Animator에게 전달
         //예로들어서 넘어짐, 폭발, 비틀거림 등 설정된 애니메이션 재생
-        //animator.SetTrigger("Die");
+        animator.SetTrigger("Die");
     }
 
     //애니메이션 정지용 메서드
