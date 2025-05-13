@@ -1,185 +1,79 @@
-using System.Collections;
-using System.Collections.Generic;
+ï»¿using System;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 /*
-¾ÆÀÌÅÛ Á¾·ù, È¿°ú¼öÄ¡ µî
-¾ÆÀÌÅÛ Á¾·ù ¹Ø ÀÓÀÇ¼öÄ¡
-°Å´ëÈ­               ÀÏÁ¤½Ã°£µ¿¾È ¹«Àû ¹× Å©±â°¡ Ä¿Áø´Ù. 5ÃÊµ¿¾È °Å´ëÈ­?
-ÁúÁÖ                 ÀÏÁ¤½Ã°£ µ¿¾È ¹«Àû»óÅÂ·Î ºü¸¥¼Óµµ·Î ´Ş¸°´Ù. 3ÃÊµ¿¾È speed + 3f?
-ÆøÁ×=ÄÚÀÎ¸ÅÁ÷        Àü¹æ ÀÏÁ¤¹üÀ§ÀÇ Àå¾Ö¹°À» ¹«·ÂÈ­? ¹«È¿È­ ÇÏ°í Á¡¼ö¸¦ ¾òÀ» ¼ö ÀÖ´Â ¿ä¼Ò »ı¼º 
-ÀÚ¼®                 ÀÏÁ¤½Ã°£µ¿¾È ÇÃ·¹ÀÌ¾î ÁÖº¯¿¡ collectable << ¾ÆÀÌÅÛ, ÄÚÀÎ µîÀ» »¡¾ÆµéÀÎ´Ù ÇÃ·¹ÀÌ¾î ·ÎÄÃÁÂÇ¥ÀÇ 
-Ã¼·Â¹°¾à             Ã¼·Â È¸º¹. ÀÏ´ÜÀº ÇÑÄ­È¸º¹
+ì•„ì´í…œ ì¢…ë¥˜, íš¨ê³¼ìˆ˜ì¹˜ ë“±
+ì•„ì´í…œ ì¢…ë¥˜ ë°‘ ì„ì˜ìˆ˜ì¹˜
+ê±°ëŒ€í™”               ì¼ì •ì‹œê°„ë™ì•ˆ ë¬´ì  ë° í¬ê¸°ê°€ ì»¤ì§„ë‹¤. 5ì´ˆë™ì•ˆ ê±°ëŒ€í™”?
+ì§ˆì£¼                 ì¼ì •ì‹œê°„ ë™ì•ˆ ë¬´ì ìƒíƒœë¡œ ë¹ ë¥¸ì†ë„ë¡œ ë‹¬ë¦°ë‹¤. 3ì´ˆë™ì•ˆ speed + 3f?
+í­ì£½=ì½”ì¸ë§¤ì§        ì „ë°© ì¼ì •ë²”ìœ„ì˜ ì¥ì• ë¬¼ì„ ë¬´ë ¥í™”? ë¬´íš¨í™” í•˜ê³  ì ìˆ˜ë¥¼ ì–»ì„ ìˆ˜ ìˆëŠ” ìš”ì†Œ ìƒì„± 
+ìì„                 ì¼ì •ì‹œê°„ë™ì•ˆ í”Œë ˆì´ì–´ ì£¼ë³€ì— collectable << ì•„ì´í…œ, ì½”ì¸ ë“±ì„ ë¹¨ì•„ë“¤ì¸ë‹¤ í”Œë ˆì´ì–´ ë¡œì»¬ì¢Œí‘œì˜ 
+ì²´ë ¥ë¬¼ì•½             ì²´ë ¥ íšŒë³µ. ì¼ë‹¨ì€ í•œì¹¸íšŒë³µ
 
-ÄÚÀÎµµ ¿©±â µé¾î°¡³ª?
-ÇÃ·¹ÀÌ¾î ¹«Àû ÇÊ¿ä, Àå¾Ö¹° ÆÄ±«? ºñÈ°¼ºÈ­? ÇÊ¿ä, 
+ì½”ì¸ë„ ì—¬ê¸° ë“¤ì–´ê°€ë‚˜?
+í”Œë ˆì´ì–´ ë¬´ì  í•„ìš”, ì¥ì• ë¬¼ íŒŒê´´? ë¹„í™œì„±í™”? í•„ìš”, 
 
  */
 
+// MonoBehaviour ìƒì† ì œê±° â†’ ìˆœìˆ˜ ë°ì´í„° í´ë˜ìŠ¤ë¡œ ë³€ê²½
+// ì½”ë£¨í‹´ ë° Unity ì˜ì¡´ ë¡œì§ ì œê±°
+// Awake(), FindObjectOfType(), Coroutine ì œê±°
+// itemEnum í•„ë“œë¥¼ ItemTypeìœ¼ë¡œ ëª…í™•íˆ ëª…ëª…
+// Duration, Value í•„ë“œë¥¼ í†µí•´ í™•ì¥ì„± í™•ë³´ (ì˜ˆ: GiantPotionì˜ ì§€ì†ì‹œê°„, Heal ìˆ˜ì¹˜ ë“±)
+
+
+/// <summary>
+/// ì•„ì´í…œì˜ ì¢…ë¥˜ë¥¼ ì •ì˜í•˜ëŠ” ì—´ê±°í˜•
+/// </summary>
 public enum ItemEnum
 {
-    Coin,
-    HealPotion,
-    SpeedPotion,
-    GiantPotion,
-    Magnet
-    //Bomb
+    Coin,         // ì ìˆ˜ íšë“
+    HealPotion,   // ì²´ë ¥ íšŒë³µ
+    SpeedPotion,  // ì¼ì • ì‹œê°„ ë™ì•ˆ ì†ë„ ì¦ê°€ + ë¬´ì 
+    GiantPotion,  // ì¼ì • ì‹œê°„ ë™ì•ˆ í¬ê¸° ì¦ê°€ + ë¬´ì 
+    Magnet        // ì¼ì • ì‹œê°„ ë™ì•ˆ ì£¼ë³€ Collectable ëŒì–´ë‹¹ê¹€
+    // Bomb: í–¥í›„ ì¶”ê°€ ê°€ëŠ¥
 }
 
-public class ItemModel : MonoBehaviour
+/// <summary>
+/// ì•„ì´í…œì˜ ìˆœìˆ˜ ë°ì´í„° ëª¨ë¸ í´ë˜ìŠ¤ - ViewModelì´ë‚˜ Managerì—ì„œ ì‚¬ìš©í•  ëª©ì 
+/// MonoBehaviourë¥¼ ìƒì†í•˜ì§€ ì•Šê³ , ìˆœìˆ˜ ë°ì´í„°ë§Œ ë³´ê´€í•˜ë„ë¡ ì„¤ê³„
+/// </summary>
+[Serializable]
+public class ItemModel
 {
-    private ItemManager pool;
-    private void Awake()
+    /// <summary>
+    /// ì•„ì´í…œì˜ ì¢…ë¥˜
+    /// </summary>
+    public ItemEnum ItemType;
+
+    /// <summary>
+    /// ì§€ì†ì‹œê°„ì´ í•„ìš”í•œ ê²½ìš°ì˜ ì‹œê°„ (ì´ˆ)
+    /// ì˜ˆ: GiantPotion 3ì´ˆ, Magnet 5ì´ˆ ë“±
+    /// </summary>
+    public float Duration;
+
+    /// <summary>
+    /// ìˆ˜ì¹˜ ê¸°ë°˜ ì•„ì´í…œì˜ ìˆ˜ì¹˜ ê°’
+    /// ì˜ˆ: HealPotion íšŒë³µëŸ‰, SpeedPotion ì†ë„ ìˆ˜ì¹˜ ë“±
+    /// </summary>
+    public float Value;
+
+    /// <summary>
+    /// ìƒì„±ì - ì¸ìŠ¤í™í„° ë˜ëŠ” ì½”ë“œ ìƒì—ì„œ ì´ˆê¸°í™” ê°€ëŠ¥
+    /// </summary>
+    public ItemModel(ItemEnum itemType, float duration = 0f, float value = 0f)
     {
-        pool = FindObjectOfType<ItemManager>();
-        playerController = FindAnyObjectByType<PlayerController>();
-    }
-    UIManager UIManager;
-
-    public ItemEnum itemEnum;
-    [SerializeField] private PlayerController playerController;
-    [SerializeField] private PlayerModel model;
-
-    public void ApplyEffect()//¾ÆÀÌÅÛÀ» ¸ÔÀ¸¸é
-    {
-        Debug.Log("¾ÆÀÌÅÛ È¿°ú ½ÇÇàµÊ: " + itemEnum);
-        GameManager.Instance.AddScore(100);
-
-        switch (itemEnum)
-        {
-            case ItemEnum.Coin:
-                GameManager.Instance.AddScore(100);
-                pool.ReturnToPool(itemEnum, gameObject);
-                break;
-            case ItemEnum.HealPotion:
-                HealPotion(2);
-                break;
-            case ItemEnum.SpeedPotion:
-                StartCoroutine(SpeedPotion(3));
-                break;
-            case ItemEnum.GiantPotion:
-                StartCoroutine(GiantPotion(3));
-                break;
-            case ItemEnum.Magnet:
-                StartCoroutine(Magnet(5));
-                break;
-                //case ItemEnum.Bomb:
-                //    Bomb();
-                //    break;
-        }
-
+        ItemType = itemType;  // ì•„ì´í…œ ì¢…ë¥˜ ì„¤ì •
+        Duration = duration;  // íš¨ê³¼ ì§€ì† ì‹œê°„ ì„¤ì •
+        Value = value;        // ìˆ˜ì¹˜ ì„¤ì •
     }
 
-    private IEnumerator BlinkEffect()//±ôºıÀÌ´Â ÄÚ·çÆ¾. ÁöÇÇÆ¼ÇÇ¼ÈÀÌ¶ó ½ÇÇè ÇÊ¿ä
+    /// <summary>
+    /// ë””ë²„ê·¸ìš© ToString ì˜¤ë²„ë¼ì´ë“œ - ë””ë²„ê¹…ì´ë‚˜ ë¡œê·¸ í™•ì¸ìš©
+    /// </summary>
+    public override string ToString()
     {
-        SpriteRenderer sr = playerController.GetComponentInChildren<SpriteRenderer>(); // ÇÃ·¹ÀÌ¾îÀÇ SpriteRenderer °¡Á®¿È
-        Color originalColor = sr.color;            // ¿ø·¡ »ö ÀúÀå
-
-        while (true) // StopCoroutine µÉ ¶§±îÁö °è¼Ó ¹İº¹
-        {
-            sr.color = new Color(1f, 1f, 1f, 0.3f); // ¹İÅõ¸í
-            yield return new WaitForSeconds(0.1f); // 0.3ÃÊ ´ë±â
-
-            sr.color = originalColor;              // ¿ø·¡ »öÀ¸·Î
-            yield return new WaitForSeconds(0.1f); // ¶Ç 0.3ÃÊ ´ë±â
-        }
-    }
-    
-    private IEnumerator SpeedPotion(int duration)//±¤?¼ÓÁúÁÖ
-    {
-        playerController.SetInvincible(true); ;//¹«Àû
-        playerController.SetSpeed(13) ;       //ÀÌµ¿¼Óµµ Áõ°¡, »¡¶óÁö´Â µ¿¾È ÆÄÆ¼Å¬Ã³·³ ÀÌÆåÆ® ³ª¿À¸é ÁÁ?À»µí, ¼Óµµ Àû´çÇÑÁö ½ÇÇèÇÊ¿ä
-
-        yield return new WaitForSeconds(duration);//¹ßµ¿µÇ¸é À§¿¡°Å Àû¿ë ÈÄ Áö¼Ó½Ã°£(duration)ÈÄ¿¡ ¹Ø¿¡°Å Àû¿ë
-
-        playerController.SetSpeed(8.5f);//´Ù½Ã °¨¼Ò, ¹«ÀûÀº 1.5ÃÊÈÄ¿¡ Ç®¸²
-        Coroutine blink = StartCoroutine(BlinkEffect());//±ôºıÀÌ´Â ÀÌÆåÆ® Àû¿ë
-
-        yield return new WaitForSeconds(1.5f);//1.5ÃÊÈÄ ´Ù½Ã ¹«ÀûÇØÁ¦ 
-
-        StopCoroutine(blink);          // ±ôºıÀÌ±â Á¾·á
-        playerController.GetComponentInChildren<SpriteRenderer>().color = Color.white; // »ö»ó ¿ø»óº¹±¸
-        playerController.SetInvincible(false); ;//¹«Àû ÇØÁ¦
-
-        pool.ReturnToPool(itemEnum, gameObject);//µğ½ºÆ®·ÎÀÌ, SetActiveFalse ´ë½Å ¾ÆÀÌÅÛ Ç®¸µ Ç®¿¡ ¹İÈ¯.¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ
-
-    }
-
-
-    private IEnumerator GiantPotion(int duration)//Ä¿Á®¶ó~
-    {
-        Debug.Log("ÀÚÀÌ¾ğÆ® ÄÚ·çÆ¾ ½ÃÀÛµÊ");
-        BoxCollider2D collider = playerController.GetComponent<BoxCollider2D>();
-        playerController.SetInvincible(true); ;//¹«Àû
-        //collider.size *= 1f;    // ¹Ú½º Äİ¶óÀÌ´õ Å©±â 2¹è
-        //collider.offset *= 1f;  // À§Ä¡µµ °°ÀÌ ¸ÂÃçÁà¾ß ÇÑ´Ù°í ÁöÇÇÆ¼°¡ ±×·¨¾î¿ä
-        playerController.transform.localScale *= 2f;//ÇÃ·¹ÀÌ¾îÀÇ Å©±â 2¹è
-        
-        yield return new WaitForSeconds(duration);//Áö¼Ó½Ã°£ ÈÄ¿¡ ´ÙÀ½°Å Àû¿ë
-
-        Debug.Log("ÀÚÀÌ¾ğÆ® ÄÚ·çÆ¾ ³¡³²");
-        //collider.size /= 1f;    // ¹Ú½º Äİ¶óÀÌ´õ Å©±â ¿ø·¡´ë·Î
-        //collider.offset /= 1f;  // À§Ä¡
-        playerController.transform.localScale /= 2f;//ÇÃ·¹ÀÌ¾îÀÇ Å©±â ¿ø·¡´ë·Î
-        Coroutine blink = StartCoroutine(BlinkEffect());
-
-        Debug.Log("ºí¸µÅ© ½ÃÀÛ");
-
-        yield return new WaitForSeconds(1.5f);
-
-        Debug.Log("ºí¸µÅ© ³¡");
-
-        StopCoroutine(blink);          // ±ôºıÀÌ±â Á¾·á
-        playerController.GetComponentInChildren<SpriteRenderer>().color = Color.white; // »ö»ó ¿ø»óº¹±¸
-        playerController.SetInvincible(false); ;//¹«Àû ÇØÁ¦
-
-        pool.ReturnToPool(itemEnum, gameObject);
-    }
-
-    private IEnumerator Magnet(int duration)
-    {
-        float radius = 10f;           // ÀÚ¼® ¹üÀ§ ¹İ°æ
-        float pullSpeed = 15f;       // ²ø·Á¿À´Â ¼Óµµ
-        float timer = 0f;            // Å¸ÀÌ¸Ó ÃÊ±âÈ­
-
-
-        while (timer < duration)//duration ¸¸Å­ 
-        {
-            //Physics2D.OverlapCircleAll(Æ¯Á¤À§Ä¡, ¹İÁö¸§ÀÇ Å©±â) = Æ¯Á¤ À§Ä¡¸¦ Áß½ÉÀ¸·Î radius¸¸Å­ÀÇ ¿øÇü ¹üÀ§ ¾È¿¡ ÀÖ´Â ¸ğµç Collider2D¸¦ Ã£¾ÆÁÜ.
-            Collider2D[] items = Physics2D.OverlapCircleAll(playerController.transform.position, radius);//ÇÃ·¹ÀÌ¾î Áß½É radius¹üÀ§ ¾È¿¡ Äİ¶óÀÌ´õµéÀ» °Ë»ç
-
-            foreach (Collider2D item in items)
-            {
-                if (item.CompareTag("Collectable"))//Äİ·ºÅÍºí ÀÌ¶ó¸é
-                {
-                    //Vector dir = ( Å¸°ÙÀ§Ä¡ - ÇöÀçÀ§Ä¡).normalized.     normalized = º¤ÅÍ¸¦ ±æÀÌ 1Â¥¸® º¤ÅÍ·Î ¹Ù²Ş
-                    Vector3 dir = (playerController.transform.position - item.transform.position).normalized;// ÀÌµ¿ ¹æÇâÀ» °áÁ¤
-                    item.transform.position += dir * pullSpeed * Time.deltaTime;//¾ÆÀÌÅÛÆ÷Áö¼ÇÀ» ¹Ù²ã¼­ ²ø¾î¿À±â
-                }
-            }
-
-            yield return null;         // ´ÙÀ½ ÇÁ·¹ÀÓ±îÁö ´ë±â
-            timer += Time.deltaTime;    // Å¸ÀÌ¸Ó °»½Å
-        }
-        pool.ReturnToPool(itemEnum, gameObject);
-    }
-
-
-    public void HealPotion(int heal)
-    {
-        //model.Heal(heal);
-        //int updateHp = model.CurrentHealth;
-
-        //playerController.Heal(heal);
-        Debug.Log("Èú µÊ");
-        GameManager.Instance.Heal(heal);
-
-        //UIManager.Instance.UpdateHealth(updateHp); //UI ¾÷µ¥ÀÌÆ®
-
-        pool.ReturnToPool(itemEnum, gameObject);
+        return $"ItemType: {ItemType}, Duration: {Duration}, Value: {Value}";
     }
 }
-
-
-
