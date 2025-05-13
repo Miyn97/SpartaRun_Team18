@@ -1880,6 +1880,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2aa202d79eb456143a6851ab22abd1f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  boxCollider: {fileID: 1083998796}
+  slideColliderSize: {x: 1.6, y: 0.8}
+  slideColliderOffset: {x: -0.5, y: 0.4}
   spriteTransform: {fileID: 1555901437}
   slideScaleY: 0.5
 --- !u!50 &1083998798

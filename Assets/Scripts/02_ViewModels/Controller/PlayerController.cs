@@ -71,14 +71,21 @@ public class PlayerController : MonoBehaviour
             Jump(); //점프키는 Space
         }
 
-        if (Input.GetKeyDown(KeyCode.LeftShift) && !isSliding)
+        if (Input.GetKey(KeyCode.LeftShift))
         {
-            Slide(); //슬라이드 키는 Shift
+            if (!isSliding)
+            {
+                Slide(); // Shift를 누른 순간 슬라이드 시작
+            }
         }
-        if (isSliding)
+        else
         {
-            SlideTime(); // 슬라이드 지속 시간 처리
+            if (isSliding)
+            {
+                EndSlide(); // Shift에서 손 뗐을 때 슬라이드 종료
+            }
         }
+
 
         //체력감소 테스트
         if (Input.GetKeyDown(KeyCode.H))
@@ -122,23 +129,14 @@ public class PlayerController : MonoBehaviour
         isSliding = true; //슬라이드 중 상태
         slideTimer = slideDuration; //슬라이드 지속 시간 설정
         playerView.Slide(); //슬라이드 애니메이션 요청
-
-        //뷰에게 종료 애니메이션 요청
-        //playerView.EndSlide(); //애니메이션 생성 시 주석처리 해제
     }
 
-    //슬라이드
-    private void SlideTime()
+    //슬라이드 종료
+    private void EndSlide()
     {
-        //슬라이드 지속 시간 처리
-        slideTimer -= Time.deltaTime;
-
-        if (slideTimer <= 0f)
-        {
-            Debug.Log("슬라이드 종료");
-            isSliding = false;
-            playerView.EndSlide(); //슬라이드 종료 애니메이션 요청
-        }
+        Debug.Log("슬라이드 종료");
+        isSliding = false;
+        playerView.EndSlide(); // 애니메이션 종료
     }
 
     // 땅에 닿았는지 확인
