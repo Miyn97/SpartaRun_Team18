@@ -21,3 +21,20 @@ public class StageManager : MonoBehaviour
         return null;
     }
 }
+public class DeathTrigger : MonoBehaviour
+{
+    private StageManager stageManager;
+
+    void Start()
+    {
+        stageManager = FindObjectOfType<StageManager>();
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player") && gameObject.name == "DeathGround")
+        {
+            GameManager.Instance.ChangeState(GameManager.GameState.GameOver);
+        }
+    }
+}
