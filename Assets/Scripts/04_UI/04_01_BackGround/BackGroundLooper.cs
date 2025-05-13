@@ -51,7 +51,12 @@ public class BackGroundLooper : MonoBehaviour
 
     void RemoveOldChunkIfNeeded()
     {
-        if (activeChunks.Count > preloadCount)
+        if (activeChunks.Count == 0) return;
+
+        GameObject firstChunk = activeChunks.Peek();
+        float chunkEndX = firstChunk.transform.position.x + chunkWidth;
+
+        if (player.position.x - chunkEndX > chunkWidth * 2f)
         {
             GameObject oldChunk = activeChunks.Dequeue();
             ReturnChunkToPool(oldChunk);
