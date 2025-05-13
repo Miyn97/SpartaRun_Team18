@@ -56,8 +56,8 @@ public class GameManager : MonoBehaviour
 
         //게임이 시작되면 Intro 상태로 전환
         //ChangeState(GameState.Intro); // 최종본에서는 필요함
-        StartCoroutine(itemManager.SpawnRandomItem(15f));//시작할때 코루틴도 시작, 15초 후에 아이템 생성
-        StartCoroutine(itemManager.SpawnCoin(2));//2초마다 코인생성
+        //StartCoroutine(itemManager.SpawnRandomItem(15f));//시작할때 코루틴도 시작, 15초 후에 아이템 생성
+        //StartCoroutine(itemManager.SpawnCoin(2));//2초마다 코인생성
     }
 
     private void OnEnable()
