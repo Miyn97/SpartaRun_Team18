@@ -21,11 +21,9 @@ public enum ItemEnum
     Coin,
     HealPotion,
     SpeedPotion,
-    GiantPotion/*,
-    Bomb,
-    Magnet*/
-
-
+    GiantPotion,
+    Magnet
+    //Bomb
 }
 
 public class ItemModel : MonoBehaviour
@@ -53,14 +51,12 @@ public class ItemModel : MonoBehaviour
             case ItemEnum.GiantPotion:
                 StartCoroutine(GiantPotion(5));
                 break;
+            case ItemEnum.Magnet:
+                Magnet(5);
+                break;
                 //case ItemEnum.Bomb:
                 //    Bomb();
                 //    break;
-                //case ItemEnum.Magnet:
-                //    Magnet();
-                //    break;
-
-
         }
 
     }
@@ -122,89 +118,38 @@ public class ItemModel : MonoBehaviour
 
     }
 
-    //public void Bomb()
-    //{
+    private IEnumerator Magnet(int duration)
+    {
+        float radius = 8f;           // 자석 범위 반경
+        float pullSpeed = 5f;       // 끌려오는 속도
+        float timer = 0f;            // 타이머 초기화
 
-    //}
+        while (timer < duration)//duration 만큼 
+        {
+            //Physics2D.OverlapCircleAll(특정위치, 반지름의 크기) = 특정 위치를 중심으로 radius만큼의 원형 범위 안에 있는 모든 Collider2D를 찾아줌.
+            Collider2D[] items = Physics2D.OverlapCircleAll(playerController.transform.position, radius);//플레이어 중심 radius범위 안에 콜라이더들을 검사
 
-    //public void Magnet()
-    //{
+            foreach (Collider2D item in items)
+            {
+                if (item.CompareTag("Collectable"))//콜렉터블 이라면
+                {
+                    //Vector dir = ( 타겟위치 - 현재위치).normalized.     normalized = 벡터를 길이 1짜리 벡터로 바꿈
+                    Vector3 dir = (playerController.transform.position - item.transform.position).normalized;// 이동 방향을 결정
+                    item.transform.position += dir * pullSpeed * Time.deltaTime;//아이템포지션을 바꿔서 끌어오기
+                }
+            }
 
-    //}
-
-
-
+            timer += Time.deltaTime;    // 타이머 갱신
+            yield return null;         // 다음 프레임까지 대기
+        }
+    }
     public void HealPotion()
     {
-        playerController.Heal(1);//이런식으로 쓰면 되나?
+        playerController.Heal(1);
 
         //+ UI의 하트도 하나 추가
     }
 }
 
-//public class ItemModel : MonoBehaviour//아래쪽은 지피티가 추천해준 코드
 
-//   private IEnumerator GiantEffect(PlayerController player)
-//    {
-//        player.IsInvincible = true;
-//        player.transform.localScale *= 2f;
-//        yield return new WaitForSeconds(duration);
-//        player.transform.localScale /= 2f;
-//        player.IsInvincible = false;
-//    }
 
-//    private IEnumerator SpeedEffect(PlayerController player)
-//    {
-//        player.IsInvincible = true;
-//        player.speed += 3f;
-//        yield return new WaitForSeconds(duration);
-//        player.speed -= 3f;
-//        player.IsInvincible = false;
-//    }
-//private IEnumerator BombEffect(PlayerController player)
-//{
-//    // 플레이어 전방 방향
-//    Vector2 origin = player.transform.position;
-//    Vector2 direction = player.transform.right;
-
-//    // 일정 범위 내 모든 충돌체 감지 (전방 5f 거리, 반지름 1.5f)
-//    RaycastHit2D[] hits = Physics2D.CircleCastAll(origin, 1.5f, direction, 5f);
-
-//    foreach (var hit in hits)
-//    {
-//        // 장애물 오브젝트인지 확인 (태그 "Obstacle" 필요)
-//        if (hit.collider != null && hit.collider.CompareTag("Obstacle"))
-//        {
-//            Destroy(hit.collider.gameObject); // 장애물 파괴
-//            player.AddScore(itemScore);       // 점수 추가
-//        }
-//    }
-
-//    yield return null; // 코루틴 종료 (지연 없음)
-//}
-//private IEnumerator MagnetEffect(PlayerController player)
-//{
-//    float radius = 5f;           // 자석 범위 반경
-//    float pullSpeed = 10f;       // 끌려오는 속도
-//    float timer = 0f;            // 타이머 초기화
-
-//    while (timer < duration)
-//    {
-//        // 주변에 있는 모든 콜렉터블 감지 (Collectable 태그 필요)
-//        Collider2D[] items = Physics2D.OverlapCircleAll(player.transform.position, radius);
-
-//        foreach (Collider2D item in items)
-//        {
-//            if (item.CompareTag("Collectable"))
-//            {
-//                // 플레이어를 향해 이동 (자석처럼 끌림)
-//                Vector3 dir = (player.transform.position - item.transform.position).normalized;
-//                item.transform.position += dir * pullSpeed * Time.deltaTime;
-//            }
-//        }
-
-//        timer += Time.deltaTime;    // 타이머 갱신
-//        yield return null;         // 다음 프레임까지 대기
-//    }
-//}
-//}
