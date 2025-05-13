@@ -24,7 +24,7 @@ public class ObstacleView : MonoBehaviour
 
     private void Awake()
     {
-        spriteRenderer =  GetComponent<SpriteRenderer>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
 
         if (spriteRenderer == null)  //spriteRenderer의 노쇼 방지
         {
