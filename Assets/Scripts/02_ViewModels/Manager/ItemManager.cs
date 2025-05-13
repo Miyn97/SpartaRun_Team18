@@ -108,6 +108,7 @@ public class ItemManager : MonoBehaviour
 
         while (true)
         {
+            Debug.Log("랜덤 아이템 생성됨");
             yield return new WaitForSeconds(nowCoolTime);//현재쿨타임만큼 기다리기
 
             ItemEnum randomItem = (ItemEnum)Random.Range(1, System.Enum.GetValues(typeof(ItemEnum)).Length);//소환될 아이템을 정하고 
@@ -124,6 +125,7 @@ public class ItemManager : MonoBehaviour
         {
             yield return new WaitForSeconds(Time);
             SpawnItem(ItemEnum.Coin);
+            Debug.Log("코인 생성됨");
         }
     }
 
