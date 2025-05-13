@@ -6,10 +6,10 @@ using UnityEngine;
 public class BackGroundLooper : MonoBehaviour
 {
     [Header("프리팹 및 설정")]
-    [SerializeField] private int poolSizePerChunk = 5; // 각 프리팹당 풀링할 오브젝트 수
+    [SerializeField] private int poolSizePerChunk = 16; // 각 프리팹당 풀링할 오브젝트 수
     [SerializeField] private float chunkWidth = 5f;     // 청크 하나의 너비
     [SerializeField] private float chunkSpacing = 0f;   // 청크 간 간격
-    [SerializeField] private int preloadCount = 5;      // 최초 미리 생성할 청크 수
+    [SerializeField] private int preloadCount = 12;      // 최초 미리 생성할 청크 수
 
     [Header("참조 연결")]
     [SerializeField] private Transform player;          // 플레이어 위치 추적
@@ -46,7 +46,7 @@ public class BackGroundLooper : MonoBehaviour
     // 새 청크를 생성해서 배치
     void SpawnNextChunk()
     {
-        GameObject prefab = stageView.GenNextChunkPrefab(); // ✅ ViewModel에 위임된 메서드 호출
+        GameObject prefab = stageView.GenNextChunkPrefab(); // ViewModel에 위임된 메서드 호출
         GameObject chunk = GetChunkFromPool(prefab);        // 풀에서 꺼내기
 
         chunk.transform.position = new Vector3(nextSpawnX, 0f, 0f); // 위치 배치
@@ -65,7 +65,7 @@ public class BackGroundLooper : MonoBehaviour
         float chunkEndX = firstChunk.transform.position.x + chunkWidth;
 
         // 플레이어가 해당 청크를 지나친 경우
-        if (player.position.x - chunkEndX > chunkWidth * 2f)
+        if (player.position.x - chunkEndX > chunkWidth * 1.5f) //2에서 1.5로 조정
         {
             GameObject oldChunk = activeChunks.Dequeue(); // 큐에서 제거
             ReturnChunkToPool(oldChunk);                  // 풀로 반환
@@ -77,20 +77,17 @@ public class BackGroundLooper : MonoBehaviour
     {
         if (!chunkPools.ContainsKey(prefab))
         {
-            // 해당 프리팹에 대한 풀을 새로 생성
             chunkPools[prefab] = new Queue<GameObject>();
-
             for (int i = 0; i < poolSizePerChunk; i++)
             {
-                GameObject obj = Instantiate(prefab, transform); // 하위로 생성
-                obj.SetActive(false);                            // 비활성화
-                chunkPools[prefab].Enqueue(obj);                 // 풀에 추가
+                GameObject obj = Instantiate(prefab, transform);
+                obj.SetActive(false);
+                chunkPools[prefab].Enqueue(obj);
             }
         }
 
         Queue<GameObject> pool = chunkPools[prefab];
 
-        // 풀에 남아 있는 경우 꺼내서 반환
         if (pool.Count > 0)
         {
             return pool.Dequeue();
@@ -98,7 +95,10 @@ public class BackGroundLooper : MonoBehaviour
         else
         {
             Debug.LogWarning($"풀 부족: {prefab.name} 추가 생성");
-            return Instantiate(prefab, transform); // GC 우려 있으나 예외 처리용
+            GameObject newChunk = Instantiate(prefab, transform); // 새로 생성
+            newChunk.SetActive(false);                             // 즉시 사용하지 않음
+            pool.Enqueue(newChunk);                                // 풀에 추가
+            return pool.Dequeue();                                 // 바로 꺼냄 (사실상 newChunk 반환)
         }
     }
 
@@ -107,7 +107,7 @@ public class BackGroundLooper : MonoBehaviour
     {
         chunk.SetActive(false); // 비활성화 후
 
-        GameObject prefab = stageView.FindOriginalPrefab(chunk); // ✅ 기존 stageManager → stageView
+        GameObject prefab = stageView.FindOriginalPrefab(chunk); // 기존 stageManager → stageView
 
         if (prefab == null)
         {
@@ -119,6 +119,7 @@ public class BackGroundLooper : MonoBehaviour
         if (!chunkPools.ContainsKey(prefab))
         {
             chunkPools[prefab] = new Queue<GameObject>();
+            Debug.Log($"[BackGroundLooper] 풀로 반환됨: {prefab.name}, 현재 수: {chunkPools[prefab].Count}");
         }
 
         chunkPools[prefab].Enqueue(chunk);
