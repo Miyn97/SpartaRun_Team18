@@ -128,11 +128,12 @@ public class ObstacleManager : MonoBehaviour
                 placePosition.y = airObstacleY;
                 break;
         }
-        // ObstacleView view = instance.GetComponent<ObstacleView>();
-        // if (view != null)
-        // {
-        //    view.SetupView(model); // View에 모델 전달 (View에서 구현해야 하는 부분)
-        // }
+
+        ObstacleView view = instance.GetComponent<ObstacleView>();
+        if (view != null)
+        {
+            view.SetupView(model); // View에 모델 전달 (View에서 구현해야 하는 부분)
+        }
 
         instance.transform.position = placePosition;    // 장애물 오브젝트의 위치를 실제로 적용시켜주기
         obstacleLastPosition = placePosition;           // 다음 장애물 위치를 지정할 때 참고할 위치 저장
