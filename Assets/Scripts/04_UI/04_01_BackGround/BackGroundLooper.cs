@@ -5,55 +5,48 @@ using UnityEngine;
 public class BackGroundLooper : MonoBehaviour
 {
     [Header("프리팹 및 설정")]
-    [SerializeField] private GameObject chunkPrefab;
-    [SerializeField] private int poolSize = 10;
-    [SerializeField] private float chunkWidth = 20f;
+    [SerializeField] private int poolSizePerChunk = 5;
+    [SerializeField] private float chunkWidth = 5f;
+    [SerializeField] private float chunkSpacing = 0f;
     [SerializeField] private int preloadCount = 5;
 
     [Header("참조 연결")]
     [SerializeField] private Transform player;
+    [SerializeField] private StageManager stageManager;
 
-    private Queue<GameObject> chunkPool = new Queue<GameObject>();
-    private Queue<GameObject> activeChunks = new Queue<GameObject> ();
+    private Dictionary<GameObject, Queue<GameObject>> chunkPools = new();
+    private Queue<GameObject> activeChunks = new();
     private float nextSpawnX = 0f;
 
     void Start()
     {
-        InitPool(); 
-
-        for(int i = 0; i < preloadCount; i ++)
+        for (int i = 0; i < preloadCount; i++)
         {
             SpawnNextChunk();
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
-       if(player.position.x + (preloadCount * chunkWidth) > nextSpawnX)
+        if (player == null) return;
+
+        if (player.position.x + (preloadCount * chunkWidth) > nextSpawnX)
         {
             SpawnNextChunk();
             RemoveOldChunkIfNeeded();
         }
     }
 
-    void InitPool()
-    {
-        for(int i = 0; i < poolSize; i++)
-        {
-            GameObject chunk = Instantiate(chunkPrefab, transform);
-            chunk.SetActive(false);
-            chunkPool.Enqueue(chunk);
-        }
-    }
-
     void SpawnNextChunk()
     {
-        GameObject chunk = GetChunkFromPool();
+        GameObject prefab = stageManager.GenNextChunkPrefab();
+        GameObject chunk = GetChunkFromPool(prefab);
+
         chunk.transform.position = new Vector3(nextSpawnX, 0f, 0f);
         chunk.SetActive(true);
         activeChunks.Enqueue(chunk);
-        nextSpawnX += chunkWidth;
+
+        nextSpawnX += chunkWidth + chunkSpacing;
     }
 
     void RemoveOldChunkIfNeeded()
@@ -65,22 +58,50 @@ public class BackGroundLooper : MonoBehaviour
         }
     }
 
-    GameObject GetChunkFromPool()
+    GameObject GetChunkFromPool(GameObject prefab)
     {
-        if(chunkPool.Count > 0)
+        if (!chunkPools.ContainsKey(prefab))
         {
-            return chunkPool.Dequeue();
+            chunkPools[prefab] = new Queue<GameObject>();
+
+            for (int i = 0; i < poolSizePerChunk; i++)
+            {
+                GameObject obj = Instantiate(prefab, transform);
+                obj.SetActive(false);
+                chunkPools[prefab].Enqueue(obj);
+            }
+        }
+
+        Queue<GameObject> pool = chunkPools[prefab];
+
+        if (pool.Count > 0)
+        {
+            return pool.Dequeue();
         }
         else
         {
-            Debug.LogWarning("청크 풀이 부족해 새로 생성합니다.");
-            return Instantiate(chunkPrefab);
+            Debug.LogWarning($"풀 부족: {prefab.name} 추가 생성");
+            return Instantiate(prefab, transform);
         }
     }
 
     void ReturnChunkToPool(GameObject chunk)
     {
         chunk.SetActive(false);
-        chunkPool.Enqueue(chunk);
+        GameObject prefab = stageManager.FindOriginalPrefab(chunk);
+
+        if (prefab == null)
+        {
+            Debug.LogWarning("ReturnChunkToPool: 원본 프리팹을 찾지 못했습니다.");
+            return;
+        }
+
+        if (!chunkPools.ContainsKey(prefab))
+        {
+            chunkPools[prefab] = new Queue<GameObject>();
+        }
+
+        chunkPools[prefab].Enqueue(chunk);
     }
 }
+

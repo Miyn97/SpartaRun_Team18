@@ -9,13 +9,12 @@ public class MapData : ScriptableObject
     public class ChunkEntry
     {
         public GameObject chunkPrefab;
-        public float weight = 1f; //등장 확률(가중치)
+        public float weight = 1f;
     }
 
     [Header("청크 프리팹 리스트")]
-    public List<ChunkEntry> chunks = new List<ChunkEntry>();
+    public List<ChunkEntry> chunks = new();
 
-    //가중치 기반 무작위 청크 반환
     public GameObject GetRandomChunk()
     {
         float totalWeight = 0f;
@@ -39,3 +38,4 @@ public class MapData : ScriptableObject
         return chunks.Count > 0 ? chunks[0].chunkPrefab : null;
     }
 }
+

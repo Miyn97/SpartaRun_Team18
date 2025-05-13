@@ -71,14 +71,21 @@ public class PlayerController : MonoBehaviour
             Jump(); //점프키는 Space
         }
 
-        if (Input.GetKeyDown(KeyCode.LeftShift) && !isSliding)
+        if (Input.GetKey(KeyCode.LeftShift))
         {
-            Slide(); //슬라이드 키는 Shift
+            if (!isSliding)
+            {
+                Slide(); // Shift를 누른 순간 슬라이드 시작
+            }
         }
-        if (isSliding)
+        else
         {
-            SlideTime(); // 슬라이드 지속 시간 처리
+            if (isSliding)
+            {
+                EndSlide(); // Shift에서 손 뗐을 때 슬라이드 종료
+            }
         }
+
 
         //체력감소 테스트
         if (Input.GetKeyDown(KeyCode.H))
@@ -105,7 +112,7 @@ public class PlayerController : MonoBehaviour
         }
         else if (isDoubleJump)
         {
-            playerView.Jump(jumpForce); //더블 점프 애니메이션 요청
+            playerView.DoubleJump(jumpForce); //더블 점프 애니메이션 요청
             isDoubleJump = false; //더블 점프!
             playerView.SetGrounded(false); // 더블 점프 직후 공중 상태 전달
         }
@@ -122,23 +129,14 @@ public class PlayerController : MonoBehaviour
         isSliding = true; //슬라이드 중 상태
         slideTimer = slideDuration; //슬라이드 지속 시간 설정
         playerView.Slide(); //슬라이드 애니메이션 요청
-
-        //뷰에게 종료 애니메이션 요청
-        //playerView.EndSlide(); //애니메이션 생성 시 주석처리 해제
     }
 
-    //슬라이드
-    private void SlideTime()
+    //슬라이드 종료
+    private void EndSlide()
     {
-        //슬라이드 지속 시간 처리
-        slideTimer -= Time.deltaTime;
-
-        if (slideTimer <= 0f)
-        {
-            Debug.Log("슬라이드 종료");
-            isSliding = false;
-            playerView.EndSlide(); //슬라이드 종료 애니메이션 요청
-        }
+        Debug.Log("슬라이드 종료");
+        isSliding = false;
+        playerView.EndSlide(); // 애니메이션 종료
     }
 
     // 땅에 닿았는지 확인
@@ -182,7 +180,8 @@ public class PlayerController : MonoBehaviour
     {
         //playerView.SetAnimatorSpeed(0f);
         //죽었을 때 애니메이션 실행
-        //playerView.PlayDeathAnimation(); //애니메이션 생성 시 주석처리 해제
+        playerView.PlayDeathAnimation(); //애니메이션 생성 시 주석처리 해제
+        playerView.StopMovementAnimation(); // 움직임 강제 정지
         //View는 죽는 연출 + 게임매니저는 상태변화
         GameManager.Instance.ChangeState(GameManager.GameState.GameOver);
         playerView.StopMovementAnimation();
