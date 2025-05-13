@@ -76,6 +76,12 @@ public class PlayerView : MonoBehaviour
         animator.SetTrigger("Jump"); //애니메이션 생성 시 주석처리 해제
     }
 
+    public void DoubleJump(float jumpForce)
+    {
+        _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, jumpForce);
+        animator.SetTrigger("DoubleJump");
+    }
+
     //착지 했는지에 대한 애니메이션 전용 메서드
     public void SetGrounded(bool value)
     {
