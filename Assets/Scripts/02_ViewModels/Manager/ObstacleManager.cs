@@ -1,197 +1,160 @@
-using System.Collections;
+ï»¿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ObstacleManager : MonoBehaviour
 {
-    // °¢°¢ÀÇ Àå¾Ö¹°¿¡ ´ëÀÀÇÏ´Â ÇÁ¸®ÆÕÀ» ³Ö¾îµÑ º¯¼öµé (Inspector¿¡¼­ Á÷Á¢ ¿¬°á)
-    public GameObject redLinePrefab;            // RedLineTrap ÇÁ¸®ÆÕ
-    public GameObject syntaxErrorBoxPrefab;     // SyntaxErrorBox ÇÁ¸®ÆÕ
-    public GameObject compileErrorWallPrefab;   // CompileErrorWall ÇÁ¸®ÆÕ
+    public static ObstacleManager Instance { get; private set; }
 
+    //â”€â”€ [í’€ ì„¤ì • (Model)] â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    [Header("í’€ ì„¤ì •")]
+    [Tooltip("ì¥ì• ë¬¼ ì¢…ë¥˜ë³„ ì´ˆê¸° í’€ í¬ê¸°")]
+    public int countPerType = 5;
+    public GameObject redLinePrefab;           // RedLineTrap í”„ë¦¬íŒ¹
+    public GameObject syntaxErrorBoxPrefab;    // SyntaxErrorBox í”„ë¦¬íŒ¹
+    public GameObject compileErrorWallPrefab;  // CompileErrorWall í”„ë¦¬íŒ¹
 
-    private List<GameObject> obstaclePool = new List<GameObject>();     // Àå¾Ö¹°À» Á¾·ùº°·Î ¿©·¯ °³ »ı¼ºÇØ ´ã¾ÆµÑ ¸®½ºÆ®
-    private Vector3 obstacleLastPosition = Vector3.zero;                // Àå¾Ö¹°À» ¾îµğ¿¡ ³õÀ»Áö ¸¶Áö¸· À§Ä¡¸¦ ±â¾ïÇØ µÑ º¯¼ö 
-    public int countPerType = 3;                                        // Àå¾Ö¹°À» Á¾·ùº°·Î ¸î°³¾¿ ¸¸µéÁö¿¡ ´ëÇÑ º¯¼ö (Áö±İÀº 3°³¾¿)
+    //â”€â”€ [íŒ¨í„´ ì„¤ì • (ViewModel)] â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    [Header("íŒ¨í„´ ì„¤ì •")]
+    [Tooltip("í•œ ë¬¶ìŒì— ë¿Œë¦´ ì¥ì• ë¬¼ ê°œìˆ˜ (íŒ¨í„´ ê¸¸ì´)")]
+    public int batchSize = 3;
+    [Tooltip("ìˆ¨ê¹€ ì²˜ë¦¬ëœ ì¥ì• ë¬¼ì„ ì¬ìƒì„±í•  ë•Œ ê¸°ì¤€ì´ ë  ê°œìˆ˜")]
+    public int hiddenThreshold = 3;
+    [Tooltip("ë¬¶ìŒ ê°„ X ê°„ê²©")]
+    public float groupSpacing = 7;
+    [Tooltip("íŒ¨í„´ ë‚´ë¶€ ì¥ì• ë¬¼ ê°„ê²©")]
+    public float innerSpacing = 6f;
 
+    //â”€â”€ [ìœ„ì¹˜ ì„¤ì • (ViewModel)] â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    [Header("ìœ„ì¹˜ ì„¤ì •")]
+    [Tooltip("í”Œë ˆì´ì–´ Transform (Inspectorì—ì„œ ë“œë˜ê·¸)")]
+    public Transform player;
+    [Tooltip("í”Œë ˆì´ì–´ ì•ìœ¼ë¡œ ìµœì†Œ ì´ë§Œí¼ ì•ì—ì„œ ë¿Œë¦¬ê¸°")]
+    public float spawnAhead = 20f;
+    public float groundObstacleY = -3f;        // ë•…í˜• ì¥ì• ë¬¼ Y
+    public float airObstacleY = 2.6f;       // ê³µì¤‘í˜• ì¥ì• ë¬¼ Y
 
-    public float groundObstacleY = -2f;  // Á¡ÇÁ/´õºí Á¡ÇÁ Àå¾Ö¹°ÀÇ YÀ§Ä¡
-    public float airObstacleY = 1.5f;   // ½½¶óÀÌµå¿ë Àå¾Ö¹°ÀÇ YÀ§Ä¡ 
+    //â”€â”€ ë‚´ë¶€ ë°ì´í„° êµ¬ì¡° â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // 1) í’€: íƒ€ì…ë³„ ë¹„í™œì„± ì˜¤ë¸Œì íŠ¸ ë³´ê´€
+    private readonly Dictionary<ObstacleType, Queue<GameObject>> pool
+        = new Dictionary<ObstacleType, Queue<GameObject>>();
 
-    public float minXPadding = 4f;      // Àå¾Ö¹° °£ ÃÖ¼Ò °£°İ
-    public float maxXPadding = 7f;      // Àå¾Ö¹° °£ ÃÖ´ë °£°İ
+    // 2) ìˆ¨ê¸´ ì˜¤ë¸Œì íŠ¸ë¥¼ ìŒ“ì•„ë‘ëŠ” í
+    private readonly Queue<GameObject> hiddenQueue = new Queue<GameObject>();
 
-
-    private List<ObstacleType[]> obstaclePatterns = new List<ObstacleType[]>(); //ObstacleType enum ¸®½ºÆ®¸¦ °¡Á®¿È
-    private int currentPatternIndex = 0; // Àå¾Ö¹° ÆĞÅÏ ¼ø¼­
-    private int currentObstacleInPattern = 0; // Àå¾Ö¹° ÆĞÅÏ ÃßÀû(¸î ¹øÂ° Àå¾Ö¹°ÀÌ »ç¿ëµÇ°í ÀÖ´ÂÁö)
-
-    public float patternSpawnInterval = 2f; // ÆĞÅÏ °£ ½Ã°£ °£°İ
-    private float patternTimer = 0f; // ÆĞÅÏÀÌ ÀÛµ¿ÇÏ´Â ½Ã°£
-
-    public static ObstacleManager Instance { get; private set; }    // ½Ì±ÛÅæ ¼³Á¤
-
-    public void Awake()
+    // 3) ë¯¸ë¦¬ ì •ì˜ëœ 6ê°€ì§€ 3ê°œì§œë¦¬ íŒ¨í„´
+    private readonly List<ObstacleType[]> patterns = new()
     {
-        Instance = this;
-    }
+        new[] { ObstacleType.RedLineTrap,      ObstacleType.SyntaxErrorBox,    ObstacleType.CompileErrorWall },
+        new[] { ObstacleType.SyntaxErrorBox,   ObstacleType.RedLineTrap,       ObstacleType.CompileErrorWall },
+        new[] { ObstacleType.CompileErrorWall, ObstacleType.CompileErrorWall,  ObstacleType.RedLineTrap },
+        new[] { ObstacleType.CompileErrorWall, ObstacleType.RedLineTrap,       ObstacleType.SyntaxErrorBox },
+        new[] { ObstacleType.RedLineTrap,      ObstacleType.RedLineTrap,       ObstacleType.CompileErrorWall },
+        new[] { ObstacleType.SyntaxErrorBox,   ObstacleType.CompileErrorWall,  ObstacleType.RedLineTrap }
+    };
 
-    // Start is called before the first frame update
-    void Start()
+    // 4) ë§ˆì§€ë§‰ìœ¼ë¡œ ë°°ì¹˜ëœ ì¥ì• ë¬¼ì˜ X ì¢Œí‘œ
+    private float lastSpawnX;
+
+    //â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    private void Awake()
     {
-        // ObstacleType enum ¿¡ ÀÖ´Â ¸ğµç Å¸ÀÔ(¸ğµç Àå¾Ö¹° Á¾·ù)À» ¹è¿­·Î °¡Á®¿À±â
-        ObstacleType[] types = (ObstacleType[])System.Enum.GetValues(typeof(ObstacleType));
-
-
-        foreach (var type in types)                                                 // ¹è¿­¿¡ ÀÖ´Â °¢ Àå¾Ö¹°¸¶´Ù ¼³Á¤ÇØÁÖ±â
+        Instance = this;    // â† ì‹±ê¸€í†¤ Instance ì´ˆê¸°í™”
+        // â‘  í’€(Pool) ì´ˆê¸°í™”: ê° íƒ€ì…ë‹¹ countPerType ê°œ Instantiate
+        foreach (ObstacleType type in Enum.GetValues(typeof(ObstacleType)))
         {
-            for (int i = 0; i < countPerType; i++)                                  // countPerType¿¡¼­ ¼³Á¤µÈ °³¼ö¸¸Å­ ¹İº¹ÇØ¼­ »ı¼º
+            var q = new Queue<GameObject>();
+            GameObject prefab = GetPrefab(type);
+
+            for (int i = 0; i < countPerType; i++)
             {
-                SpawnObstacle(type);
+                var obj = Instantiate(prefab);
+                obj.SetActive(false);   // ì‹œì‘ ë• ëª¨ë‘ ìˆ¨ê¹€
+                q.Enqueue(obj);
             }
+
+            pool[type] = q;
         }
 
-        InitPatterns(); // Àå¾Ö¹° ÆĞÅÏ ½ÃÀÛ
-
-        SpawnNextPatternObstacle(); // Ã¹ Àå¾Ö¹° ÆĞÅÏÀÌ Á¾·á µÆÀ» ½Ã ´ÙÀ½ ÆĞÅÏÀÌ ³ª¿Àµµ·Ï SpawnNextPatternObstacleÀ» ÅëÇØ °Ë»ç ÈÄ ´ÙÀ½ ÆĞÅÏ ½ÃÀü
-
+        // â‘¡ ì‹œì‘ ê¸°ì¤€ X = í”Œë ˆì´ì–´ í˜„ì¬ X
+        lastSpawnX = player.position.x;
     }
 
-    void Update()
+    private void Start()
     {
-        patternTimer += Time.deltaTime;
-
-        if (patternTimer >= patternSpawnInterval) // ÆĞÅÏ Áö¼Ó ½Ã°£ÀÌ patternSpawnIntervalÀÇ °ªÀÎ 2¸¦ ³Ñ°äÀ» °æ¿ì
+        // â”€â”€ 1) ê²Œì„ ì‹œì‘ ì‹œ, í”Œë ˆì´ì–´ ì•ìœ¼ë¡œ spawnAheadë§Œí¼ì˜ ê±°ë¦¬ë¥¼
+        //       íŒ¨í„´ ë¬¶ìŒìœ¼ë¡œ ìë™ ì±„ì›Œ ì£¼ë„ë¡ ë°˜ë³µ í˜¸ì¶œ
+        while (lastSpawnX < player.position.x + spawnAhead)
         {
-            SpawnNextPatternObstacle(); // ´ÙÀ½ ÆĞÅÏ ½ÃÀü
-            patternTimer = 0; // SpawnNextPatternObstacleÀÌ ½ÃÀü ÈÄ patternTimerÀÇ °ªÀ» ÃÊ±âÈ­ ÇÏ¿© 
+            SpawnNextBatch();
         }
+
+        // â”€â”€ 2) (ì›ë˜ ìˆë˜ ì£¼ì„ ì²˜ë¦¬ëœ ì½”ë“œ ì˜ˆì‹œ)
+        // while (lastSpawnX < player.position.x + spawnAhead)
+        //     SpawnNextBatch();
     }
 
-
-
-    private void InitPatterns() // Àå¾Ö¹° ÆĞÅÏ ·ÎÁ÷
+    private void Update()
     {
-        //ÆĞÅÏº° ¿¹½Ã Á¤ÀÇ
-        obstaclePatterns.Add(new ObstacleType[]{
-            ObstacleType.CompileErrorWall,ObstacleType.RedLineTrap,ObstacleType.SyntaxErrorBox
-        });
-
-        obstaclePatterns.Add(new ObstacleType[]{
-            ObstacleType.CompileErrorWall,ObstacleType.SyntaxErrorBox
-        });
-
-        obstaclePatterns.Add(new ObstacleType[]{
-            ObstacleType.SyntaxErrorBox,ObstacleType.SyntaxErrorBox
-        });
+        // hiddenThreshold ê¸°ì¤€ë§Œ ì‚¬ìš© â†’ ê±°ë¦¬ì— ìƒê´€ì—†ì´ â€œìˆ¨ê¹€ ê°œìˆ˜ â‰¥ 3â€ ì¼ ë•Œ
+        if (hiddenQueue.Count >= hiddenThreshold)
+        {
+            SpawnNextBatch();             // 3ê°œ ë¬¶ìŒ íŒ¨í„´ ë¿Œë¦¬ê¸°
+            for (int i = 0; i < batchSize; i++)
+                hiddenQueue.Dequeue();    // í•´ë‹¹ ìˆ˜ë§Œí¼ ìˆ¨ê¹€ íì—ì„œë„ ì œê±°
+        }
     }
 
-    private void SpawnNextPatternObstacle()
+    /// <summary>
+    /// ObstacleLooperì—ì„œ í˜¸ì¶œ: 
+    /// íŠ¸ë¦¬ê±°ëœ Obstacleì„ ìˆ¨ê¸°ê³  ì¬í™œìš© ëŒ€ê¸°ì—´ë¡œ ë³´ë‚¸ë‹¤.
+    /// </summary>
+    public void OnObstacleHidden(GameObject obstacle)
     {
-        if (obstaclePatterns.Count == 0) return; // InitPatterns ¾È¿¡ Á¸ÀçÇÏ´Â Àå¾Ö¹° ÆĞÅÏÀÌ ´Ù »ç¿ë‰çÀ» °æ¿ì Á¾·á
-
-        ObstacleType[] currentPattern = obstaclePatterns[currentPatternIndex]; // Àå¾Ö¹° ÆĞÅÏ ½ÃÀü½Ã ÇöÀç currentPatternIndex °¡ °¡Áö°í ÀÖ´Â °ª¿¡ µû¶ó Àå¾Ö¹° ÆĞÅÏ ½ÃÀü (ex: currentPatternIndex == 0 ÀÌ¶§
-                                                                               // ObstacleType.CompileErrorWall,ObstacleType.RedLineTrap,ObstacleType.SyntaxErrorBox ÀÌ ÆĞÅÏÀ» °¡Á®¿È
-
-        ObstacleType typeToSpawn = currentPattern[currentObstacleInPattern]; // ÇöÀç ¸î ¹øÂ° Àå¾Ö¹° ÆĞÅÏÀÌ ½ÃÀü ÁßÀÎÁö ÃßÀû ÈÄ ±× ÆĞÅÏ¿¡ ´ëÇÑ Å¸ÀÔÀ» °¡Á®¿È
-
-        SpawnObstacle(typeToSpawn); // SpawnObstacle Ãß°¡ ÇÒ ½Ã µé¾î°¡¾ß µÊ (¿Ï·á)
-
-        currentObstacleInPattern++; // ÆĞÅÏ ½ÃÀü ÈÄ currentObstacleInPatternÀÇ °ªÀÌ Áõ°¡
-
-        if (currentObstacleInPattern >= currentPattern.Length) // ÇöÀç ÆĞÅÏÀÇ Àå¾Ö¹°ÀÌ ¸ğµÎ »ı¼º‰çÀ» ½Ã
-        {
-            currentPatternIndex = (currentPatternIndex + 1) % obstaclePatterns.Count; //currentPatternIndexÀÇ °ªÀÌ 1 Áõ°¡ÇÏ°í ´ÙÀ½ ÆĞÅÏÀÌ µîÀå (% obstaclePatterns.Count ¸¦ ÇÏ´Â ÀÌÀ¯´Â ÆĞÅÏ ¸ñ·ÏÀÇ ³¡¿¡ µµ´ŞÇßÀ» °æ¿ì ÆĞÅÏ ¸ñ·ÏÀÇ Ã³À½ºÎÅÍ ´Ù½Ã ½ÃÀÛ)
-            currentObstacleInPattern = 0; // currentObstacleInPatternÀÇ °ªÀ» 0À¸·Î ÃÊ±âÈ­ ÇÑ ÈÄ Ã³À½ ÆĞÅÏÀÌ Á¾·áµÈ ÈÄ ´ÙÀ½ ÆĞÅÏÀÇ Ã¹¹øÂ° Àå¾Ö¹°ÀÌ ³ª¿Àµµ·Ï À¯µµ
-        }
+        obstacle.SetActive(false);
+        hiddenQueue.Enqueue(obstacle);
     }
 
-    private void SpawnObstacle(ObstacleType type)   // Àå¾Ö¹° »ı¼º ÇÔ¼ö
+    /// <summary>
+    /// íŒ¨í„´ í•˜ë‚˜(3ê°œ)ë¥¼ ë½‘ì•„ ìˆœì„œëŒ€ë¡œ ì•ìª½ì— ë°°ì¹˜
+    /// </summary>
+    private void SpawnNextBatch()
     {
-        ObstacleModel model = new ObstacleModel(type);                               // ¸ğµ¨ °´Ã¼¸¦ »ı¼ºÇØ¼­ Àå¾Ö¹°ÀÇ Á¤º¸¸¦ ÀúÀå (Àå¾Ö¹° Á¾·ù, µ¥¹ÌÁö, È¸ÇÇ ¹æ¹ı)
-        GameObject prefab = GetPrefabByType(type);                                   // GetPrefabByType(type);
-        GameObject instance = Instantiate(prefab);                                   // ÇÁ¸®ÆÕ »ı¼ºÇÏ±â
+        // 1) ë¬´ì‘ìœ„ íŒ¨í„´ ì„ íƒ
+        var pat = patterns[UnityEngine.Random.Range(0, patterns.Count)];
 
-        float randomX = Random.Range(minXPadding, maxXPadding);                      // randomXÀÇ °ªÀ» min~max ¹üÀ§¿¡¼­ ·£´ıÇÑ °ªÀ¸·Î ¼³Á¤
-        Vector3 placePosition = obstacleLastPosition + new Vector3(randomX, 0f, 0f); // Àå¾Ö¹° À§Ä¡ º¯¼öÀÇ °ªÀ» randomX°ªÀ¸·Î ¼³Á¤
+        // 2) ë¬¶ìŒ ì‹œì‘ X: ë§ˆì§€ë§‰ ë°°ì¹˜ + íŒ¨í„´ ê°„ê²©
+        float startX = lastSpawnX + groupSpacing;
 
-        // Àå¾Ö¹° Á¾·ù¿¡ µû¶ó Y°ª ¼³Á¤
-        switch (model.Type)
+        for (int i = 0; i < pat.Length; i++)
         {
-            // Á¡ÇÁ·Î ³Ñ´Â Àå¾Ö¹°ÀÏ °æ¿ì Y°ªÀ» ¶¥ÂÊÀ¸·Î ¼³Á¤
-            case ObstacleType.RedLineTrap:
-            case ObstacleType.SyntaxErrorBox:
-                placePosition.y = groundObstacleY;
-                break;
-            // ½½¶óÀÌµå·Î ÇÇÇÏ´Â Àå¾Ö¹°ÀÏ °æ¿ì Y°ªÀ» À§ÂÊÀ¸·Î ¼³Á¤
-            case ObstacleType.CompileErrorWall:
-                placePosition.y = airObstacleY;
-                break;
+            var type = pat[i];
+
+            // 3) í’€ì—ì„œ í•˜ë‚˜ êº¼ë‚´ê¸° â†’ ìˆœí™˜ íì²˜ëŸ¼ ì‚¬ìš©
+            var obj = pool[type].Dequeue();
+
+            // 4) ìœ„ì¹˜ ê²°ì •: ë¬¶ìŒ ì‹œì‘ì  + ë‚´ë¶€ ê°„ê²© Ã— i
+            float x = startX + innerSpacing * i;
+            float y = (type == ObstacleType.CompileErrorWall) ? airObstacleY : groundObstacleY;
+            obj.transform.position = new Vector3(x, y, 0f);
+
+            // 5) í™œì„±í™”í•´ì„œ í™”ë©´ì— ë³´ì´ê¸°
+            obj.SetActive(true);
+
+            // 6) ë‹¤ì‹œ í’€ ë§¨ ë’¤ë¡œ ë„£ê¸° (ì¬í™œìš© ì¤€ë¹„)
+            pool[type].Enqueue(obj);
         }
-        // ObstacleView view = instance.GetComponent<ObstacleView>();
-        // if (view != null)
-        // {
-        //    view.SetupView(model); // View¿¡ ¸ğµ¨ Àü´Ş (View¿¡¼­ ±¸ÇöÇØ¾ß ÇÏ´Â ºÎºĞ)
-        // }
 
-        instance.transform.position = placePosition;    // Àå¾Ö¹° ¿ÀºêÁ§Æ®ÀÇ À§Ä¡¸¦ ½ÇÁ¦·Î Àû¿ë½ÃÄÑÁÖ±â
-        obstacleLastPosition = placePosition;           // ´ÙÀ½ Àå¾Ö¹° À§Ä¡¸¦ ÁöÁ¤ÇÒ ¶§ Âü°íÇÒ À§Ä¡ ÀúÀå
-
-        obstaclePool.Add(instance);
+        // 7) ë§ˆì§€ë§‰ ë°°ì¹˜ X ê°±ì‹  (ë¬¶ìŒì˜ ë§ˆì§€ë§‰ ì¥ì• ë¬¼)
+        lastSpawnX = startX + innerSpacing * (batchSize - 1);
     }
 
-    public void RepositionObstacle(GameObject obstacle) // Àå¾Ö¹°À» ¾ÕÀ¸·Î ´Ù½Ã º¸³»´Â ÇÔ¼ö 
+    //â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    private GameObject GetPrefab(ObstacleType type) => type switch
     {
-        // ÇöÀç´Â View°¡ ¾ø±â ¶§¹®¿¡ Àå¾Ö¹° ÀÌ¸§À» º¸°í ¾î¶² Á¾·ùÀÎÁö À¯ÃßÇÑ´Ù. 
-        ObstacleType type = ObstacleType.RedLineTrap;   // ±âº»°ªÀ¸·Î RedLineTrap ¼³Á¤
-
-        if (obstacle.name.Contains("RedLine"))
-        {
-            type = ObstacleType.RedLineTrap;
-        }
-        else if (obstacle.name.Contains("Syntax"))
-        {
-            type = ObstacleType.SyntaxErrorBox;
-        }
-        else if (obstacle.name.Contains("Compile"))
-        {
-            type = ObstacleType.CompileErrorWall;
-        }
-
-        // Àü Àå¾Ö¹° À§Ä¡¿¡¼­ XÃàÀ¸·Î ÀÏÁ¤ °£°İÀ» ¶ç¿î À§Ä¡¸¦ °è»êÇÑ´Ù.
-        float randomX = Random.Range(minXPadding, maxXPadding);                     // randomX º¯¼ö¸¦ min ~max ¹üÀ§¿¡¼­ ·£´ı °£°İ »ı¼º
-        Vector3 newPosition = obstacleLastPosition + new Vector3(randomX, 0f, 0f);  // X¸¸ ÀÌµ¿
-
-        // Àå¾Ö¹°ÀÇ Á¾·ù¿¡ µû¶ó Y À§Ä¡¸¦ ¼³Á¤ÇÑ´Ù. 
-        switch (type)
-        {
-            // Á¡ÇÁ ¶Ç´Â ´õºíÁ¡ÇÁ Àå¾Ö¹°Àº ¶¥¿¡ ¹èÄ¡
-            case ObstacleType.RedLineTrap:
-            case ObstacleType.SyntaxErrorBox:
-                newPosition.y = groundObstacleY;   
-                break;
-
-            // ½½¶óÀÌµå Àå¾Ö¹°Àº À§ÂÊ¿¡ ¹èÄ¡
-            case ObstacleType.CompileErrorWall:
-                newPosition.y = airObstacleY;      
-                break;
-        }
-
-        obstacle.transform.position = newPosition;  // Àå¾Ö¹° ¿ÀºêÁ§Æ®ÀÇ À§Ä¡¸¦ ½ÇÁ¦ Àû¿ë½ÃÄÑÁÖ±â 
-        obstacleLastPosition = newPosition;         // ´ÙÀ½ Àå¾Ö¹° À§Ä¡¸¦ ÁöÁ¤ÇÒ ¶§ Âü°íÇÒ À§Ä¡ ÀúÀå
-    }
-
-
-    GameObject GetPrefabByType(ObstacleType type)                                           // ÇÁ¸®ÆÕÀ» ¹İÈ¯ÇÏ´Â ¸Ş¼­µå
-    {
-        return type switch
-        {
-            ObstacleType.RedLineTrap => redLinePrefab,                                      // RedLineTrap Àå¾Ö¹° ÇÁ¸®ÆÕ
-            ObstacleType.SyntaxErrorBox => syntaxErrorBoxPrefab,                            // SyntaxErrorBox Àå¾Ö¹° ÇÁ¸®ÆÕ
-            ObstacleType.CompileErrorWall => compileErrorWallPrefab,                        //CompileErrorWall Àå¾Ö¹° ÇÁ¸®ÆÕ
-            _ => null // È¤½Ã¶óµµ °ªÀÌ Àß¸ø µé¾î¿À¸é null ¹İÈ¯ (¿¹¿Ü Ã³¸®¿ë)
-        };
-    }
-
-
+        ObstacleType.RedLineTrap => redLinePrefab,
+        ObstacleType.SyntaxErrorBox => syntaxErrorBoxPrefab,
+        ObstacleType.CompileErrorWall => compileErrorWallPrefab,
+        _ => throw new ArgumentOutOfRangeException()
+    };
 }

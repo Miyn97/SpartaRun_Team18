@@ -21,18 +21,19 @@ public class ObstacleDamage : MonoBehaviour
         else
             damage = 1; // 장애물 종류에 없으면 1로 처리
     }
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        // 충돌한 상대 오브젝트에 Player 태그가 붙어 있는지 확인
-        if (collision.collider.CompareTag("Player"))
+    private void OnTriggerEnter2D(Collider2D other)
+    {   
+        // 닿은 게임 오브젝트가 Player 태그인지 확인
+        if (other.CompareTag("Player"))
         {
             // 태그가 Player라면 해당 오브젝트의 PlayerController 컴포넌트를 가져오기
-            PlayerController playerCtrl = collision.collider.GetComponent<PlayerController>();
-            if (playerCtrl != null) // 예외 처리 
+            var playerCtrl = other.GetComponent<PlayerController>();
+            if (playerCtrl != null)
             {
                 // PlayerController의 TakeDamage(int) 메서드를 호출해 데미지를 전달
                 playerCtrl.TakeDamage(damage);
             }
         }
     }
+
 }

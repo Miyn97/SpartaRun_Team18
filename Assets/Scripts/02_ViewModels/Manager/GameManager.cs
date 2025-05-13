@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour
     //점수, 체력과 현재 스테이지 정보를 저장하는 변수
     public int Score { get; private set; }
     public int BestScore { get; private set; } // 최고 점수
+    public int MaxHp { get; private set; }
+
     public int CurrentHp { get; private set; } // 현재 체력
     public int CurrentStage { get; private set; }
 
@@ -24,7 +26,8 @@ public class GameManager : MonoBehaviour
     private GameUI gameUI;
     //GameOverUI 참조
     //private GameOverUI gameOverUI;
-    ItemManager itemManager;
+    [SerializeField] private ItemManager itemManager;
+
 
     public event System.Action OnRestartRequested;
     public event System.Action OnReturnHomeRequested;
@@ -212,6 +215,12 @@ public class GameManager : MonoBehaviour
         //점수 증가 후, UIManager에 현재 점수 업데이트 요청
         UIManager.Instance?.UpdateScore(Score, BestScore);
     }
+    public void Heal(int amount)
+    {
+        CurrentHp = Mathf.Min(CurrentHp + amount, MaxHp); //체력 증가 (최대 6)
+        UIManager.Instance.UpdateHealth(CurrentHp); //UIManager에 체력 업데이트 요청
+    }
+
 
     // 체력감소 테스트용 _ryang
     public void TakeDamage(int damage)
