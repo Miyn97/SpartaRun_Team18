@@ -16,6 +16,9 @@ public class UIManager : MonoBehaviour
     private GameUI gameUI;
     private GameOverUI gameOverUI; // [SerializeField] 지움_ryang
 
+    public event System.Action OnRestartRequested;
+    public event System.Action OnReturnHomeRequested;
+
     private void Awake()
     {
         //UIManager 2개 방지 + 싱글톤 원칙
@@ -62,9 +65,22 @@ public class UIManager : MonoBehaviour
                 // GameOverUI 찾기 / null오류 방지용
                 var all = Resources.FindObjectsOfTypeAll<GameOverUI>();
                 gameOverUI = System.Array.Find(all, ui => ui.gameObject.scene == scene);
+
                 // 게임 오버 UI는 비활성화
                 gameUI?.gameObject.SetActive(true);
-                gameOverUI?.gameObject.SetActive(false); // 게임 오버 UI는 비활성화
+                gameOverUI?.gameObject.SetActive(true); // 스크립트는 활성화
+                gameOverUI?.Hide(); // UI는 비활성화
+
+                //게임 UI의 버튼 클릭 이벤트를 연결 (GameOverIU는 UImanager에서만 연결!)
+                gameOverUI.OnRestartRequested += () => OnRestartRequested?.Invoke();
+                gameOverUI.OnReturnHomeRequested += () => OnReturnHomeRequested?.Invoke();
+
+
+                //gameOverUI.OnRestartRequested -= GameManager.Instance.RestartGame;
+                //gameOverUI.OnReturnHomeRequested -= GameManager.Instance.ReturnToHome;
+
+                //gameOverUI.OnRestartRequested += GameManager.Instance.RestartGame;
+                //gameOverUI.OnReturnHomeRequested += GameManager.Instance.ReturnToHome;
                 break;
         }
     }
@@ -91,10 +107,10 @@ public class UIManager : MonoBehaviour
     }
 
     //GameOverUI 화면을 보여주는 함수
-    public void ShowGameOverUI(int finalScore, int highScore)
+    public void ShowGameOverUI(int finalScore, int bestScore)
     {
         //게임 오버 상황에서만 보여주는 UI를 켬
-        gameOverUI.Show(finalScore, highScore);
+        gameOverUI.Show(finalScore, bestScore);
     }
 
     //GameUI의 점수 표시 갱신을 요청

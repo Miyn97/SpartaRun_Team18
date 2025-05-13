@@ -27,27 +27,48 @@ public class GameUI : MonoBehaviour
 
     [Header("PanelButtons")]
     [SerializeField] private Button resumeButton;
-    //[SerializeField] private Button volumeSetting; // 슬라이더 / 소 중 대 / on, off
-    [SerializeField] private Button startScene;
+    [SerializeField] private Button homeButton;
 
     //[Header("Audio")]
-    //[SerializeField] private Button pauseScene;
+    //[SerializeField] private Slider volumeSlider; // 음량 슬라이더(연결 되면 주석처리 해제하고 적용)
 
     //delegate는 이벤트를 외부에 전달할 수 있는 형식
     public delegate void PauseRequestedHandler();
     //OnpauseRequested는 정지 버튼이 눌렸다 라는 사실만 외부 ViewModel에게 알림
     public event PauseRequestedHandler OnPauseRequested;
+    //StartScene으로 돌아가고 싶다 라는 요청을 외부에 알림
+    public event System.Action OnReturnHomeRequested;
+
+    //AudioManager에게 볼륨을 조절하라고 요청
+    // 슬라이더 값이 바뀔 때마다 해당 값 호출 => 나중에 SoundManager에서 해당 값 받아서 볼륨 변경되도록 구현해야함.
+    //public event System.Action<float> OnVolumeChanged; // (연결 되면 주석처리 해제하고 적용)
 
     private void Awake()
     {
         // 옵션패널 처음부터 보여주지 않음.
         optionPanel.SetActive(false);
-
         //정지 버튼을 클릭하면 NotifyPauseRequested() 함수가 호출되도록 연결
         optionButton.onClick.AddListener(NotifyPauseRequested);
-
         //일시정지 버튼 클릭 시 일시정지 요청 이벤트 발생 (구독자에게 알림)
         OnPauseRequested += () => optionPanel.SetActive(true);
+
+        //Resume버튼 : 옵션창 닫고, 일시정지 해제
+        resumeButton.onClick.AddListener(() =>
+        {
+            optionPanel.SetActive(false);
+            NotifyPauseRequested();
+        });
+
+        //home버튼 : StartScene으로 돌아가기
+        homeButton.onClick.AddListener(() =>
+        {
+            //게임을 종료하고, 시작 화면으로 돌아가야함
+            optionPanel.SetActive(false);
+            OnReturnHomeRequested?.Invoke();
+        });
+
+        // 볼륨 슬라이더의 값이 바뀔 때마다 OnVolumeChanged 이벤트를 호출
+        //volumeSlider.onValueChanged.AddListener(value => OnVolumeChanged?.Invoke(value));
     }
 
     public void SetScore(int score, int bestScore)
@@ -64,12 +85,12 @@ public class GameUI : MonoBehaviour
         {
             //하나의 하트가 2체력 담당하니까
             //i번째의 하트가 현재 남은 체력을 얼마나 표현해야 하는지 계산
-            int heartIndex = Mathf.Clamp(currentHp - i * 2, 0, 2);
-            Sprite sprite = heartIndex switch
+            int hpHeart = Mathf.Clamp(currentHp - i * 2, 0, 2);
+            Sprite sprite = hpHeart switch
             {
-                0 => heart_full,
+                0 => heart_empty,
                 1 => heart_half,
-                _ => heart_empty
+                _ => heart_full
             };
             // hp UI에 스프라이트(하트이미지) 적용
             hpImages[i].sprite = sprite;
