@@ -158,7 +158,8 @@ public class ObstacleManager : MonoBehaviour
     }
 
 
-    // 장애물을 "마지막 배치 위치" 기준으로 x 간격을 랜덤으로 띄우고 타입에 따라 y 값을 결정
+    // 장애물을 "마지막 배치 위치"와 플레이어 기준 중 더 앞쪽을 선택하게 해서
+    // 장애물 배치가 플레이어보다 늦춰지지 않게 한다. 
     private Vector3 GetNextPosition(ObstacleType type)
     {
         float randomX = Random.Range(minXPadding, maxXPadding);
