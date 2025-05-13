@@ -4,15 +4,5 @@ using UnityEngine;
 
 public class MonsterModel : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public float chaseSpeed = 2.5f; //플레이어보다 약간 느리게
 }
