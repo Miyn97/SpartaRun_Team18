@@ -6,7 +6,7 @@ public class Collectable : MonoBehaviour
 {
     //충돌시 효과 적용 및 파괴처리, 과제가 어렵다면 코드 참고함
     //아이템에 이 스크립트랑 아이템 모델 넣고 is trigger 켜두기
-    //
+    //아이템 프리펩에 태그 Collectable
     private ItemManager pool;
     private void Awake()
     {
