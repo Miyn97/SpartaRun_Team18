@@ -1,83 +1,56 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum Obstacle
-{
-    SyntaxError,
-    CompileError,
-    RedLine,
-    // 미사용 UnhandledException
-}
-
-
+/// <summary>
+/// 장애물 외형을 처리하는 View 계층 클래스
+/// - 모델 정보에 따라 Sprite를 설정
+/// - 장애물 외형은 오직 ObstacleModel의 Type으로 결정됨
+/// </summary>
 public class ObstacleView : MonoBehaviour
 {
-
     [Header("장애물 스프라이트")]
-    public Sprite spriteSyntaxError;         // SyntaxError 이미지
-    public Sprite spriteCompileError;        // CompileError 이미지
-    public Sprite spriteRedLine;             // RedLine 이미지
-    // 미사용 public Sprite spriteUnhandledException;  // UnhandledException 이미지
+    [SerializeField] private Sprite spriteSyntaxError;       // 높은 장애물 Sprite
+    [SerializeField] private Sprite spriteCompileError;      // 위쪽 장애물 Sprite
+    [SerializeField] private Sprite spriteRedLine;           // 낮은 장애물 Sprite
 
-    public SpriteRenderer spriteRenderer;
+    private SpriteRenderer spriteRenderer;                   // 장애물 외형 표현 컴포넌트
+    private static Dictionary<ObstacleType, Sprite> spriteMap; // Sprite 매핑 테이블 (정적 캐시)
 
     private void Awake()
     {
+        // SpriteRenderer가 없다면 자동으로 검색
         spriteRenderer = GetComponent<SpriteRenderer>();
+        if (spriteRenderer == null)
+            Debug.LogWarning("[ObstacleView] SpriteRenderer가 없습니다.");
 
-        if (spriteRenderer == null)  //spriteRenderer의 노쇼 방지
+        // 정적 딕셔너리 초기화 (최초 1회만 수행)
+        if (spriteMap == null)
         {
-            Debug.Log("ObstacleView : spriteRenderer가 없습니다.");
+            spriteMap = new Dictionary<ObstacleType, Sprite>
+            {
+                { ObstacleType.RedLineTrap, spriteRedLine },
+                { ObstacleType.SyntaxErrorBox, spriteSyntaxError },
+                { ObstacleType.CompileErrorWall, spriteCompileError }
+            };
         }
     }
 
-
-    // Obstacle(enum)을 기반으로 Sprite를 설정하는 메서드
-    public void SetobstacleSprite(Obstacle obs)
-    {
-        switch (obs)
-        {
-            case Obstacle.SyntaxError:
-                spriteRenderer.sprite = spriteSyntaxError;
-                break;
-            case Obstacle.CompileError:
-                spriteRenderer.sprite = spriteCompileError;
-                break;
-            case Obstacle.RedLine:
-                spriteRenderer.sprite = spriteRedLine;
-                break;
-            //case Obstacle.UnhandledException:
-            //  spriteRenderer.sprite = spriteUnhandledException;
-            //  break;
-            default:
-                Debug.LogWarning($"알수 없는 장애물 {obs}");
-                break;
-        }
-    }
-
-    // ObstacleModel  내 ObstacleType(enum)을 기반으로 Sprite를 설정하는 메서드
-    // View 계층에서 모델 정보를 받아 장애물의 외형을 초기화하는 역할을 수행
+    /// <summary>
+    /// 모델의 Type을 기반으로 외형(SPRITE) 설정
+    /// </summary>
     public void SetupView(ObstacleModel model)
     {
-        if (spriteRenderer == null) // spriteRenderer의 노쇼 방지
+        if (spriteRenderer == null || model == null)
             return;
 
-        switch (model.Type)
+        // 모델 타입에 따라 스프라이트 설정 (딕셔너리 기반)
+        if (spriteMap.TryGetValue(model.Type, out var sprite))
         {
-            case ObstacleType.RedLineTrap:
-                spriteRenderer.sprite = spriteRedLine;
-                break;
-            case ObstacleType.SyntaxErrorBox:
-                spriteRenderer.sprite = spriteSyntaxError;
-                break;
-            case ObstacleType.CompileErrorWall:
-                spriteRenderer.sprite = spriteCompileError;
-                break;
-            default:
-                Debug.LogWarning($"[ObstacleView] Unknown ObstacleType: {model.Type}");
-                break;
+            spriteRenderer.sprite = sprite;
+        }
+        else
+        {
+            Debug.LogWarning($"[ObstacleView] 알 수 없는 ObstacleType: {model.Type}");
         }
     }
-
 }

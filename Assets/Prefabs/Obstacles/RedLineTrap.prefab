@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 262905386791713432}
   - component: {fileID: 3185249503978600710}
   - component: {fileID: 3720560201882454692}
+  - component: {fileID: 9171368231268253501}
   m_Layer: 0
   m_Name: RedLineTrap
   m_TagString: Obstacle
@@ -171,3 +172,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 497f721aa8560954d8cac0650e8561f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &9171368231268253501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4565103189964499219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac7151f0fc495e34bb95c58f4272e2ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteSyntaxError: {fileID: 21300000, guid: 3874c0871cef9b7469644cff32cd153f, type: 3}
+  spriteCompileError: {fileID: 21300000, guid: 3874c0871cef9b7469644cff32cd153f, type: 3}
+  spriteRedLine: {fileID: 21300000, guid: 3874c0871cef9b7469644cff32cd153f, type: 3}

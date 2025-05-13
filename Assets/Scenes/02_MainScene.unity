@@ -123,6 +123,96 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &32276640
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 32276643}
+  - component: {fileID: 32276642}
+  - component: {fileID: 32276641}
+  m_Layer: 6
+  m_Name: ObstacleReclaimer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &32276641
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 32276640}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05e8fb0ca6c3bce45a08ed1e68eaa4f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!61 &32276642
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 32276640}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
+--- !u!4 &32276643
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 32276640}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -20, y: -2.34, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &34417805
 GameObject:
   m_ObjectHideFlags: 0
@@ -799,14 +889,19 @@ MonoBehaviour:
   itemPrefabs:
   - type: 0
     prefab: {fileID: 5748354604842384851, guid: a816c00e825f039449bac281da8da5f2, type: 3}
+    preloadCount: 0
   - type: 1
     prefab: {fileID: 3877681020837683989, guid: d83fb8dc940ebee4ea6ded3474d42b8d, type: 3}
+    preloadCount: 0
   - type: 2
     prefab: {fileID: 1315613758775527033, guid: 8f5656842a8da484bbbc7019a84dabbd, type: 3}
+    preloadCount: 0
   - type: 3
     prefab: {fileID: 8228531426416595722, guid: 314a0ed027be46c44b64e2b01c94d49c, type: 3}
+    preloadCount: 0
   - type: 4
     prefab: {fileID: 6114264948723355549, guid: 38fb970891e40914db411d2b8077cf34, type: 3}
+    preloadCount: 0
   poolSize: 3
 --- !u!4 &465285770
 Transform:
@@ -1244,7 +1339,7 @@ GameObject:
   - component: {fileID: 664417961}
   - component: {fileID: 664417960}
   m_Layer: 0
-  m_Name: Ground_test
+  m_Name: Ground_Test_"Don't Delete Please"
   m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1356,8 +1451,8 @@ Transform:
   m_GameObject: {fileID: 664417959}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 15.92, y: -4, z: 0}
-  m_LocalScale: {x: 50, y: 2, z: 1}
+  m_LocalPosition: {x: 263.1332, y: -4, z: 0}
+  m_LocalScale: {x: 544.4503, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -2844,7 +2939,7 @@ GameObject:
   - component: {fileID: 1830982750}
   - component: {fileID: 1830982749}
   m_Layer: 0
-  m_Name: ObstacleManager
+  m_Name: ObstacleSpawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3806,9 +3901,10 @@ SceneRoots:
   - {fileID: 408840787}
   - {fileID: 578157797}
   - {fileID: 1830982750}
+  - {fileID: 32276643}
   - {fileID: 1796048640}
   - {fileID: 1959329720}
   - {fileID: 1187664389}
-  - {fileID: 1169550093}
   - {fileID: 465285770}
+  - {fileID: 1169550093}
   - {fileID: 664417962}

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1685531062675941628}
   - component: {fileID: 8570779664716801938}
   - component: {fileID: 5681905249001570130}
+  - component: {fileID: 435714203545140960}
   m_Layer: 0
   m_Name: SyntaxErrorBox
   m_TagString: Obstacle
@@ -171,3 +172,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 497f721aa8560954d8cac0650e8561f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &435714203545140960
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2184221484011828788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac7151f0fc495e34bb95c58f4272e2ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteSyntaxError: {fileID: 21300000, guid: 3874c0871cef9b7469644cff32cd153f, type: 3}
+  spriteCompileError: {fileID: 21300000, guid: 3874c0871cef9b7469644cff32cd153f, type: 3}
+  spriteRedLine: {fileID: 21300000, guid: 3874c0871cef9b7469644cff32cd153f, type: 3}
