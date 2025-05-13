@@ -22,7 +22,10 @@ public class GameManager : MonoBehaviour
     //GameUI 참조
     private GameUI gameUI;
     //GameOverUI 참조
-    private GameOverUI gameOverUI;
+    //private GameOverUI gameOverUI;
+
+    public event System.Action OnRestartRequested;
+    public event System.Action OnReturnHomeRequested;
 
     //현재 게임이 일시정지 상태인지 나타내는 변수.
     //상태를 토글할 때 사용됨
@@ -95,6 +98,9 @@ public class GameManager : MonoBehaviour
             {
                 gameUI.OnPauseRequested += TogglePause;
                 gameUI.OnReturnHomeRequested += ReturnToHome;
+
+                UIManager.Instance.OnRestartRequested += RestartGame;
+                UIManager.Instance.OnReturnHomeRequested += ReturnToHome;
                 //gameUI.OnVolumeChanged += SoundManager.Instance.SetVolume; // (연결 되면 주석처리 해제하고 적용)
             }
         }
@@ -119,7 +125,7 @@ public class GameManager : MonoBehaviour
         //게임 오버시 플레이 정지.
         Time.timeScale = 0;
         //점수와 최고 점수를 전달 + GameOverUI를 보여줌
-        gameOverUI.Show(score, bestScore);
+        //gameOverUI.Show(score, bestScore); // <<이거 주석 해제하면 GameOverUI 두번 호출
         //상태를 GameOver로 전환
         ChangeState(GameState.GameOver);
     }
