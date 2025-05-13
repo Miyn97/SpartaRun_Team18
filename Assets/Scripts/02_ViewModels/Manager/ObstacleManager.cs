@@ -13,7 +13,6 @@ public class ObstacleManager : MonoBehaviour
     public GameObject redLinePrefab;           // RedLineTrap 프리팹
     public GameObject syntaxErrorBoxPrefab;    // SyntaxErrorBox 프리팹
     public GameObject compileErrorWallPrefab;  // CompileErrorWall 프리팹
-    public GameObject groundWithGapPrefab;     // 지형+구멍 프리팹
 
     //── [패턴 설정 (ViewModel)] ─────────────────────────────────────
     [Header("패턴 설정")]
@@ -32,8 +31,8 @@ public class ObstacleManager : MonoBehaviour
     public Transform player;
     [Tooltip("플레이어 앞으로 최소 이만큼 앞에서 뿌리기")]
     public float spawnAhead = 20f;
-    public float groundObstacleY = -3f;        // 땅형 장애물 Y
-    public float airObstacleY = 2.6f;       // 공중형 장애물 Y
+    public float groundObstacleY = -2.5f;        // 땅형 장애물 Y
+    public float airObstacleY = 2.5f;       // 공중형 장애물 Y
 
     //── 내부 데이터 구조 ────────────────────────────────────────────
     // 1) 풀: 타입별 비활성 오브젝트 보관
@@ -51,8 +50,6 @@ public class ObstacleManager : MonoBehaviour
         new[] { ObstacleType.CompileErrorWall, ObstacleType.CompileErrorWall,  ObstacleType.RedLineTrap },
         new[] { ObstacleType.CompileErrorWall, ObstacleType.RedLineTrap,       ObstacleType.SyntaxErrorBox },
         new[] { ObstacleType.RedLineTrap,      ObstacleType.RedLineTrap,       ObstacleType.CompileErrorWall },
-        new[] { ObstacleType.SyntaxErrorBox,   ObstacleType.CompileErrorWall,  ObstacleType.RedLineTrap },
-        new[] { ObstacleType.GroundWithGap, ObstacleType.GroundWithGap, ObstacleType.CompileErrorWall } // 지형 + 구멍 프리팹
     };
 
     // 4) 마지막으로 배치된 장애물의 X 좌표
@@ -157,7 +154,6 @@ public class ObstacleManager : MonoBehaviour
         ObstacleType.RedLineTrap => redLinePrefab,
         ObstacleType.SyntaxErrorBox => syntaxErrorBoxPrefab,
         ObstacleType.CompileErrorWall => compileErrorWallPrefab,
-        ObstacleType.GroundWithGap => groundWithGapPrefab,
         _ => throw new ArgumentOutOfRangeException()
     };
 }

@@ -1192,7 +1192,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!61 &664417960
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1471,51 +1471,6 @@ MonoBehaviour:
   bestScoreText: {fileID: 1655848014}
   restartButton: {fileID: 233456801}
   homeButton: {fileID: 592712406}
---- !u!1 &875916442
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 875916444}
-  - component: {fileID: 875916443}
-  m_Layer: 0
-  m_Name: StageManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &875916443
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 875916442}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 138b00b032d633c4c98b0bad9100306b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  testLevelData: {fileID: 11400000, guid: 2dce8d04440e5b74fbdbfdea92711be8, type: 2}
---- !u!4 &875916444
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 875916442}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.2368673, y: 1.249743, z: -5.130869}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &902099970
 GameObject:
   m_ObjectHideFlags: 0
@@ -2150,56 +2105,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!1 &1145881328
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1145881330}
-  - component: {fileID: 1145881329}
-  m_Layer: 0
-  m_Name: BgLooper
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1145881329
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1145881328}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 636a4cd258cf2774a997fd7487531592, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  poolSizePerChunk: 5
-  chunkWidth: 5
-  chunkSpacing: 0
-  preloadCount: 5
-  player: {fileID: 1083998795}
-  stageManager: {fileID: 875916443}
---- !u!4 &1145881330
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1145881328}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.2368673, y: 1.249743, z: -5.130869}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1169550090
 GameObject:
   m_ObjectHideFlags: 0
@@ -2428,7 +2333,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -13, y: 0, z: 10}
-  m_LocalScale: {x: 0.5, y: 10, z: 1}
+  m_LocalScale: {x: 0.5, y: 30, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 519420032}
@@ -2796,7 +2701,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1796048639
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2855,14 +2760,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   countPerType: 5
-  redLinePrefab: {fileID: 4565103189964499219, guid: 91ef75a540db7c9478c2e02605d3af3a, type: 3}
-  syntaxErrorBoxPrefab: {fileID: 2184221484011828788, guid: 88ec28c112ee0ed42b9f1a1da38a3606, type: 3}
-  compileErrorWallPrefab: {fileID: 8560573066561155159, guid: 6bcac34abc8c13c48860aee4c6db2e87, type: 3}
-  groundWithGapPrefab: {fileID: 203086495045373760, guid: 127bedb70f6c37144a9e2c60234fab12, type: 3}
+  redLinePrefab: {fileID: 9120857436961055974, guid: 5b204b3a4098c9e48bbc8d81d593a7a4, type: 3}
+  syntaxErrorBoxPrefab: {fileID: 823901195161814766, guid: 6263a4b52b257ba48bc398495a104229, type: 3}
+  compileErrorWallPrefab: {fileID: 7120145286101456948, guid: 09cc28c4f5e63824da3a2a35497a50a4, type: 3}
   batchSize: 3
   hiddenThreshold: 3
   groupSpacing: 7
-  innerSpacing: 6
+  innerSpacing: 7
   player: {fileID: 220529794}
   spawnAhead: 20
   groundObstacleY: -2.5
@@ -3237,7 +3141,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1959329719
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3748,7 +3652,6 @@ SceneRoots:
   - {fileID: 408840787}
   - {fileID: 578157797}
   - {fileID: 1830982750}
-  - {fileID: 365828294}
-  - {fileID: 532559188}
   - {fileID: 1796048640}
   - {fileID: 1959329720}
+  - {fileID: 664417962}

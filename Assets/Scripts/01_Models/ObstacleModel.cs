@@ -9,7 +9,6 @@ public enum ObstacleType    // 장애물 종류 enum
     SyntaxErrorBox,         // 문법 오류 모양 장애물          (높은 장애물)    (회피 방법: 더블 점프)
     // UnhandledExceptionBox,  // 처리되지 않은 예외 박스 장애물 (구덩이)      (회피 방법: 점프)
     CompileErrorWall,       // 컴파일 에러 모양의 벽 장애물   (위쪽 장애물)    (회피 방법: 슬라이드)
-    GroundWithGap           // 지형 + 구멍 프리팹
 
 }
 
