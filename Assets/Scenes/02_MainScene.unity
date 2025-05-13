@@ -2772,7 +2772,7 @@ MonoBehaviour:
   maxXPadding: 7
   player: {fileID: 220529794}
   spawnAhead: 20
-  patternSpawnInterval: 2
+  patternSpawnInterval: 1
 --- !u!4 &1830982750
 Transform:
   m_ObjectHideFlags: 0
