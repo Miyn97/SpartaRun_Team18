@@ -1,86 +1,59 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
-public enum Difficulty  // Difficulty라는 이름의 enum을 만들어 난이도 추가
-{
-    Basic,
-    Standard,
-    Challenge
-}
 
 public class SpeedManager : MonoBehaviour
 {
-    Difficulty difficulty = Difficulty.Basic; // 기본값 설정
-    public float currentSpeed { get; private set; } // 난이도별 이동속도 
+    [SerializeField] private Difficulty difficulty = Difficulty.Basic; // 인스펙터에서 난이도 설정
 
-    private float speedIncreaseInterval = 0.5f; // 0.5초 마다 이동속도를 증가 시켜주는 speedIncreaseInterval 선언
-    private float speedIncrement = 0.005f;
-
-    float MaxSpeed;
+    private SpeedModel model;
+    private ISpeedService speedService;
 
     private Coroutine speedCoroutine;
+    private static readonly WaitForSeconds waitInterval = new WaitForSeconds(0.5f); // GC 최소화를 위해 재사용
 
-    void Start()
+    [SerializeField] private float speedIncrement = 0.005f; // 1회 증가량 (인스펙터에서 조절 가능)
+
+    private void Awake()
     {
-        SetInitialSpeed();
-        SetMaxSpeed();
-        speedCoroutine = StartCoroutine(IncreaseSpeedOverTime()); // 코루틴을 통하여 이동속도 증가와 이동속도의 최대 한도값 제어
-    }
-    private void SetInitialSpeed() // 난이도 별 이동속도 초기값 설정
-    {
-        switch (difficulty)
-        {
-            case Difficulty.Basic:
-                currentSpeed = 3.0f; // 베이직
-                break;
-            case Difficulty.Standard:
-                currentSpeed = 4.0f; // 스탠다드
-                break;
-            case Difficulty.Challenge:
-                currentSpeed = 5.0f; // 챌린지
-                break;
-        }
+        // 모델 및 서비스 초기화
+        model = new SpeedModel();
+        speedService = new SpeedService();
+
+        model.Difficulty = difficulty;
+
+        // 초기 속도 및 최대 속도 설정
+        model.CurrentSpeed = speedService.GetInitialSpeed(model.Difficulty); // 한줄 추가: 초기 속도 설정
+        model.MaxSpeed = speedService.GetMaxSpeed(model.Difficulty); // 한줄 추가: 최대 속도 설정
     }
 
-    private void SetMaxSpeed() // 이동속도 상한선값 제어
+    private void Start()
     {
-        switch (difficulty)
-        {
-            case Difficulty.Basic:
-                MaxSpeed = 5.0f;
-                break;
-            case Difficulty.Standard:
-                MaxSpeed = 6.0f;
-                break;
-            case Difficulty.Challenge:
-                MaxSpeed = 7.0f;
-                break;
-        }
+        speedCoroutine = StartCoroutine(IncreaseSpeedOverTime()); // 한줄 추가: 코루틴 시작
     }
 
     private IEnumerator IncreaseSpeedOverTime()
     {
-        yield return new WaitForSeconds(speedIncreaseInterval);  // 게임이 시작된 후 speedIncreaseInterval(즉 0.5초)까지 대기하다 이동속도 값이 증가
-
-        while (currentSpeed <= MaxSpeed) // currentSpeed(이동속도)가 증가하여 최대값인 MaxSpeed에 도달 할때 까지 
+        while (model.CurrentSpeed < model.MaxSpeed)
         {
-            currentSpeed += speedIncrement; // 난이도 별로 이동속도 값(0.005)이 증가
+            yield return waitInterval; // GC 피하기 위해 static 변수 사용
 
-            if (currentSpeed >= MaxSpeed) // currentSpeed 가 증가를 반복하여 MaxSpeed 보다 넘게 됫을 경우
-                currentSpeed = MaxSpeed; // MaxSpeed보다 증가 되지 않도록 보정
+            model.CurrentSpeed += speedIncrement; // 한줄 추가: 속도 증가
 
-            yield return new WaitForSeconds(speedIncreaseInterval); // 다시 0.5초 대기 후 이동속도 값이 다시 증가
+            if (model.CurrentSpeed > model.MaxSpeed) // 한줄 추가: 최대 속도 보정
+                model.CurrentSpeed = model.MaxSpeed;
         }
-        speedCoroutine = null; // 중복 실행 방지를 위해 값이 증가 된 후 null값 적용
+
+        speedCoroutine = null; // 한줄 추가: 중복 실행 방지용 null 처리
     }
 
-    public void StopIncreasingSpeed() // StageManager, MapData에서 사용
+    public float GetCurrentSpeed() => model.CurrentSpeed; // 한줄 추가: 외부에서 속도 조회
+
+    public void StopIncreasingSpeed()
     {
-        if (speedCoroutine != null) // speedCoroutine을 통하여 이동속도 값이 증가했을 경우 if 시작
+        if (speedCoroutine != null)
         {
-            StopCoroutine(speedCoroutine); // 이동속도가 증가된 후 Coroutine이 종료
-            speedCoroutine = null; // 중복 실행 방지를 위해 값이 증가 된 후 null값 적용
+            StopCoroutine(speedCoroutine); // 한줄 추가: 코루틴 중단
+            speedCoroutine = null;
         }
     }
 }
