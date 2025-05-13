@@ -2777,17 +2777,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68545ed675eb61745a5a03afa04f2d77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  countPerType: 5
   redLinePrefab: {fileID: 4565103189964499219, guid: 91ef75a540db7c9478c2e02605d3af3a, type: 3}
   syntaxErrorBoxPrefab: {fileID: 2184221484011828788, guid: 88ec28c112ee0ed42b9f1a1da38a3606, type: 3}
   compileErrorWallPrefab: {fileID: 8560573066561155159, guid: 6bcac34abc8c13c48860aee4c6db2e87, type: 3}
-  countPerType: 3
-  groundObstacleY: -2.5
-  airObstacleY: 2
-  minXPadding: 4
-  maxXPadding: 7
+  batchSize: 3
+  hiddenThreshold: 3
+  groupSpacing: 7
+  innerSpacing: 6
   player: {fileID: 220529794}
   spawnAhead: 20
-  patternSpawnInterval: 1
+  groundObstacleY: -2.5
+  airObstacleY: 2
 --- !u!4 &1830982750
 Transform:
   m_ObjectHideFlags: 0
