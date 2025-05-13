@@ -31,8 +31,8 @@ public class GameManager : MonoBehaviour
 
 
 
-    public event System.Action OnRestartRequested;
-    public event System.Action OnReturnHomeRequested;
+    //public event System.Action OnRestartRequested;
+    //public event System.Action OnReturnHomeRequested;
 
     //현재 게임이 일시정지 상태인지 나타내는 변수.
     //상태를 토글할 때 사용됨
@@ -107,8 +107,8 @@ public class GameManager : MonoBehaviour
 
             if (itemSpawnController != null)
             {
+                StartCoroutine(itemSpawnController.SpawnCoinRoutine(5f));
                 StartCoroutine(itemSpawnController.SpawnRandomItemRoutine(15f));
-                StartCoroutine(itemSpawnController.SpawnCoinRoutine(2f));
                 Debug.Log("[GameManager] 아이템 스폰 코루틴 시작됨");
             }
             else
@@ -173,8 +173,8 @@ public class GameManager : MonoBehaviour
     //StartUI에서 옵션 버튼을 누르면 이 함수가 호출
     private void HandleOption()
     {
-        Debug.Log("옵션 버튼 눌림 - 옵션 UI 처리 예정");
-        //추후 옵션 UI.Show() 등 달아주시면 됩니다 선량님
+        //옵션 UI를 띄우는 로직을 여기에 추가하면 됩니다.
+        startUI.ShowOptionPanel();
     }
 
     //게임 종료 버튼을 눌렸을 때 실행되는 함수
