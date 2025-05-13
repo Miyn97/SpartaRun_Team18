@@ -154,25 +154,34 @@ public class PlayerController : MonoBehaviour
     public void TakeDamage(int damage)
     {
 
-        //데미지를 받았을 때 체력 감소
-        model.TakeDamage(damage);
-        int updateHp = model.CurrentHealth;
-
-        UIManager.Instance.UpdateHealth(updateHp); //UI 업데이트
-
-        //체력이 0 이하이면
-        if (model.CurrentHealth == 0)
+        if (IsInvincible == true)
         {
-            Debug.Log("죽었습니다.");
-            //죽었을 때 애니메이션 실행
-            //playerView.PlayDeathAnimation(); //애니메이션 생성 시 주석처리 해제
-            //사망처리 메서드 호출
-            Die();
+            Debug.Log("무적임");
+            return;
         }
         else
         {
-            Debug.Log("체력 : " + model.CurrentHealth);
+            //데미지를 받았을 때 체력 감소
+            model.TakeDamage(damage);
+            int updateHp = model.CurrentHealth;
+
+            UIManager.Instance.UpdateHealth(updateHp); //UI 업데이트
+
+            //체력이 0 이하이면
+            if (model.CurrentHealth == 0)
+            {
+                Debug.Log("죽었습니다.");
+                //죽었을 때 애니메이션 실행
+                //playerView.PlayDeathAnimation(); //애니메이션 생성 시 주석처리 해제
+                //사망처리 메서드 호출
+                Die();
+            }
+            else
+            {
+                Debug.Log("체력 : " + model.CurrentHealth);
+            }
         }
+
     }
 
     //사망처리 메서드
@@ -201,6 +210,8 @@ public class PlayerController : MonoBehaviour
     {
         //회복 아이템을 먹었을 때 회복 처리
         model.Heal(amount);
+
+        GameManager.Instance.Heal(amount);
     }
 
     //속도아이템 관련
