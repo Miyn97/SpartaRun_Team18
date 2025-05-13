@@ -112,7 +112,7 @@ public class PlayerController : MonoBehaviour
         }
         else if (isDoubleJump)
         {
-            playerView.Jump(jumpForce); //더블 점프 애니메이션 요청
+            playerView.DoubleJump(jumpForce); //더블 점프 애니메이션 요청
             isDoubleJump = false; //더블 점프!
             playerView.SetGrounded(false); // 더블 점프 직후 공중 상태 전달
         }
