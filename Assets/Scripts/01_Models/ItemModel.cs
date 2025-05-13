@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 /*
 아이템 종류, 효과수치 등
@@ -28,31 +29,40 @@ public enum ItemEnum
 
 public class ItemModel : MonoBehaviour
 {
-    private PlayerController playerController;//플레이어는 어디에 있는가. 교체필요?
+    private ItemManager pool;
+    private void Awake()
+    {
+        pool = FindObjectOfType<ItemManager>();
+        playerController = FindAnyObjectByType<PlayerController>();
+    }
+    UIManager UIManager;
 
     public ItemEnum itemEnum;
+    [SerializeField] private PlayerController playerController;
+    [SerializeField] private PlayerModel model;
 
     public void ApplyEffect()//아이템을 먹으면
     {
-        
-        GameManager.Instance.AddScore(500);
+        Debug.Log("아이템 효과 실행됨: " + itemEnum);
+        GameManager.Instance.AddScore(100);
 
         switch (itemEnum)
         {
             case ItemEnum.Coin:
                 GameManager.Instance.AddScore(100);
+                pool.ReturnToPool(itemEnum, gameObject);
                 break;
             case ItemEnum.HealPotion:
-                HealPotion();
+                HealPotion(2);
                 break;
             case ItemEnum.SpeedPotion:
-                StartCoroutine(SpeedPotion(5));
+                StartCoroutine(SpeedPotion(3));
                 break;
             case ItemEnum.GiantPotion:
-                StartCoroutine(GiantPotion(5));
+                StartCoroutine(GiantPotion(3));
                 break;
             case ItemEnum.Magnet:
-                Magnet(5);
+                StartCoroutine(Magnet(5));
                 break;
                 //case ItemEnum.Bomb:
                 //    Bomb();
@@ -60,6 +70,7 @@ public class ItemModel : MonoBehaviour
         }
 
     }
+
     private IEnumerator BlinkEffect()//깜빡이는 코루틴. 지피티피셜이라 실험 필요
     {
         SpriteRenderer sr = playerController.GetComponentInChildren<SpriteRenderer>(); // 플레이어의 SpriteRenderer 가져옴
@@ -68,21 +79,21 @@ public class ItemModel : MonoBehaviour
         while (true) // StopCoroutine 될 때까지 계속 반복
         {
             sr.color = new Color(1f, 1f, 1f, 0.3f); // 반투명
-            yield return new WaitForSeconds(0.3f); // 0.3초 대기
+            yield return new WaitForSeconds(0.1f); // 0.3초 대기
 
             sr.color = originalColor;              // 원래 색으로
-            yield return new WaitForSeconds(0.3f); // 또 0.3초 대기
+            yield return new WaitForSeconds(0.1f); // 또 0.3초 대기
         }
     }
-
+    
     private IEnumerator SpeedPotion(int duration)//광?속질주
     {
         playerController.SetInvincible(true); ;//무적
-        playerController.SetSpeed(15) ;       //이동속도 증가, 빨라지는 동안 파티클처럼 이펙트 나오면 좋?을듯, 속도 적당한지 실험필요
+        playerController.SetSpeed(13) ;       //이동속도 증가, 빨라지는 동안 파티클처럼 이펙트 나오면 좋?을듯, 속도 적당한지 실험필요
 
         yield return new WaitForSeconds(duration);//발동되면 위에거 적용 후 지속시간(duration)후에 밑에거 적용
 
-        playerController.SetSpeed(10);//다시 감소, 무적은 1.5초후에 풀림
+        playerController.SetSpeed(8.5f);//다시 감소, 무적은 1.5초후에 풀림
         Coroutine blink = StartCoroutine(BlinkEffect());//깜빡이는 이펙트 적용
 
         yield return new WaitForSeconds(1.5f);//1.5초후 다시 무적해제 
@@ -91,38 +102,47 @@ public class ItemModel : MonoBehaviour
         playerController.GetComponentInChildren<SpriteRenderer>().color = Color.white; // 색상 원상복구
         playerController.SetInvincible(false); ;//무적 해제
 
+        pool.ReturnToPool(itemEnum, gameObject);//디스트로이, SetActiveFalse 대신 아이템 풀링 풀에 반환.ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+
     }
 
 
     private IEnumerator GiantPotion(int duration)//커져라~
     {
+        Debug.Log("자이언트 코루틴 시작됨");
         BoxCollider2D collider = playerController.GetComponent<BoxCollider2D>();
         playerController.SetInvincible(true); ;//무적
-        collider.size *= 2f;    // 박스 콜라이더 크기 2배
-        collider.offset *= 2f;  // 위치도 같이 맞춰줘야 한다고 지피티가 그랬어요
+        //collider.size *= 1f;    // 박스 콜라이더 크기 2배
+        //collider.offset *= 1f;  // 위치도 같이 맞춰줘야 한다고 지피티가 그랬어요
         playerController.transform.localScale *= 2f;//플레이어의 크기 2배
-
+        
         yield return new WaitForSeconds(duration);//지속시간 후에 다음거 적용
 
-        collider.size /= 2f;    // 박스 콜라이더 크기 원래대로
-        collider.offset /= 2f;  // 위치
+        Debug.Log("자이언트 코루틴 끝남");
+        //collider.size /= 1f;    // 박스 콜라이더 크기 원래대로
+        //collider.offset /= 1f;  // 위치
         playerController.transform.localScale /= 2f;//플레이어의 크기 원래대로
         Coroutine blink = StartCoroutine(BlinkEffect());
 
+        Debug.Log("블링크 시작");
+
         yield return new WaitForSeconds(1.5f);
+
+        Debug.Log("블링크 끝");
 
         StopCoroutine(blink);          // 깜빡이기 종료
         playerController.GetComponentInChildren<SpriteRenderer>().color = Color.white; // 색상 원상복구
         playerController.SetInvincible(false); ;//무적 해제
 
-
+        pool.ReturnToPool(itemEnum, gameObject);
     }
 
     private IEnumerator Magnet(int duration)
     {
-        float radius = 8f;           // 자석 범위 반경
-        float pullSpeed = 5f;       // 끌려오는 속도
+        float radius = 10f;           // 자석 범위 반경
+        float pullSpeed = 15f;       // 끌려오는 속도
         float timer = 0f;            // 타이머 초기화
+
 
         while (timer < duration)//duration 만큼 
         {
@@ -139,15 +159,25 @@ public class ItemModel : MonoBehaviour
                 }
             }
 
-            timer += Time.deltaTime;    // 타이머 갱신
             yield return null;         // 다음 프레임까지 대기
+            timer += Time.deltaTime;    // 타이머 갱신
         }
+        pool.ReturnToPool(itemEnum, gameObject);
     }
-    public void HealPotion()
-    {
-        playerController.Heal(1);
 
-        //+ UI의 하트도 하나 추가
+
+    public void HealPotion(int heal)
+    {
+        //model.Heal(heal);
+        //int updateHp = model.CurrentHealth;
+
+        //playerController.Heal(heal);
+        Debug.Log("힐 됨");
+        GameManager.Instance.Heal(heal);
+
+        //UIManager.Instance.UpdateHealth(updateHp); //UI 업데이트
+
+        pool.ReturnToPool(itemEnum, gameObject);
     }
 }
 

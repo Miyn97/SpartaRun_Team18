@@ -23,7 +23,10 @@ public class Collectable : MonoBehaviour
             {
                 item.ApplyEffect();  // 아이템모델에 있는 효과 발동
 
-                pool.ReturnToPool(item.itemEnum, gameObject);//디스트로이, SetActiveFalse 대신 아이템 풀링 풀에 반환.
+
+                Vector3 pos = item.transform.position;
+                pos.y += 30f;
+                item.transform.position = pos;
             }
         }
     }
