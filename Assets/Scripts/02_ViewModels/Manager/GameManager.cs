@@ -173,8 +173,8 @@ public class GameManager : MonoBehaviour
     //StartUI에서 옵션 버튼을 누르면 이 함수가 호출
     private void HandleOption()
     {
-        Debug.Log("옵션 버튼 눌림 - 옵션 UI 처리 예정");
-        //추후 옵션 UI.Show() 등 달아주시면 됩니다 선량님
+        //옵션 UI를 띄우는 로직을 여기에 추가하면 됩니다.
+        startUI.ShowOptionPanel();
     }
 
     //게임 종료 버튼을 눌렸을 때 실행되는 함수
