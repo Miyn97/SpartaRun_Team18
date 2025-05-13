@@ -12,11 +12,12 @@ public class ItemManager : MonoBehaviour
     {
         public ItemEnum type;        // 아이템 종류
         public GameObject prefab;    // 해당 종류에 대응되는 프리팹
+        public int preloadCount;     // 새로 추가
     }
 
     [Header("아이템 설정")]
     [SerializeField] private List<ItemPrefab> itemPrefabs;   // 프리팹 등록 리스트
-    [SerializeField] private int poolSize = 3;               // 타입별 풀 개수
+    [SerializeField] private int poolSize = 8;               // 타입별 풀 개수
 
     private Dictionary<ItemEnum, Queue<GameObject>> poolDict = new(); // 아이템 풀 딕셔너리
 

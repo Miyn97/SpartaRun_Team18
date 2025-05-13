@@ -31,8 +31,8 @@ public class GameManager : MonoBehaviour
 
 
 
-    public event System.Action OnRestartRequested;
-    public event System.Action OnReturnHomeRequested;
+    //public event System.Action OnRestartRequested;
+    //public event System.Action OnReturnHomeRequested;
 
     //현재 게임이 일시정지 상태인지 나타내는 변수.
     //상태를 토글할 때 사용됨
@@ -107,8 +107,8 @@ public class GameManager : MonoBehaviour
 
             if (itemSpawnController != null)
             {
+                StartCoroutine(itemSpawnController.SpawnCoinRoutine(5f));
                 StartCoroutine(itemSpawnController.SpawnRandomItemRoutine(15f));
-                StartCoroutine(itemSpawnController.SpawnCoinRoutine(2f));
                 Debug.Log("[GameManager] 아이템 스폰 코루틴 시작됨");
             }
             else
