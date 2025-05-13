@@ -163,39 +163,52 @@ public class ObstacleManager : MonoBehaviour
     private Vector3 GetNextPosition(ObstacleType type)
     {
         float randomX = Random.Range(minXPadding, maxXPadding);
-        Vector3 pos = obstacleLastPosition + new Vector3(randomX, 0f, 0f);
 
-        pos.y = type switch
+        // 이전 장애물 기준 간격
+        float candidateX = obstacleLastPosition.x + randomX;
+
+        // 플레이어 기준 최소 앞쪽 거리
+        float safeX = player.position.x + spawnAhead;
+
+        // 둘 중 더 큰 값(=더 앞쪽)을 선택
+        float finalX = Mathf.Max(candidateX, safeX);
+
+        //y 값은 장애물 종류에 따라 결정
+        float finalY = type switch
         {
             ObstacleType.RedLineTrap => groundObstacleY,
             ObstacleType.SyntaxErrorBox => groundObstacleY,
             ObstacleType.CompileErrorWall => airObstacleY,
-            _ => pos.y
+            _ => 0f
         };
 
-        return pos;
+        return new Vector3(finalX, finalY, 0f);
     }
 
     public void RepositionObstacle(GameObject obstacle)
     {
-        // 종류 파악 – 이름 또는 별도 컴포넌트로 구분
-        ObstacleType type = ObstacleType.RedLineTrap;     // 기본값
+        // 장애물 종류 파악 (기존 로직 유지) 
+        ObstacleType type = ObstacleType.RedLineTrap; // 기본값
         if (obstacle.name.Contains("Syntax")) type = ObstacleType.SyntaxErrorBox;
         else if (obstacle.name.Contains("Compile")) type = ObstacleType.CompileErrorWall;
 
-        // x 간격 계산
+        // X 좌표 계산 : 마지막 장애물 vs. 플레이어 앞으로 안전거리 확보 ─
         float randomX = Random.Range(minXPadding, maxXPadding);
-        Vector3 newPos = obstacleLastPosition + new Vector3(randomX, 0f, 0f);
+        float candidateX = obstacleLastPosition.x + randomX;
+        float safeX = player.position.x + spawnAhead;
+        float finalX = Mathf.Max(candidateX, safeX);
 
-        // y 값 결정
-        newPos.y = type switch
+        // Y 좌표는 종류별로 결정
+        float finalY = type switch
         {
             ObstacleType.RedLineTrap => groundObstacleY,
             ObstacleType.SyntaxErrorBox => groundObstacleY,
             ObstacleType.CompileErrorWall => airObstacleY,
-            _ => newPos.y
+            _ => 0f
         };
 
+        // 실제 이동 + 기준 위치 갱신
+        Vector3 newPos = new Vector3(finalX, finalY, 0f);
         obstacle.transform.position = newPos;
         obstacleLastPosition = newPos;
     }
