@@ -12,4 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 794ef95e8237fab4eb454402e7612be2, type: 3}
   m_Name: TestLevelData
   m_EditorClassIdentifier: 
-  chunks: []
+  chunks:
+  - chunkPrefab: {fileID: 4081261823314264042, guid: 2822a3123b6fd8046bee1b2089bdd945, type: 3}
+    weight: 1
+  - chunkPrefab: {fileID: 4081261823314264042, guid: cf59d57b5ee36cb41976723aea04a465, type: 3}
+    weight: 0.2
+  - chunkPrefab: {fileID: 4081261823314264042, guid: 35f5d5c66de3a2d428902afe7b5a20b0, type: 3}
+    weight: 0.1
