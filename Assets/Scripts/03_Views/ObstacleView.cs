@@ -7,6 +7,7 @@ public enum Obstacle
     SyntaxError,
     CompileError,
     RedLine,
+    GroundWithGap,
     // 미사용 UnhandledException
 }
 
@@ -18,6 +19,7 @@ public class ObstacleView : MonoBehaviour
     public Sprite spriteSyntaxError;         // SyntaxError 이미지
     public Sprite spriteCompileError;        // CompileError 이미지
     public Sprite spriteRedLine;             // RedLine 이미지
+    public Sprite GroundWithGap;
     // 미사용 public Sprite spriteUnhandledException;  // UnhandledException 이미지
 
     public SpriteRenderer spriteRenderer;
@@ -47,9 +49,12 @@ public class ObstacleView : MonoBehaviour
             case Obstacle.RedLine:
                 spriteRenderer.sprite = spriteRedLine;
                 break;
+            case Obstacle.GroundWithGap:
+                spriteRenderer.sprite = GroundWithGap;
+                break;
             //case Obstacle.UnhandledException:
             //  spriteRenderer.sprite = spriteUnhandledException;
-                break;
+            //  break;
             default:
                 Debug.LogWarning($"알수 없는 장애물 {obs}");
                 break;
@@ -73,6 +78,9 @@ public class ObstacleView : MonoBehaviour
                 break;
             case ObstacleType.CompileErrorWall:
                 spriteRenderer.sprite = spriteCompileError;
+                break;
+            case ObstacleType.GroundWithGap:
+                spriteRenderer.sprite = GroundWithGap;
                 break;
             default:
                 Debug.LogWarning($"[ObstacleView] Unknown ObstacleType: {model.Type}");

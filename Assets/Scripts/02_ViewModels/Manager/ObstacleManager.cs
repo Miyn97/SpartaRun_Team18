@@ -13,6 +13,7 @@ public class ObstacleManager : MonoBehaviour
     public GameObject redLinePrefab;           // RedLineTrap 프리팹
     public GameObject syntaxErrorBoxPrefab;    // SyntaxErrorBox 프리팹
     public GameObject compileErrorWallPrefab;  // CompileErrorWall 프리팹
+    public GameObject groundWithGapPrefab;     // 지형+구멍 프리팹
 
     //── [패턴 설정 (ViewModel)] ─────────────────────────────────────
     [Header("패턴 설정")]
@@ -50,7 +51,8 @@ public class ObstacleManager : MonoBehaviour
         new[] { ObstacleType.CompileErrorWall, ObstacleType.CompileErrorWall,  ObstacleType.RedLineTrap },
         new[] { ObstacleType.CompileErrorWall, ObstacleType.RedLineTrap,       ObstacleType.SyntaxErrorBox },
         new[] { ObstacleType.RedLineTrap,      ObstacleType.RedLineTrap,       ObstacleType.CompileErrorWall },
-        new[] { ObstacleType.SyntaxErrorBox,   ObstacleType.CompileErrorWall,  ObstacleType.RedLineTrap }
+        new[] { ObstacleType.SyntaxErrorBox,   ObstacleType.CompileErrorWall,  ObstacleType.RedLineTrap },
+        new[] { ObstacleType.GroundWithGap, ObstacleType.GroundWithGap, ObstacleType.CompileErrorWall } // 지형 + 구멍 프리팹
     };
 
     // 4) 마지막으로 배치된 장애물의 X 좌표
@@ -155,6 +157,7 @@ public class ObstacleManager : MonoBehaviour
         ObstacleType.RedLineTrap => redLinePrefab,
         ObstacleType.SyntaxErrorBox => syntaxErrorBoxPrefab,
         ObstacleType.CompileErrorWall => compileErrorWallPrefab,
+        ObstacleType.GroundWithGap => groundWithGapPrefab,
         _ => throw new ArgumentOutOfRangeException()
     };
 }
