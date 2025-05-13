@@ -20,6 +20,8 @@ public class ItemManager : MonoBehaviour
 
     [SerializeField] private Transform player;
 
+    [SerializeField] private LayerMask obstacleLayer;//LayerMask = 특정 레이어들만 선택적으로 감지하거나 검사할때 쓰는 데이터타입
+
     // 아이템 종류(enum)별로 각각의 풀(Queue)을 관리하는 딕셔너리. 키 = enum, 값 = queue
     private Dictionary<ItemEnum, Queue<GameObject>> poolDict = new Dictionary<ItemEnum, Queue<GameObject>>();
     //Queue는 선입선출 방식의 자료구조
@@ -81,26 +83,24 @@ public class ItemManager : MonoBehaviour
             Vector3 spawnPosition = player.position;//플레이어의 포지션 가져와서
             spawnPosition.x += 15f;//오른쪽으로 + 15한곳 저장
 
+            //Physics2D.OverlapCircle = 영역을 검사해서 그 안에 있는 콜라이더를 감지하는 2D 물리 함수 ( 검사위치, 원의 반지름, 검사하는 레이어의 종류)
+            if (Physics2D.OverlapCircle(spawnPosition, 0.5f, obstacleLayer))
+            {
+                spawnPosition.x += 1f; // 1만큼 옆으로 밀기
+                spawnPosition.y += 1f;//위로도 한칸
+
+                if (Physics2D.OverlapCircle(spawnPosition, 0.5f, obstacleLayer))
+                {
+                    Debug.Log("장애물 때문에 아이템 생성 취소");
+                    ReturnToPool(type, item);
+                    return;
+                }
+            }
             item.transform.position = spawnPosition;//저장한곳에 아이템 소환
             item.SetActive(true);
         }
     }
-
-
-}
-
-/*   게임매니저에 추가할 것들
-using System.Collections;
-
-ItemManager itemManager;
-
-
-
-
-update에         StartCoroutine(SpawnRandomItem(15f));//시작할때 코루틴도 시작, 15초 후에 생성
-
-
-    private IEnumerator SpawnRandomItem(float startTime)//()는 코루틴 시작할때 설정하는 시간
+    public IEnumerator SpawnRandomItem(float startTime)//()는 코루틴 시작할때 설정하는 시간
     {
         float playTime = 0f;//플레이타임 비례해서 
         float nowCoolTime = startTime;//처음 쿨타임은 코루틴 시작할때 입력한값
@@ -111,11 +111,20 @@ update에         StartCoroutine(SpawnRandomItem(15f));//시작할때 코루틴도 시작, 
             yield return new WaitForSeconds(nowCoolTime);//현재쿨타임만큼 기다리기
 
             ItemEnum randomItem = (ItemEnum)Random.Range(1, System.Enum.GetValues(typeof(ItemEnum)).Length);//소환될 아이템을 정하고 
-            itemManager.SpawnItem(randomItem);//아이템 매니저에 스폰아이템
+            SpawnItem(randomItem);//스폰아이템
 
             playTime += nowCoolTime;//플레이타임에 현재 쿨타임만큼 더해서 플레이타임을 갱신.
             nowCoolTime = Mathf.Min(startTime + playTime * 0.05f, maxCoolTime);//현재 쿨타임은 플레이타임 비례 증가, 최대 30f 
             //Mathf.Min 은 ( a , b ) 둘중에 작은값을 반환하는 함수
         }
     }
-*/
+    public IEnumerator SpawnCoin(int Time)//코인소환
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(Time);
+            SpawnItem(ItemEnum.Coin);
+        }
+    }
+
+}
