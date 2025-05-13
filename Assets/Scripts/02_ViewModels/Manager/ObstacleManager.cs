@@ -16,18 +16,18 @@ public class ObstacleManager : MonoBehaviour
 
 
     public float groundObstacleY = -2f;  // 점프/더블 점프 장애물의 Y위치
-    public float airObstacleY = 1.5f;   // 슬라이드용 장애물의 Y위치 
+    public float airObstacleY = 1.5f;    // 슬라이드용 장애물의 Y위치
 
-    public float minXPadding = 4f;      // 장애물 간 최소 간격
-    public float maxXPadding = 7f;      // 장애물 간 최대 간격
+    public float minXPadding = 4f;       // 장애물 간 최소 간격
+    public float maxXPadding = 7f;       // 장애물 간 최대 간격
 
 
     private List<ObstacleType[]> obstaclePatterns = new List<ObstacleType[]>(); //ObstacleType enum 리스트를 가져옴
-    private int currentPatternIndex = 0; // 장애물 패턴 순서
-    private int currentObstacleInPattern = 0; // 장애물 패턴 추적(몇 번째 장애물이 사용되고 있는지)
+    private int currentPatternIndex = 0;                                        // 장애물 패턴 순서
+    private int currentObstacleInPattern = 0;                                   // 장애물 패턴 추적(몇 번째 장애물이 사용되고 있는지)
 
-    public float patternSpawnInterval = 2f; // 패턴 간 시간 간격
-    private float patternTimer = 0f; // 패턴이 작동하는 시간
+    public float patternSpawnInterval = 2f;                                     // 패턴 간 시간 간격
+    private float patternTimer = 0f;                                            // 패턴이 작동하는 시간
 
     public static ObstacleManager Instance { get; private set; }    // 싱글톤 설정
 
