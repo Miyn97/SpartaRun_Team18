@@ -10,10 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 7325356777365688105}
   - component: {fileID: 7692273941123464203}
-  - component: {fileID: 9046442328048958273}
-  - component: {fileID: 7912959761346464623}
   - component: {fileID: 6337496554765846086}
   - component: {fileID: 6698572492375886379}
+  - component: {fileID: 7623826698576934841}
   m_Layer: 0
   m_Name: SpeedPotion
   m_TagString: Collectable
@@ -81,32 +80,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.5568843, y: 0.7880752}
   m_EdgeRadius: 0
---- !u!114 &9046442328048958273
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1315613758775527033}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 60a370d7b9733204580b28fa5920be50, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemEnum: 2
-  playerController: {fileID: 0}
---- !u!114 &7912959761346464623
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1315613758775527033}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77953441d13248849b30b452590827ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!212 &6337496554765846086
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -186,3 +159,16 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &7623826698576934841
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1315613758775527033}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2dfeadb36575cb74e89b1d6acaa3850e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemType: 0

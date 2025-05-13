@@ -27,6 +27,8 @@ public class GameManager : MonoBehaviour
     //GameOverUI 참조
     //private GameOverUI gameOverUI;
     [SerializeField] private ItemManager itemManager;
+    [SerializeField] private ItemSpawnController itemSpawnController;
+
 
 
     public event System.Action OnRestartRequested;
@@ -100,6 +102,20 @@ public class GameManager : MonoBehaviour
 
         if (scene.name == "02_MainScene")
         {
+            gameUI = FindObjectOfType<GameUI>();
+            itemSpawnController = FindObjectOfType<ItemSpawnController>();
+
+            if (itemSpawnController != null)
+            {
+                StartCoroutine(itemSpawnController.SpawnRandomItemRoutine(15f));
+                StartCoroutine(itemSpawnController.SpawnCoinRoutine(2f));
+                Debug.Log("[GameManager] 아이템 스폰 코루틴 시작됨");
+            }
+            else
+            {
+                Debug.LogError("[GameManager] ItemSpawnController를 찾을 수 없습니다.");
+            }
+
             gameUI = FindObjectOfType<GameUI>();
             if (gameUI != null)
             {
