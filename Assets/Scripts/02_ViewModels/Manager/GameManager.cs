@@ -83,6 +83,7 @@ public class GameManager : MonoBehaviour
     {
         if (scene.name == "03_IntroScene")
         {
+            Time.timeScale = 1;
             //IntroUI 찾고 활성화
             introUI = FindObjectOfType<IntroUI>();
             if (introUI != null)
@@ -93,6 +94,7 @@ public class GameManager : MonoBehaviour
 
         if (scene.name == "01_StartScene")
         {
+            Time.timeScale = 1;
             //StartUI 찾고 활성화
             startUI = FindObjectOfType<StartUI>();
             if (startUI != null)
@@ -105,6 +107,7 @@ public class GameManager : MonoBehaviour
 
         if (scene.name == "02_MainScene")
         {
+            Time.timeScale = 1;
             gameUI = FindObjectOfType<GameUI>();
             itemSpawnController = FindObjectOfType<ItemSpawnController>();
 
