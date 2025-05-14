@@ -4,6 +4,11 @@ using UnityEngine.SocialPlatforms.Impl;
 [RequireComponent(typeof(PlayerView))]
 public class PlayerController : MonoBehaviour
 {
+
+    public AudioClip jumpClip;
+    public AudioClip slideClip;
+    public AudioClip damageCilp;
+    public AudioClip DieClip;
     //플레이어 애니메이션 + 물리처리 등을 게이머가 조작할 수 있도록 연결
     //[SerializeField] 잠시 주석처리
     private PlayerView playerView;
@@ -112,12 +117,14 @@ public class PlayerController : MonoBehaviour
             playerView.Jump(jumpForce); //점프 애니메이션 요청
             playerView.SetGrounded(false); // 점프 직후 공중 상태 전달
             // 뷰에게 점프 애니메이션/물리 적용 명령
+            SoundManager.Instance.PlaySFX(jumpClip, 0.1f);
             isGround = false; //점프!
             isDoubleJump = true; //더블 점프 가능
         }
         else if (isDoubleJump)
         {
             playerView.DoubleJump(jumpForce); //더블 점프 애니메이션 요청
+            SoundManager.Instance.PlaySFX(jumpClip, 0.1f);
             isDoubleJump = false; //더블 점프!
             playerView.SetGrounded(false); // 더블 점프 직후 공중 상태 전달
         }
@@ -131,6 +138,7 @@ public class PlayerController : MonoBehaviour
     private void Slide()
     {
         Debug.Log("슬라이드 중입니다.");
+        SoundManager.Instance.PlaySFX(slideClip, 0.1f);
         isSliding = true; //슬라이드 중 상태
         slideTimer = slideDuration; //슬라이드 지속 시간 설정
         playerView.Slide(); //슬라이드 애니메이션 요청
@@ -164,10 +172,11 @@ public class PlayerController : MonoBehaviour
         else
         {
             //데미지를 받았을 때 체력 감소
+            SoundManager.Instance.PlaySFX(damageCilp, 0.1f);
             model.TakeDamage(damage);
             int updateHp = model.CurrentHealth;
 
-            UIManager.Instance.UpdateHealth(updateHp); //UI 업데이트
+            //UIManager.Instance.UpdateHealth(updateHp); //UI 업데이트
 
             //체력이 0 이하이면
             if (model.CurrentHealth == 0)
@@ -190,6 +199,7 @@ public class PlayerController : MonoBehaviour
     {
         //playerView.SetAnimatorSpeed(0f);
         //죽었을 때 애니메이션 실행
+        SoundManager.Instance.PlaySFX(DieClip, 1f);
         playerView.PlayDeathAnimation(); //애니메이션 생성 시 주석처리 해제
         playerView.StopMovementAnimation(); // 움직임 강제 정지
         //View는 죽는 연출 + 게임매니저는 상태변화

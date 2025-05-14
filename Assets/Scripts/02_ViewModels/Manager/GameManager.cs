@@ -18,6 +18,8 @@ public class GameManager : MonoBehaviour
     public int CurrentHp { get; private set; } // 현재 체력
     public int CurrentStage { get; private set; }
 
+    public bool IsInvincible { get; private set; }
+
     //StartUI 참조
     private StartUI startUI;
     //IntroUI 참조
@@ -57,7 +59,8 @@ public class GameManager : MonoBehaviour
     {
         BestScore = PlayerPrefs.GetInt("BestScore", 0); // 최고 점수 불러오기
         Score = 0; // 점수 리셋
-        CurrentHp = 6; // 체력 리셋 (6으로 설정)
+        MaxHp = 6; // 체력 리셋 (6으로 설정)
+        CurrentHp = MaxHp;
 
         //게임이 시작되면 Intro 상태로 전환
         //ChangeState(GameState.Intro); // 최종본에서는 필요함
@@ -241,13 +244,21 @@ public class GameManager : MonoBehaviour
     // 체력감소 테스트용 _ryang
     public void TakeDamage(int damage)
     {
-        CurrentHp = Mathf.Max(CurrentHp - damage, 0); //체력 감소 (최소 0)
-        UIManager.Instance.UpdateHealth(CurrentHp); //UIManager에 체력 업데이트 요청
-
-        if (CurrentHp <= 0)
+        if (IsInvincible == true)
         {
-            TriggerGameOver(Score, BestScore); //여기서 GameOver 처리 통합
-            //ChangeState(GameState.GameOver);
+            Debug.Log("무적임");
+            return;
+        }
+        else
+        {
+            CurrentHp = Mathf.Max(CurrentHp - damage, 0); //체력 감소 (최소 0)
+            UIManager.Instance.UpdateHealth(CurrentHp); //UIManager에 체력 업데이트 요청
+
+            if (CurrentHp <= 0)
+            {
+                TriggerGameOver(Score, BestScore); //여기서 GameOver 처리 통합
+                                                   //ChangeState(GameState.GameOver);
+            }
         }
     }
 
@@ -286,6 +297,9 @@ public class GameManager : MonoBehaviour
     //{
     //    Application.Quit();
     //}
-
+    public void SetInvincible(bool value)
+    {
+        IsInvincible = value;
+    }
 
 }
