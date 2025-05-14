@@ -58,7 +58,7 @@ public class SoundManager : MonoBehaviour
         PlaySceneBGM(scene.name);
     }
 
-    private void PlaySceneBGM(string sceneName)
+    private void PlaySceneBGM(string sceneName) 
     {
         AudioClip clip = null;
         switch (sceneName)
