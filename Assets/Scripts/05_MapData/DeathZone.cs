@@ -20,7 +20,11 @@ public class DeathZone : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             Debug.Log("낙사 판정: 플레이어 감지됨");
-            GameManager.Instance.ChangeState(GameManager.GameState.GameOver);
+            var dead = other.GetComponent<PlayerController>();
+            if (dead != null)
+            {
+                dead.Die(); // 플레이어 사망처리 메서드 호출
+            }
         }
     }
 }

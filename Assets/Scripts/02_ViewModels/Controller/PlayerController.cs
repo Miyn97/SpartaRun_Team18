@@ -203,7 +203,7 @@ public class PlayerController : MonoBehaviour
     }
 
     //사망처리 메서드
-    private void Die()
+    public void Die()
     {
         //playerView.SetAnimatorSpeed(0f);
         //죽었을 때 애니메이션 실행
@@ -228,6 +228,15 @@ public class PlayerController : MonoBehaviour
         GameManager.Instance.BestScore
         );
         deathCoroutine = null; // 코루틴 종료 후 null 처리
+    }
+
+    // DeathZone 같은 예외상황에서 즉시 사망처리
+    public void DeathPlayer()
+    {
+        if (!isDead)
+        {
+            Die(); // 즉시 사망 처리
+        }
     }
 
 
