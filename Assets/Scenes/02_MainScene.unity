@@ -3002,7 +3002,7 @@ MonoBehaviour:
   slideClip: {fileID: 8300000, guid: 49acb5538e24cce48a5bfe10de4d7401, type: 3}
   damageCilp: {fileID: 8300000, guid: 45a3a57154780854ca5fe3bc1e2741e8, type: 3}
   DieClip: {fileID: 8300000, guid: 38395a5c3e5c29940b789e23780deaeb, type: 3}
-  initialHealth: 100
+  initialHealth: 6
   initialSpeed: 8.5
   jumpForce: 25
   slideDuration: 1
