@@ -24,6 +24,7 @@ public class ObstacleDamage : MonoBehaviour
         if (playerCtrl != null)
         {
             GameManager.Instance.TakeDamage(damage);
+            Debug.Log(other.gameObject.name);
             playerCtrl.TakeDamage(damage); // 플레이어에게 데미지 전달
         }
     }
