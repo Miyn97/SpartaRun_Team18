@@ -314,7 +314,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8194866152331925320, guid: d001fcfa1d21eb8409309b4e81bb623f, type: 3}
       propertyPath: m_Name
-      value: TsetGround (1)
+      value: TestGround (1)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -380,7 +380,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8194866152331925320, guid: d001fcfa1d21eb8409309b4e81bb623f, type: 3}
       propertyPath: m_Name
-      value: TsetGround
+      value: TestGround
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
