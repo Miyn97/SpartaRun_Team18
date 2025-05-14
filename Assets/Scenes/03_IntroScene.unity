@@ -599,7 +599,7 @@ MonoBehaviour:
   sfxVolume: 10
   bgmVolume: 10
   soundSourcePrefab: {fileID: 7183723592553649250, guid: ecb0d5b0c33e4d24ca0afc324c840784, type: 3}
-  introBgm: {fileID: 8300000, guid: d36bd2d0630c8b04383c70523a748989, type: 3}
+  introBgm: {fileID: 8300000, guid: 9f7bb8d32f5e2e84899ba9c6c900d4f2, type: 3}
   startBgm: {fileID: 8300000, guid: d36bd2d0630c8b04383c70523a748989, type: 3}
   mainBgm: {fileID: 8300000, guid: b0f1f5e270bdd8d4f987ebacec64611d, type: 3}
 --- !u!4 &1160983423

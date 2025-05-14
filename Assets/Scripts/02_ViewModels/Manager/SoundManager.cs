@@ -28,7 +28,6 @@ public class SoundManager : MonoBehaviour
     {
         if (Instance == null)
         {
-            Debug.Log($"[SoundManager] Awake in scene {SceneManager.GetActiveScene().name}");
             Instance = this;
             DontDestroyOnLoad(gameObject);
 
@@ -54,7 +53,6 @@ public class SoundManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        Debug.Log($"[SoundManager] SceneLoaded: {scene.name} ¡æ PlaySceneBGM");
         PlaySceneBGM(scene.name);
     }
 
