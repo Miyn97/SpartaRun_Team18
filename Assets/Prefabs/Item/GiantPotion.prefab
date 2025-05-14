@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5841651692056328852}
   - component: {fileID: 590276699062828232}
   - component: {fileID: 1540273537398756489}
+  - component: {fileID: -4597957165065427045}
   - component: {fileID: 7901042246909352720}
   m_Layer: 0
   m_Name: GiantPotion
@@ -131,6 +132,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &-4597957165065427045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8228531426416595722}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77953441d13248849b30b452590827ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &7901042246909352720
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -143,4 +156,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dfeadb36575cb74e89b1d6acaa3850e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemType: 0
+  itemType: 3

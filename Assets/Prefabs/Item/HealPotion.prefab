@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 175315577603037787}
   - component: {fileID: 131471853728572378}
   - component: {fileID: 248086373150775064}
+  - component: {fileID: 4429216367063361952}
   - component: {fileID: 1668808175191078279}
   m_Layer: 0
   m_Name: HealPotion
@@ -131,6 +132,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &4429216367063361952
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3877681020837683989}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77953441d13248849b30b452590827ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1668808175191078279
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -143,4 +156,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dfeadb36575cb74e89b1d6acaa3850e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemType: 0
+  itemType: 1
