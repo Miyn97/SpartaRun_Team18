@@ -159,11 +159,8 @@ public class PlayerController : MonoBehaviour
     public void TakeDamage(int damage)
     {
 
-        if (IsInvincible == true)
-        {
-            Debug.Log("무적임");
+        if (IsInvincible || model.CurrentHealth <= 0)
             return;
-        }
         else
         {
             //데미지를 받았을 때 체력 감소
@@ -176,14 +173,13 @@ public class PlayerController : MonoBehaviour
             if (model.CurrentHealth == 0)
             {
                 Debug.Log("죽었습니다.");
-                //죽었을 때 애니메이션 실행
-                //playerView.PlayDeathAnimation(); //애니메이션 생성 시 주석처리 해제
                 //사망처리 메서드 호출
                 Die();
             }
             else
             {
                 Debug.Log("체력 : " + model.CurrentHealth);
+                playerView.PlayDamageAnimation();
             }
         }
 

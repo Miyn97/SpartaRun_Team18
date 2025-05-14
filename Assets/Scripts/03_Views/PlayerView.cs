@@ -143,6 +143,13 @@ public class PlayerView : MonoBehaviour
 
     }
 
+    // 데미지를 입었을 때 애니메이션 실행
+    public void PlayDamageAnimation()
+    {
+        animator.SetTrigger("DamageTrigger");
+    }
+
+
     //사망 애니메이션 재생
     public void PlayDeathAnimation()
     {
