@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
     public AudioClip jumpClip;
     public AudioClip slideClip;
     public AudioClip damageCilp;
+    public AudioClip DieClip;
     //플레이어 애니메이션 + 물리처리 등을 게이머가 조작할 수 있도록 연결
     //[SerializeField] 잠시 주석처리
     private PlayerView playerView;
@@ -202,6 +203,7 @@ public class PlayerController : MonoBehaviour
     {
         //playerView.SetAnimatorSpeed(0f);
         //죽었을 때 애니메이션 실행
+        SoundManager.Instance.PlaySFX(DieClip, 1f);
         playerView.PlayDeathAnimation(); //애니메이션 생성 시 주석처리 해제
         playerView.StopMovementAnimation(); // 움직임 강제 정지
         //View는 죽는 연출 + 게임매니저는 상태변화
