@@ -1,30 +1,30 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
-    //Àü¿ª¿¡¼­ ÇÑ¹ø¸¸ »ı¼º + GameManager.Instance ·Î ½±°Ô Á¢±Ù°¡´É
+    //ì „ì—­ì—ì„œ í•œë²ˆë§Œ ìƒì„± + GameManager.Instance ë¡œ ì‰½ê²Œ ì ‘ê·¼ê°€ëŠ¥
     public static GameManager Instance { get; private set; }
-    //°ÔÀÓÀÇ ÇöÀç »óÅÂ
+    //ê²Œì„ì˜ í˜„ì¬ ìƒíƒœ
     public enum GameState { Intro, Start, InGame, GameOver }
-    //ÇöÀç »óÅÂ ÀúÀå º¯¼ö
+    //í˜„ì¬ ìƒíƒœ ì €ì¥ ë³€ìˆ˜
     public GameState CurrentState { get; private set; }
-    //Á¡¼ö, Ã¼·Â°ú ÇöÀç ½ºÅ×ÀÌÁö Á¤º¸¸¦ ÀúÀåÇÏ´Â º¯¼ö
+    //ì ìˆ˜, ì²´ë ¥ê³¼ í˜„ì¬ ìŠ¤í…Œì´ì§€ ì •ë³´ë¥¼ ì €ì¥í•˜ëŠ” ë³€ìˆ˜
     public int Score { get; private set; }
-    public int BestScore { get; private set; } // ÃÖ°í Á¡¼ö
+    public int BestScore { get; private set; } // ìµœê³  ì ìˆ˜
     public int MaxHp { get; private set; }
 
-    public int CurrentHp { get; private set; } // ÇöÀç Ã¼·Â
+    public int CurrentHp { get; private set; } // í˜„ì¬ ì²´ë ¥
     public int CurrentStage { get; private set; }
 
-    //StartUI ÂüÁ¶
+    //StartUI ì°¸ì¡°
     private StartUI startUI;
-    //IntroUI ÂüÁ¶
+    //IntroUI ì°¸ì¡°
     private IntroUI introUI;
-    //GameUI ÂüÁ¶
+    //GameUI ì°¸ì¡°
     private GameUI gameUI;
-    //GameOverUI ÂüÁ¶
+    //GameOverUI ì°¸ì¡°
     //private GameOverUI gameOverUI;
     [SerializeField] private ItemManager itemManager;
     [SerializeField] private ItemSpawnController itemSpawnController;
@@ -34,45 +34,45 @@ public class GameManager : MonoBehaviour
     //public event System.Action OnRestartRequested;
     //public event System.Action OnReturnHomeRequested;
 
-    //ÇöÀç °ÔÀÓÀÌ ÀÏ½ÃÁ¤Áö »óÅÂÀÎÁö ³ªÅ¸³»´Â º¯¼ö.
-    //»óÅÂ¸¦ Åä±ÛÇÒ ¶§ »ç¿ëµÊ
+    //í˜„ì¬ ê²Œì„ì´ ì¼ì‹œì •ì§€ ìƒíƒœì¸ì§€ ë‚˜íƒ€ë‚´ëŠ” ë³€ìˆ˜.
+    //ìƒíƒœë¥¼ í† ê¸€í•  ë•Œ ì‚¬ìš©ë¨
     private bool isPaused = false;
 
     private void Awake()
     {
-        //GameManager 2°³ ¹æÁö + ½Ì±ÛÅæ ¿øÄ¢
+        //GameManager 2ê°œ ë°©ì§€ + ì‹±ê¸€í†¤ ì›ì¹™
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
             return;
         }
 
-        //GameManager¸¦ Àü¿ª ÀÎ½ºÅÏ½º·Î µî·Ï
+        //GameManagerë¥¼ ì „ì—­ ì¸ìŠ¤í„´ìŠ¤ë¡œ ë“±ë¡
         Instance = this;
-        //¾À ÀüÈ¯µÇ¾îµµ ÀÌ ¿ÀºêÁ§Æ®´Â »ç¶óÁöÁö ¾Êµµ·Ï ¼³Á¤ (°ÔÀÓ Èå¸§ À¯Áö)
+        //ì”¬ ì „í™˜ë˜ì–´ë„ ì´ ì˜¤ë¸Œì íŠ¸ëŠ” ì‚¬ë¼ì§€ì§€ ì•Šë„ë¡ ì„¤ì • (ê²Œì„ íë¦„ ìœ ì§€)
         DontDestroyOnLoad(gameObject);
     }
 
     private void Start()
     {
-        BestScore = PlayerPrefs.GetInt("BestScore", 0); // ÃÖ°í Á¡¼ö ºÒ·¯¿À±â
-        Score = 0; // Á¡¼ö ¸®¼Â
-        CurrentHp = 6; // Ã¼·Â ¸®¼Â (6À¸·Î ¼³Á¤)
+        BestScore = PlayerPrefs.GetInt("BestScore", 0); // ìµœê³  ì ìˆ˜ ë¶ˆëŸ¬ì˜¤ê¸°
+        Score = 0; // ì ìˆ˜ ë¦¬ì…‹
+        CurrentHp = 6; // ì²´ë ¥ ë¦¬ì…‹ (6ìœ¼ë¡œ ì„¤ì •)
 
-        //°ÔÀÓÀÌ ½ÃÀÛµÇ¸é Intro »óÅÂ·Î ÀüÈ¯
-        //ChangeState(GameState.Intro); // ÃÖÁ¾º»¿¡¼­´Â ÇÊ¿äÇÔ
-        //StartCoroutine(itemManager.SpawnRandomItem(15f));//½ÃÀÛÇÒ¶§ ÄÚ·çÆ¾µµ ½ÃÀÛ, 15ÃÊ ÈÄ¿¡ ¾ÆÀÌÅÛ »ı¼º
-        //StartCoroutine(itemManager.SpawnCoin(2));//2ÃÊ¸¶´Ù ÄÚÀÎ»ı¼º
+        //ê²Œì„ì´ ì‹œì‘ë˜ë©´ Intro ìƒíƒœë¡œ ì „í™˜
+        //ChangeState(GameState.Intro); // ìµœì¢…ë³¸ì—ì„œëŠ” í•„ìš”í•¨
+        //StartCoroutine(itemManager.SpawnRandomItem(15f));//ì‹œì‘í• ë•Œ ì½”ë£¨í‹´ë„ ì‹œì‘, 15ì´ˆ í›„ì— ì•„ì´í…œ ìƒì„±
+        //StartCoroutine(itemManager.SpawnCoin(2));//2ì´ˆë§ˆë‹¤ ì½”ì¸ìƒì„±
     }
 
     private void OnEnable()
     {
-        //¾ÀÀÌ ·ÎµåµÉ ¶§¸¶´Ù ÀÚµ¿À¸·Î OnSceneLoaded()¸¦ ½ÇÇà
+        //ì”¬ì´ ë¡œë“œë  ë•Œë§ˆë‹¤ ìë™ìœ¼ë¡œ OnSceneLoaded()ë¥¼ ì‹¤í–‰
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
     private void OnDisable()
     {
-        //¾ÀÀÌ ºñÈ°¼ºÈ­µÉ ¶§ ÀÚµ¿À¸·Î OnSceneLoaded()¸¦ ÇØÁ¦
+        //ì”¬ì´ ë¹„í™œì„±í™”ë  ë•Œ ìë™ìœ¼ë¡œ OnSceneLoaded()ë¥¼ í•´ì œ
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
@@ -80,7 +80,7 @@ public class GameManager : MonoBehaviour
     {
         if (scene.name == "03_IntroScene")
         {
-            //IntroUI Ã£°í È°¼ºÈ­
+            //IntroUI ì°¾ê³  í™œì„±í™”
             introUI = FindObjectOfType<IntroUI>();
             if (introUI != null)
             {
@@ -90,7 +90,7 @@ public class GameManager : MonoBehaviour
 
         if (scene.name == "01_StartScene")
         {
-            //StartUI Ã£°í È°¼ºÈ­
+            //StartUI ì°¾ê³  í™œì„±í™”
             startUI = FindObjectOfType<StartUI>();
             if (startUI != null)
             {
@@ -109,11 +109,11 @@ public class GameManager : MonoBehaviour
             {
                 StartCoroutine(itemSpawnController.SpawnCoinRoutine(5f));
                 StartCoroutine(itemSpawnController.SpawnRandomItemRoutine(15f));
-                Debug.Log("[GameManager] ¾ÆÀÌÅÛ ½ºÆù ÄÚ·çÆ¾ ½ÃÀÛµÊ");
+                Debug.Log("[GameManager] ì•„ì´í…œ ìŠ¤í° ì½”ë£¨í‹´ ì‹œì‘ë¨");
             }
             else
             {
-                Debug.LogError("[GameManager] ItemSpawnController¸¦ Ã£À» ¼ö ¾ø½À´Ï´Ù.");
+                Debug.LogError("[GameManager] ItemSpawnControllerë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
             }
 
             gameUI = FindObjectOfType<GameUI>();
@@ -124,80 +124,80 @@ public class GameManager : MonoBehaviour
 
                 UIManager.Instance.OnRestartRequested += RestartGame;
                 UIManager.Instance.OnReturnHomeRequested += ReturnToHome;
-                //gameUI.OnVolumeChanged += SoundManager.Instance.SetVolume; // (¿¬°á µÇ¸é ÁÖ¼®Ã³¸® ÇØÁ¦ÇÏ°í Àû¿ë)
+                //gameUI.OnVolumeChanged += SoundManager.Instance.SetVolume; // (ì—°ê²° ë˜ë©´ ì£¼ì„ì²˜ë¦¬ í•´ì œí•˜ê³  ì ìš©)
             }
         }
     }
 
-    //½ÇÁ¦ ÀÏ½ÃÁ¤Áö¸¦ ¼öÇàÇÏ´Â ¸Ş¼­µå
+    //ì‹¤ì œ ì¼ì‹œì •ì§€ë¥¼ ìˆ˜í–‰í•˜ëŠ” ë©”ì„œë“œ
     private void TogglePause()
     {
-        //ÇöÀç ÀÏ½ÃÁ¤Áö »óÅÂ¸¦ ¹İÀü½ÃÅ´
+        //í˜„ì¬ ì¼ì‹œì •ì§€ ìƒíƒœë¥¼ ë°˜ì „ì‹œí‚´
         isPaused = !isPaused;
-        //UnityÀÇ ½Ã°£ ¼Óµµ¸¦ Á¶ÀıÇÏ´Â º¯¼ö
-        //0À¸·Î ¼³Á¤ÇÏ¸é ¸ğµç Update³ª FixedUpdate ½ÇÇàÀÌ ¸ØÃã
+        //Unityì˜ ì‹œê°„ ì†ë„ë¥¼ ì¡°ì ˆí•˜ëŠ” ë³€ìˆ˜
+        //0ìœ¼ë¡œ ì„¤ì •í•˜ë©´ ëª¨ë“  Updateë‚˜ FixedUpdate ì‹¤í–‰ì´ ë©ˆì¶¤
         Time.timeScale = isPaused ? 0 : 1;
-        //¿É¼ÇÃ¢ UI¸¦ ÄÑ°Å³ª ²ô´Â ¸í·É
-        //View¿¡°Ô ¸í·É¸¸ ³»¸²
+        //ì˜µì…˜ì°½ UIë¥¼ ì¼œê±°ë‚˜ ë„ëŠ” ëª…ë ¹
+        //Viewì—ê²Œ ëª…ë ¹ë§Œ ë‚´ë¦¼
         gameUI.ToggleOptionPanel(isPaused);
     }
 
-    //°ÔÀÓ ¿À¹ö »óÈ²À» È£ÃâÇÒ ¶§ ¿ÜºÎ¿¡¼­ »ç¿ëÇÒ ¼ö ÀÖ´Â ÇÔ¼ö
+    //ê²Œì„ ì˜¤ë²„ ìƒí™©ì„ í˜¸ì¶œí•  ë•Œ ì™¸ë¶€ì—ì„œ ì‚¬ìš©í•  ìˆ˜ ìˆëŠ” í•¨ìˆ˜
     public void TriggerGameOver(int score, int bestScore)
     {
-        //°ÔÀÓ ¿À¹ö½Ã ÇÃ·¹ÀÌ Á¤Áö.
+        //ê²Œì„ ì˜¤ë²„ì‹œ í”Œë ˆì´ ì •ì§€.
         Time.timeScale = 0;
-        //Á¡¼ö¿Í ÃÖ°í Á¡¼ö¸¦ Àü´Ş + GameOverUI¸¦ º¸¿©ÁÜ
-        //gameOverUI.Show(score, bestScore); // <<ÀÌ°Å ÁÖ¼® ÇØÁ¦ÇÏ¸é GameOverUI µÎ¹ø È£Ãâ
-        //»óÅÂ¸¦ GameOver·Î ÀüÈ¯
+        //ì•„ì´í…œ ìƒì„± ì¤‘ë‹¨
+        itemSpawnController?.StopSpawn();
+        //ìƒíƒœë¥¼ GameOverë¡œ ì „í™˜
         ChangeState(GameState.GameOver);
     }
 
-    //IntroUI¿¡¼­ ÀÎÆ®·Î(½ºÅä¸®)°¡ ³¡³µÀ» ¶§ È£ÃâµÇ´Â Äİ¹é ÇÔ¼ö
-    //Æ®¸®°ÅµÇ¸é ½ÇÇàµÊ
+    //IntroUIì—ì„œ ì¸íŠ¸ë¡œ(ìŠ¤í† ë¦¬)ê°€ ëë‚¬ì„ ë•Œ í˜¸ì¶œë˜ëŠ” ì½œë°± í•¨ìˆ˜
+    //íŠ¸ë¦¬ê±°ë˜ë©´ ì‹¤í–‰ë¨
     private void HandleIntroComplete()
     {
-        //ÇöÀç °ÔÀÓ »óÅÂ¸¦ Start·Î ÀüÈ¯
-        //Áï, StartScene ¶Ç´Â ½ÃÀÛÈ­¸é UI·Î ³Ñ¾î°¡´Â ¿ªÇÒÀ» ¼öÇà
+        //í˜„ì¬ ê²Œì„ ìƒíƒœë¥¼ Startë¡œ ì „í™˜
+        //ì¦‰, StartScene ë˜ëŠ” ì‹œì‘í™”ë©´ UIë¡œ ë„˜ì–´ê°€ëŠ” ì—­í• ì„ ìˆ˜í–‰
         ChangeState(GameState.Start);
     }
 
-    //StartUI¿¡¼­ °ÔÀÓ ½ÃÀÛ ¹öÆ°À» ´©¸£¸é ÀÌ ÇÔ¼ö°¡ È£Ãâ
+    //StartUIì—ì„œ ê²Œì„ ì‹œì‘ ë²„íŠ¼ì„ ëˆ„ë¥´ë©´ ì´ í•¨ìˆ˜ê°€ í˜¸ì¶œ
     private void HandleStartGame()
     {
-        //°ÔÀÓ »óÅÂ¸¦ InGame·Î º¯°æ
-        //ÀÏ¹İÀûÀ¸·Î MainSceneÀ» ·ÎµåÇÏ°í, ½ÇÁ¦ °ÔÀÓ ÇÃ·¹ÀÌ¸¦ ½ÃÀÛÇÏ´Â »óÅÂ·Î ÀüÈ¯
+        //ê²Œì„ ìƒíƒœë¥¼ InGameë¡œ ë³€ê²½
+        //ì¼ë°˜ì ìœ¼ë¡œ MainSceneì„ ë¡œë“œí•˜ê³ , ì‹¤ì œ ê²Œì„ í”Œë ˆì´ë¥¼ ì‹œì‘í•˜ëŠ” ìƒíƒœë¡œ ì „í™˜
         ChangeState(GameState.InGame);
     }
 
-    //StartUI¿¡¼­ ¿É¼Ç ¹öÆ°À» ´©¸£¸é ÀÌ ÇÔ¼ö°¡ È£Ãâ
+    //StartUIì—ì„œ ì˜µì…˜ ë²„íŠ¼ì„ ëˆ„ë¥´ë©´ ì´ í•¨ìˆ˜ê°€ í˜¸ì¶œ
     private void HandleOption()
     {
-        //¿É¼Ç UI¸¦ ¶ç¿ì´Â ·ÎÁ÷À» ¿©±â¿¡ Ãß°¡ÇÏ¸é µË´Ï´Ù.
+        //ì˜µì…˜ UIë¥¼ ë„ìš°ëŠ” ë¡œì§ì„ ì—¬ê¸°ì— ì¶”ê°€í•˜ë©´ ë©ë‹ˆë‹¤.
         startUI.ShowOptionPanel();
     }
 
-    //°ÔÀÓ Á¾·á ¹öÆ°À» ´­·ÈÀ» ¶§ ½ÇÇàµÇ´Â ÇÔ¼ö
+    //ê²Œì„ ì¢…ë£Œ ë²„íŠ¼ì„ ëˆŒë ¸ì„ ë•Œ ì‹¤í–‰ë˜ëŠ” í•¨ìˆ˜
     private void HandleExit()
     {
-        //½ÇÇàµÈ ºôµå »óÅÂ¿¡¼­ °ÔÀÓÀ» Á¾·á
-        //Windows, Mac, Android µî¿¡¼­ Á¾·áµÇ¸ç ¿¡µğÅÍ¿¡¼­´Â ¹«½ÃµÊ
+        //ì‹¤í–‰ëœ ë¹Œë“œ ìƒíƒœì—ì„œ ê²Œì„ì„ ì¢…ë£Œ
+        //Windows, Mac, Android ë“±ì—ì„œ ì¢…ë£Œë˜ë©° ì—ë””í„°ì—ì„œëŠ” ë¬´ì‹œë¨
         Application.Quit();
 
-        //ÀÌ ÄÚµå´Â Unity ¿¡µğÅÍ¿¡¼­ ½ÇÇà ÁßÀÏ ¶§¸¸ ÀÛµ¿ÇÏµµ·Ï Á¶°ÇºÎ ÄÄÆÄÀÏ Áö½ÃÀÚÀÔ´Ï´Ù
-        //¿¡µğÅÍ¿¡¼­µµ Á¾·á ¹öÆ°À» ´©¸£¸é Play¸ğµå°¡ ²¨Áöµµ·Ï ÇØÁÜ
+        //ì´ ì½”ë“œëŠ” Unity ì—ë””í„°ì—ì„œ ì‹¤í–‰ ì¤‘ì¼ ë•Œë§Œ ì‘ë™í•˜ë„ë¡ ì¡°ê±´ë¶€ ì»´íŒŒì¼ ì§€ì‹œìì…ë‹ˆë‹¤
+        //ì—ë””í„°ì—ì„œë„ ì¢…ë£Œ ë²„íŠ¼ì„ ëˆ„ë¥´ë©´ Playëª¨ë“œê°€ êº¼ì§€ë„ë¡ í•´ì¤Œ
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #endif
     }
 
-    //°ÔÀÓ »óÅÂ¸¦ ÀüÈ¯ÇÏ´Â ¸Ş¼­µå (È£Ãâ °¡´É)
+    //ê²Œì„ ìƒíƒœë¥¼ ì „í™˜í•˜ëŠ” ë©”ì„œë“œ (í˜¸ì¶œ ê°€ëŠ¥)
     public void ChangeState(GameState newState)
     {
-        //»óÅÂ°ª °»½Å
+        //ìƒíƒœê°’ ê°±ì‹ 
         CurrentState = newState;
 
-        //»óÅÂ¿¡ µû¶ó¼­ ´Ù¸¥ ¾À ·Îµå
+        //ìƒíƒœì— ë”°ë¼ì„œ ë‹¤ë¥¸ ì”¬ ë¡œë“œ
         switch (newState)
         {
             case GameState.Intro:
@@ -208,79 +208,80 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.InGame:
                 SceneManager.LoadScene("02_MainScene");
-                // »õ °ÔÀÓ ½ÃÀÛ½Ã Ã¼·Â, Á¡¼ö ´Ù½Ã ÃÊ±âÈ­
-                Score = 0; // Á¡¼ö ¸®¼Â
-                CurrentHp = 6; // Ã¼·Â ¸®¼Â (6À¸·Î ¼³Á¤)
+                // ìƒˆ ê²Œì„ ì‹œì‘ì‹œ ì²´ë ¥, ì ìˆ˜ ë‹¤ì‹œ ì´ˆê¸°í™”
+                Score = 0; // ì ìˆ˜ ë¦¬ì…‹
+                CurrentHp = 6; // ì²´ë ¥ ë¦¬ì…‹ (6ìœ¼ë¡œ ì„¤ì •)
                 break;
             case GameState.GameOver:
-                //¾À ÀüÈ¯X, UI¸¸ Ç¥½Ã
+                //ì”¬ ì „í™˜X, UIë§Œ í‘œì‹œ
                 UIManager.Instance.ShowGameOverUI(Score, BestScore);
                 break;
         }
     }
 
-    //ÇÃ·¹ÀÌ¾î°¡ ¾ÆÀÌÅÛ(ÄÚÀÎ)À» ¸Ô°Å³ª ÇÒ ¶§ Á¡¼ö Áõ°¡
+    //í”Œë ˆì´ì–´ê°€ ì•„ì´í…œ(ì½”ì¸)ì„ ë¨¹ê±°ë‚˜ í•  ë•Œ ì ìˆ˜ ì¦ê°€
     public void AddScore(int value)
     {
         Score += value;
         if (Score > BestScore)
         {
-            BestScore = Score; //ÃÖ°í Á¡¼ö °»½Å
-            PlayerPrefs.SetInt("BestScore", BestScore); //ÃÖ°í Á¡¼ö ÀúÀå
+            BestScore = Score; //ìµœê³  ì ìˆ˜ ê°±ì‹ 
+            PlayerPrefs.SetInt("BestScore", BestScore); //ìµœê³  ì ìˆ˜ ì €ì¥
         }
-        //Á¡¼ö Áõ°¡ ÈÄ, UIManager¿¡ ÇöÀç Á¡¼ö ¾÷µ¥ÀÌÆ® ¿äÃ»
+        //ì ìˆ˜ ì¦ê°€ í›„, UIManagerì— í˜„ì¬ ì ìˆ˜ ì—…ë°ì´íŠ¸ ìš”ì²­
         UIManager.Instance?.UpdateScore(Score, BestScore);
     }
     public void Heal(int amount)
     {
-        CurrentHp = Mathf.Min(CurrentHp + amount, MaxHp); //Ã¼·Â Áõ°¡ (ÃÖ´ë 6)
-        UIManager.Instance.UpdateHealth(CurrentHp); //UIManager¿¡ Ã¼·Â ¾÷µ¥ÀÌÆ® ¿äÃ»
+        CurrentHp = Mathf.Min(CurrentHp + amount, MaxHp); //ì²´ë ¥ ì¦ê°€ (ìµœëŒ€ 6)
+        UIManager.Instance.UpdateHealth(CurrentHp); //UIManagerì— ì²´ë ¥ ì—…ë°ì´íŠ¸ ìš”ì²­
     }
 
 
-    // Ã¼·Â°¨¼Ò Å×½ºÆ®¿ë _ryang
+    // ì²´ë ¥ê°ì†Œ í…ŒìŠ¤íŠ¸ìš© _ryang
     public void TakeDamage(int damage)
     {
-        CurrentHp = Mathf.Max(CurrentHp - damage, 0); //Ã¼·Â °¨¼Ò (ÃÖ¼Ò 0)
-        UIManager.Instance.UpdateHealth(CurrentHp); //UIManager¿¡ Ã¼·Â ¾÷µ¥ÀÌÆ® ¿äÃ»
+        CurrentHp = Mathf.Max(CurrentHp - damage, 0); //ì²´ë ¥ ê°ì†Œ (ìµœì†Œ 0)
+        UIManager.Instance.UpdateHealth(CurrentHp); //UIManagerì— ì²´ë ¥ ì—…ë°ì´íŠ¸ ìš”ì²­
 
         if (CurrentHp <= 0)
         {
-            ChangeState(GameState.GameOver);
+            TriggerGameOver(Score, BestScore); //ì—¬ê¸°ì„œ GameOver ì²˜ë¦¬ í†µí•©
+            //ChangeState(GameState.GameOver);
         }
     }
 
-    //³­ÀÌµµ Áõ°¡³ª ´ÙÀ½ ¸Ê ÀüÈ¯¿¡ »ç¿ë
+    //ë‚œì´ë„ ì¦ê°€ë‚˜ ë‹¤ìŒ ë§µ ì „í™˜ì— ì‚¬ìš©
     public void SetStage(int stage)
     {
         CurrentStage = stage;
     }
 
-    //°ÔÀÓ Àç½ÃÀÛ °ü·Ã ¸Ş¼­µå
+    //ê²Œì„ ì¬ì‹œì‘ ê´€ë ¨ ë©”ì„œë“œ
     public void RestartGame()
     {
-        // Àç½ÃÀÛ½Ã ½Ã°£ ´Ù½Ã Èå¸£°Ô
+        // ì¬ì‹œì‘ì‹œ ì‹œê°„ ë‹¤ì‹œ íë¥´ê²Œ
         Time.timeScale = 1;
         Score = 0;
-        SetStage(1); //½ºÅ×ÀÌÁö ÃÊ±âÈ­ ¿¹½Ã
-                     //SceneManager.LoadScene("MainScene"); //MainSceneÀ» ·Îµå
-        ChangeState(GameState.InGame); //»óÅÂ¸¦ InGameÀ¸·Î º¯°æ
+        SetStage(1); //ìŠ¤í…Œì´ì§€ ì´ˆê¸°í™” ì˜ˆì‹œ
+                     //SceneManager.LoadScene("MainScene"); //MainSceneì„ ë¡œë“œ
+        ChangeState(GameState.InGame); //ìƒíƒœë¥¼ InGameìœ¼ë¡œ ë³€ê²½
     }
 
-    //È¨À¸·Î µ¹¾Æ°¡±â ¹öÆ°ÀÌ ´­·ÈÀ» ¶§ ½ÇÇà
+    //í™ˆìœ¼ë¡œ ëŒì•„ê°€ê¸° ë²„íŠ¼ì´ ëˆŒë ¸ì„ ë•Œ ì‹¤í–‰
     public void ReturnToHome()
     {
-        Time.timeScale = 1; // ½Ã°£ Èå¸£°Ô
-        isPaused = false; // ÀÏ½ÃÁ¤Áö ÇØÁ¦
+        Time.timeScale = 1; // ì‹œê°„ íë¥´ê²Œ
+        isPaused = false; // ì¼ì‹œì •ì§€ í•´ì œ
 
-        //»óÅÂ ÃÊ±âÈ­
+        //ìƒíƒœ ì´ˆê¸°í™”
         Score = 0;
         SetStage(0);
-        //Start ¾ÀÀ¸·Î ÀÌµ¿
+        //Start ì”¬ìœ¼ë¡œ ì´ë™
         ChangeState(GameState.Start);
     }
 
-    ////°ÔÀÓ Á¾·á
+    ////ê²Œì„ ì¢…ë£Œ
     //public void QuitGame()
     //{
     //    Application.Quit();

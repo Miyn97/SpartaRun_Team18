@@ -1,29 +1,51 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// ¾ÆÀÌÅÛÀÇ »ı¼º À§Ä¡ °Ë»ç ¹× ½Ã°£ ±â¹İ ·£´ı ½ºÆùÀ» ÇÔ²² ´ã´çÇÏ´Â Å¬·¡½º
+/// ì•„ì´í…œì˜ ìƒì„± ìœ„ì¹˜ ê²€ì‚¬ ë° ì‹œê°„ ê¸°ë°˜ ëœë¤ ìŠ¤í°ì„ í•¨ê»˜ ë‹´ë‹¹í•˜ëŠ” í´ë˜ìŠ¤
 /// </summary>
 public class ItemSpawnController : MonoBehaviour
 {
-    [Header("ÂüÁ¶")]
-    [SerializeField] private ItemManager itemManager; // ¾ÆÀÌÅÛ Ç®¸µ ¸Å´ÏÀú
-    [SerializeField] private Transform player;         // ÇÃ·¹ÀÌ¾î À§Ä¡ ±âÁØ
-    [SerializeField] private LayerMask obstacleLayer;  // Àå¾Ö¹° °¨Áö¿ë ·¹ÀÌ¾î
+    [Header("ì°¸ì¡°")]
+    [SerializeField] private ItemManager itemManager; // ì•„ì´í…œ í’€ë§ ë§¤ë‹ˆì €
+    [SerializeField] private Transform player;         // í”Œë ˆì´ì–´ ìœ„ì¹˜ ê¸°ì¤€
+    [SerializeField] private LayerMask obstacleLayer;  // ì¥ì• ë¬¼ ê°ì§€ìš© ë ˆì´ì–´
 
-    [Header("½ºÆù ¼³Á¤")]
-    [SerializeField] private float spawnOffsetX = 15f; // ÇÃ·¹ÀÌ¾î ±âÁØ »ı¼º À§Ä¡ X
-    [SerializeField] private float overlapRadius = 0.5f; // Àå¾Ö¹° °¨Áö ¹üÀ§
-    [SerializeField] private Vector2 fallbackOffset = new(1f, 1f); // Àå¾Ö¹° ÀÖÀ» ¶§ º¸Á¤ À§Ä¡
+    [Header("ìŠ¤í° ì„¤ì •")]
+    [SerializeField] private float spawnOffsetX = 15f; // í”Œë ˆì´ì–´ ê¸°ì¤€ ìƒì„± ìœ„ì¹˜ X
+    [SerializeField] private float overlapRadius = 0.5f; // ì¥ì• ë¬¼ ê°ì§€ ë²”ìœ„
+    [SerializeField] private Vector2 fallbackOffset = new(1f, 1f); // ì¥ì• ë¬¼ ìˆì„ ë•Œ ë³´ì • ìœ„ì¹˜
 
-    private readonly float maxCoolTime = 30f; // ·£´ı »ı¼º ÃÖ´ë °£°İ Á¦ÇÑ
+    private Coroutine spawnRoutine;
+
+    public void StartSpawn()
+    {
+        spawnRoutine = StartCoroutine(SpawnCoinRoutine(2f));
+    }
+
+    public void StopSpawn()
+    {
+        if (spawnRoutine != null)
+        {
+            StopCoroutine(spawnRoutine);
+            spawnRoutine = null;
+        }
+    }
+
+    private readonly float maxCoolTime = 30f; // ëœë¤ ìƒì„± ìµœëŒ€ ê°„ê²© ì œí•œ
 
     /// <summary>
-    /// ¿ÜºÎ¿¡¼­ Á÷Á¢ Æ¯Á¤ ¾ÆÀÌÅÛÀ» ½ºÆùÇÏ°íÀÚ ÇÒ ¶§ »ç¿ë
+    /// ì™¸ë¶€ì—ì„œ ì§ì ‘ íŠ¹ì • ì•„ì´í…œì„ ìŠ¤í°í•˜ê³ ì í•  ë•Œ ì‚¬ìš©
     /// </summary>
     public void SpawnItem(ItemEnum type)
     {
+        if (itemManager == null || itemManager.Equals(null)) //ë°©ì–´ ì½”ë“œ
+        {
+            Debug.LogWarning("ItemManagerê°€ ì¡´ì¬í•˜ì§€ ì•Šì•„ SpawnItem ì·¨ì†Œë¨");
+            return;
+        }
+
         var item = itemManager.Get(type);
         if (item == null) return;
 
@@ -35,7 +57,7 @@ public class ItemSpawnController : MonoBehaviour
 
             if (Physics2D.OverlapCircle(spawnPos, overlapRadius, obstacleLayer))
             {
-                Debug.Log("¾ÆÀÌÅÛ »ı¼º À§Ä¡¿¡ Àå¾Ö¹°ÀÌ Á¸ÀçÇÏ¿© Ãë¼ÒµÊ");
+                Debug.Log("ì•„ì´í…œ ìƒì„± ìœ„ì¹˜ì— ì¥ì• ë¬¼ì´ ì¡´ì¬í•˜ì—¬ ì·¨ì†Œë¨");
                 itemManager.ReturnToPool(type, item);
                 return;
             }
@@ -46,19 +68,25 @@ public class ItemSpawnController : MonoBehaviour
     }
 
     /// <summary>
-    /// ÁÖ±âÀûÀ¸·Î ÄÚÀÎÀ» »ı¼ºÇÏ´Â ÄÚ·çÆ¾
+    /// ì£¼ê¸°ì ìœ¼ë¡œ ì½”ì¸ì„ ìƒì„±í•˜ëŠ” ì½”ë£¨í‹´
     /// </summary>
     public IEnumerator SpawnCoinRoutine(float interval)
     {
         while (true)
         {
-            yield return YieldCache.WaitForSeconds(interval); // GC ÃÖ¼ÒÈ­ Ä³½Ì
+            yield return YieldCache.WaitForSeconds(interval); // GC ìµœì†Œí™” ìºì‹±
+
+            if (itemManager == null || itemManager.Equals(null))
+            {
+                Debug.LogWarning("ItemManagerê°€ íŒŒê´´ë˜ì–´ SpawnCoinRoutineì„ ì¤‘ë‹¨í•©ë‹ˆë‹¤.");
+                yield break;
+            }
             SpawnItem(ItemEnum.Coin);
         }
     }
 
     /// <summary>
-    /// ÀÏÁ¤ ÁÖ±â·Î ·£´ı ¾ÆÀÌÅÛÀ» »ı¼ºÇÏ´Â ÄÚ·çÆ¾
+    /// ì¼ì • ì£¼ê¸°ë¡œ ëœë¤ ì•„ì´í…œì„ ìƒì„±í•˜ëŠ” ì½”ë£¨í‹´
     /// </summary>
     public IEnumerator SpawnRandomItemRoutine(float startCoolTime)
     {
@@ -69,7 +97,7 @@ public class ItemSpawnController : MonoBehaviour
         {
             yield return YieldCache.WaitForSeconds(nowCoolTime);
 
-            // Coin Á¦¿ÜÇÑ ³ª¸ÓÁö ¾ÆÀÌÅÛµé¿¡¼­ ·£´ı ¼±ÅÃ
+            // Coin ì œì™¸í•œ ë‚˜ë¨¸ì§€ ì•„ì´í…œë“¤ì—ì„œ ëœë¤ ì„ íƒ
             ItemEnum randomItem = (ItemEnum)Random.Range(1, System.Enum.GetValues(typeof(ItemEnum)).Length);
             SpawnItem(randomItem);
 
