@@ -1,30 +1,34 @@
 using UnityEngine;
 
-public class SoundSource : MonoBehaviour
+public class SoundSource : MonoBehaviour, ISoundPlayer
 {
-    private AudioSource audioSource;
+    private AudioSource source;
+    private float currentVolume;
 
-    public void Play(AudioClip clip, float volume = 1f, float pitchVariance = 0f)
+    public void Init(bool loop, float volume)
+    {
+        if (source == null)
+            source = gameObject.AddComponent<AudioSource>();
+        source.loop = loop;
+        currentVolume = volume;
+        source.volume = volume;
+    }
+
+    public void Play(AudioClip clip, float pitchVar = 0f)
     {
         if (clip == null) return;
-
-        if (audioSource == null)
-            audioSource = gameObject.AddComponent<AudioSource>();
-
-        audioSource.clip = clip;
-        audioSource.volume = volume;
-        audioSource.pitch = 1f + Random.Range(-pitchVariance, pitchVariance);
-        audioSource.Play();
-
-        Destroy(gameObject, clip.length + 0.1f); // 자동 파괴
+        source.clip = clip;
+        source.pitch = 1f + Random.Range(-pitchVar, pitchVar);
+        source.volume = currentVolume;
+        source.Play();
     }
 
-    // 볼륨을 설정하는 메서드
-    public void SetVolume(float sfxVolume, float bgmVolume)
+    public void Stop() => source?.Stop();
+    public void SetVolume(float volume)
     {
-        if (audioSource != null)
-        {
-            audioSource.volume = bgmVolume;
-        }
+        currentVolume = volume;
+        if (source != null) source.volume = volume;
     }
+
+    public bool IsPlaying => source != null && source.isPlaying;
 }
