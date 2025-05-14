@@ -9,7 +9,7 @@ public class DeathZone : MonoBehaviour
     {
         if (player != null)
         {
-            transform.position = new Vector3(player.position.x, player.position.y - 10f, 0f);
+            transform.position = new Vector3(player.position.x, 0f, 0f);
         }
     }
 
