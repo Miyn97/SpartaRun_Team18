@@ -3379,8 +3379,8 @@ Transform:
   m_GameObject: {fileID: 1464368207}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -13, y: 0, z: 10}
-  m_LocalScale: {x: 0.5, y: 30, z: 1}
+  m_LocalPosition: {x: -30, y: 0, z: 10}
+  m_LocalScale: {x: 2, y: 20, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 519420032}
@@ -3976,18 +3976,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68545ed675eb61745a5a03afa04f2d77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countPerType: 5
-  redLinePrefab: {fileID: 4565103189964499219, guid: 91ef75a540db7c9478c2e02605d3af3a, type: 3}
-  syntaxErrorBoxPrefab: {fileID: 2184221484011828788, guid: 88ec28c112ee0ed42b9f1a1da38a3606, type: 3}
-  compileErrorWallPrefab: {fileID: 8560573066561155159, guid: 6bcac34abc8c13c48860aee4c6db2e87, type: 3}
-  batchSize: 3
-  hiddenThreshold: 3
-  groupSpacing: 7
-  innerSpacing: 7
+  countPerPrefab: 2
+  prefabList:
+  - {fileID: 7120145286101456948, guid: 09cc28c4f5e63824da3a2a35497a50a4, type: 3}
+  - {fileID: 7120145286101456948, guid: c26ee84c00961d4459265e0947004ce3, type: 3}
+  - {fileID: 7120145286101456948, guid: 751cf78007b90504988ae9a3ff86e5e1, type: 3}
+  - {fileID: 7120145286101456948, guid: fa3c88194b10d0b48843b3fb59780334, type: 3}
+  - {fileID: 7120145286101456948, guid: cb997d21fe46f5e4d9c36c9126b26b53, type: 3}
+  - {fileID: 7120145286101456948, guid: d764af9dae4804940ab54d238926d4b3, type: 3}
+  - {fileID: 7120145286101456948, guid: e074c13d4b130244ab67e30260da01c5, type: 3}
+  - {fileID: 7120145286101456948, guid: 658a2edf964910a4fa08fb6dcea6ea1b, type: 3}
+  - {fileID: 7120145286101456948, guid: aeff33f39befdc94fa472c5bc22a0005, type: 3}
+  groupSpacing: 27
+  spawnY: -2.5
+  useDistanceCheck: 1
+  spawnAhead: 54
   player: {fileID: 220529794}
-  spawnAhead: 20
-  groundObstacleY: -2.5
-  airObstacleY: -2.5
 --- !u!4 &1830982750
 Transform:
   m_ObjectHideFlags: 0
