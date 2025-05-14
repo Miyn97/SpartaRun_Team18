@@ -6,10 +6,10 @@ using UnityEngine;
 public class BackGroundLooper : MonoBehaviour
 {
     [Header("프리팹 및 설정")]
-    [SerializeField] private int poolSizePerChunk = 16; // 각 프리팹당 풀링할 오브젝트 수
+    [SerializeField] private int poolSizePerChunk = 30; // 각 프리팹당 풀링할 오브젝트 수
     [SerializeField] private float chunkWidth = 5f;     // 청크 하나의 너비
     [SerializeField] private float chunkSpacing = 0f;   // 청크 간 간격
-    [SerializeField] private int preloadCount = 12;      // 최초 미리 생성할 청크 수
+    [SerializeField] private int preloadCount = 24;      // 최초 미리 생성할 청크 수
 
     [Header("참조 연결")]
     [SerializeField] private Transform player;          // 플레이어 위치 추적
