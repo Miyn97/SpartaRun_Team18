@@ -3253,7 +3253,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startPoint: {fileID: 924829916}
   endPoint: {fileID: 213037538}
-  scrollSpeed: 0.03
+  scrollTime: 3.7
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
