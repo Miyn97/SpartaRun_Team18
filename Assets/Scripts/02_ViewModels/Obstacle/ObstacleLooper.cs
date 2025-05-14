@@ -1,18 +1,23 @@
 using UnityEngine;
 
-/// <summary>
-/// 장애물이 특정 영역을 벗어나면 ObstacleSpawner에 숨김 요청
-/// </summary>
-public class ObstacleLooper : MonoBehaviour
+namespace Game.Views
 {
-    private void OnTriggerEnter2D(Collider2D col)
+    /// <summary>
+    /// 뒤쪽 Trigger에 닿은 'ObstacleGround' 부모 오브젝트를
+    /// ObstacleSpawner에 숨김 처리 요청
+    /// </summary>
+    public class ObstacleLooper : MonoBehaviour
     {
-        // 장애물 관련 태그인 경우만 처리 (태그 2종 통합 가능)
-        if (col.CompareTag("Obstacle") || col.CompareTag("ObstacleGround"))
+        private void OnTriggerEnter2D(Collider2D col)
         {
-            var spawner = FindObjectOfType<ObstacleSpawner>(); // 추후 DI로 교체 가능
-            if (spawner != null)
+            // 부모(ObstacleGround 태그)만 처리
+            if (col.CompareTag("ObstacleGround"))
+            {
+                Game.ViewModels.ObstacleSpawner spawner =
+                    Game.ViewModels.ObstacleSpawner
+                        .FindObjectOfType<Game.ViewModels.ObstacleSpawner>();
                 spawner.OnObstacleHidden(col.gameObject);
+            }
         }
     }
 }
