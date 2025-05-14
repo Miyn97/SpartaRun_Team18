@@ -12,7 +12,7 @@ namespace Game.ViewModels
     {
         [Header("■ 풀(Pool) 설정")]
         [Tooltip("각 부모 프리팹 종류별로 몇 개를 미리 생성할지")]
-        public int countPerPrefab = 2;
+        public int countPerPrefab = 3;
         [Tooltip("Terrain+장애물이 함께 들어있는 부모 프리팹 리스트 (3종)")]
         public List<GameObject> prefabList;
 

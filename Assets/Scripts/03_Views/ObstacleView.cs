@@ -9,12 +9,13 @@ using UnityEngine;
 public class ObstacleView : MonoBehaviour
 {
     [Header("장애물 스프라이트")]
-    [SerializeField] private Sprite spriteSyntaxError;       // 높은 장애물 Sprite
-    [SerializeField] private Sprite spriteCompileError;      // 위쪽 장애물 Sprite
-    [SerializeField] private Sprite spriteRedLine;           // 낮은 장애물 Sprite
+    [SerializeField] private Sprite spriteSyntaxError;          // 높은 장애물 Sprite
+    [SerializeField] private Sprite spriteCompileError;         // 위쪽 장애물 Sprite
+    [SerializeField] private Sprite spriteRedLine;              // 낮은 장애물 Sprite
+    [SerializeField] private Sprite spriteUnhandledException;   // 낙사 장애물 Sprite
 
-    private SpriteRenderer spriteRenderer;                   // 장애물 외형 표현 컴포넌트
-    private static Dictionary<ObstacleType, Sprite> spriteMap; // Sprite 매핑 테이블 (정적 캐시)
+    private SpriteRenderer spriteRenderer;                      // 장애물 외형 표현 컴포넌트
+    private static Dictionary<ObstacleType, Sprite> spriteMap;  // Sprite 매핑 테이블 (정적 캐시)
 
     private void Awake()
     {
@@ -30,7 +31,8 @@ public class ObstacleView : MonoBehaviour
             {
                 { ObstacleType.RedLineTrap, spriteRedLine },
                 { ObstacleType.SyntaxErrorBox, spriteSyntaxError },
-                { ObstacleType.CompileErrorWall, spriteCompileError }
+                { ObstacleType.CompileErrorWall, spriteCompileError },
+                { ObstacleType.UnhandledExceptionBox, spriteUnhandledException }
             };
         }
     }
