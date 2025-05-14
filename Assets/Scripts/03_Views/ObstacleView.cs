@@ -32,7 +32,7 @@ public class ObstacleView : MonoBehaviour
                 { ObstacleType.RedLineTrap, spriteRedLine },
                 { ObstacleType.SyntaxErrorBox, spriteSyntaxError },
                 { ObstacleType.CompileErrorWall, spriteCompileError },
-                { ObstacleType.UnhandledExceptionBox, spriteUnhandledException }
+                // { ObstacleType.UnhandledExceptionBox, spriteUnhandledException }
             };
         }
     }
