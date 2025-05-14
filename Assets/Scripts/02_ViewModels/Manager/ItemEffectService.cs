@@ -21,6 +21,7 @@ public class ItemEffectService : MonoBehaviour
 
             case ItemEnum.HealPotion:
                 GameManager.Instance.Heal((int)model.Value);
+                player.Heal(2);
                 break;
 
             case ItemEnum.SpeedPotion:

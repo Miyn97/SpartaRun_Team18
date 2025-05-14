@@ -170,7 +170,7 @@ public class PlayerController : MonoBehaviour
             model.TakeDamage(damage);
             int updateHp = model.CurrentHealth;
 
-            UIManager.Instance.UpdateHealth(updateHp); //UI 업데이트
+            //UIManager.Instance.UpdateHealth(updateHp); //UI 업데이트
 
             //체력이 0 이하이면
             if (model.CurrentHealth == 0)
