@@ -156,7 +156,7 @@ GameObject:
   - component: {fileID: 8643717732526451632}
   m_Layer: 0
   m_Name: StartGround
-  m_TagString: ObstacleGround
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
