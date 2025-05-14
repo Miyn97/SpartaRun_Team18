@@ -6,6 +6,7 @@ public class GameUI : MonoBehaviour
 {
     //Score 라벨로 그룹 만들어줌
     [Header("Score")]
+    [SerializeField] private GameObject scoreHp_Panel;
     //textMeshProUGUI는 화면에 텍스트를 그리는 TMP용 컴포넌트
     [SerializeField] private TextMeshProUGUI currentScoreText;
 
@@ -45,8 +46,8 @@ public class GameUI : MonoBehaviour
 
     private void Awake()
     {
-        // 옵션패널 처음부터 보여주지 않음.
         optionPanel.SetActive(false);
+
         //정지 버튼을 클릭하면 NotifyPauseRequested() 함수가 호출되도록 연결
         optionButton.onClick.AddListener(NotifyPauseRequested);
         //일시정지 버튼 클릭 시 일시정지 요청 이벤트 발생 (구독자에게 알림)
@@ -69,6 +70,12 @@ public class GameUI : MonoBehaviour
 
         // 볼륨 슬라이더의 값이 바뀔 때마다 OnVolumeChanged 이벤트를 호출
         //volumeSlider.onValueChanged.AddListener(value => OnVolumeChanged?.Invoke(value));
+    }
+
+    // 옵션 버튼 제외한 GameUI 비활성화
+    public void HideGameUI()
+    {
+        scoreHp_Panel.SetActive(false);
     }
 
     public void SetScore(int score, int bestScore)

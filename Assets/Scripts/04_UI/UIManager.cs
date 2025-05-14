@@ -109,6 +109,9 @@ public class UIManager : MonoBehaviour
     //GameOverUI 화면을 보여주는 함수
     public void ShowGameOverUI(int finalScore, int bestScore)
     {
+        // 게임 UI는 꺼짐, 옵션버튼은 남아있음
+        gameUI?.HideGameUI();
+
         //게임 오버 상황에서만 보여주는 UI를 켬
         gameOverUI.Show(finalScore, bestScore);
     }
@@ -132,8 +135,17 @@ public class UIManager : MonoBehaviour
     {
         introUI?.gameObject.SetActive(false);
         startUI?.gameObject.SetActive(false);
-        gameUI?.gameObject.SetActive(false);
         gameOverUI?.gameObject.SetActive(false);
+
+        //옵션 버튼은 남겨두고, 나머지 UI는 꺼짐
+        if (targetUI == gameUI || targetUI == gameOverUI)
+        {
+            gameUI?.gameObject.SetActive(true);
+        }
+        else
+        {
+            targetUI.gameObject.SetActive(false);
+        }
 
         if (targetUI != null)
             targetUI.gameObject.SetActive(true);
