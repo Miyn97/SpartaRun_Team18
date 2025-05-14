@@ -10,7 +10,6 @@ namespace Game.Views
     {
         private void OnTriggerEnter2D(Collider2D col)
         {
-            Debug.Log("[Looper] Triggered by " + col.name + ", tag=" + col.tag);    // 테스트 메시지
             // 부모(ObstacleGround 태그)만 처리
             if (col.CompareTag("ObstacleGround"))
             {
