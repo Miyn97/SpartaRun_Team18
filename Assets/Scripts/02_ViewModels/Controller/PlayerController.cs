@@ -230,17 +230,6 @@ public class PlayerController : MonoBehaviour
         deathCoroutine = null; // 코루틴 종료 후 null 처리
     }
 
-    // DeathZone 같은 예외상황에서 즉시 사망처리
-    public void DeathPlayer()
-    {
-        if (!isDead)
-        {
-            Die(); // 즉시 사망 처리
-        }
-    }
-
-
-
     // 아이템 획득 등 외부에서 호출
     public void AddScore(int score)
     {
