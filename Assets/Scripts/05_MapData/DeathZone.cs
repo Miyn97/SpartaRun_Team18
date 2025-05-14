@@ -5,11 +5,13 @@ using UnityEngine;
 public class DeathZone : MonoBehaviour
 {
     [SerializeField] private Transform player;
+    [SerializeField] private float deathZoneY = -10f;
+
     private void Update()
     {
         if (player != null)
         {
-            transform.position = new Vector3(player.position.x, 0f, 0f);
+            transform.position = new Vector3(player.position.x, deathZoneY, 0f);
         }
     }
 
