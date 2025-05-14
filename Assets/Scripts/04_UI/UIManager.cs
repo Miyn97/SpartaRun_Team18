@@ -68,7 +68,7 @@ public class UIManager : MonoBehaviour
 
                 // 게임 오버 UI는 비활성화
                 gameUI?.gameObject.SetActive(true);
-                gameOverUI?.gameObject.SetActive(true); // 스크립트는 활성화
+                //gameOverUI?.gameObject.SetActive(true); // 스크립트는 활성화
                 gameOverUI?.Hide(); // UI는 비활성화
 
                 //게임 UI의 버튼 클릭 이벤트를 연결 (GameOverIU는 UImanager에서만 연결!)
@@ -109,6 +109,7 @@ public class UIManager : MonoBehaviour
     //GameOverUI 화면을 보여주는 함수
     public void ShowGameOverUI(int finalScore, int bestScore)
     {
+        gameOverUI?.gameObject.SetActive(true);
         // 게임 UI는 꺼짐, 옵션버튼은 남아있음
         gameUI?.HideGameUI();
 

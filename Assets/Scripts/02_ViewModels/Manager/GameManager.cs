@@ -259,8 +259,7 @@ public class GameManager : MonoBehaviour
 
             if (CurrentHp <= 0)
             {
-                TriggerGameOver(Score, BestScore); //여기서 GameOver 처리 통합
-                                                   //ChangeState(GameState.GameOver);
+                //TriggerGameOver(Score, BestScore); //여기서 GameOver 처리 통합
             }
         }
     }
