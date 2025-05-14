@@ -117,6 +117,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 612261317262530863}
     m_Modifications:
+    - target: {fileID: 4523692228324589416, guid: d001fcfa1d21eb8409309b4e81bb623f, type: 3}
+      propertyPath: m_SortingOrder
+      value: 70
+      objectReference: {fileID: 0}
     - target: {fileID: 4610376636732461625, guid: d001fcfa1d21eb8409309b4e81bb623f, type: 3}
       propertyPath: m_LocalScale.x
       value: 7.052334
@@ -223,6 +227,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5429860975272970557, guid: 6bcac34abc8c13c48860aee4c6db2e87, type: 3}
+      propertyPath: m_SortingOrder
+      value: 60
+      objectReference: {fileID: 0}
     - target: {fileID: 8560573066561155159, guid: 6bcac34abc8c13c48860aee4c6db2e87, type: 3}
       propertyPath: m_Name
       value: CompileErrorWall
@@ -289,6 +297,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: RedLineTrap
       objectReference: {fileID: 0}
+    - target: {fileID: 8725447717975241976, guid: 91ef75a540db7c9478c2e02605d3af3a, type: 3}
+      propertyPath: m_SortingOrder
+      value: 60
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -307,6 +319,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 612261317262530863}
     m_Modifications:
+    - target: {fileID: 4523692228324589416, guid: d001fcfa1d21eb8409309b4e81bb623f, type: 3}
+      propertyPath: m_SortingOrder
+      value: 70
+      objectReference: {fileID: 0}
     - target: {fileID: 4610376636732461625, guid: d001fcfa1d21eb8409309b4e81bb623f, type: 3}
       propertyPath: m_LocalScale.x
       value: 13.034425

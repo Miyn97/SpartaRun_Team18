@@ -121,6 +121,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SyntaxErrorBox1
       objectReference: {fileID: 0}
+    - target: {fileID: 3683858601674005792, guid: 88ec28c112ee0ed42b9f1a1da38a3606, type: 3}
+      propertyPath: m_SortingOrder
+      value: 60
+      objectReference: {fileID: 0}
     - target: {fileID: 5972855039604007785, guid: 88ec28c112ee0ed42b9f1a1da38a3606, type: 3}
       propertyPath: m_LocalPosition.x
       value: -4.96
@@ -182,6 +186,10 @@ PrefabInstance:
     - target: {fileID: 2184221484011828788, guid: 88ec28c112ee0ed42b9f1a1da38a3606, type: 3}
       propertyPath: m_Name
       value: SyntaxErrorBox2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3683858601674005792, guid: 88ec28c112ee0ed42b9f1a1da38a3606, type: 3}
+      propertyPath: m_SortingOrder
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 5972855039604007785, guid: 88ec28c112ee0ed42b9f1a1da38a3606, type: 3}
       propertyPath: m_LocalPosition.x
@@ -285,6 +293,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: RedLineTrap
       objectReference: {fileID: 0}
+    - target: {fileID: 8725447717975241976, guid: 91ef75a540db7c9478c2e02605d3af3a, type: 3}
+      propertyPath: m_SortingOrder
+      value: 60
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -303,6 +315,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 612261317262530863}
     m_Modifications:
+    - target: {fileID: 4523692228324589416, guid: d001fcfa1d21eb8409309b4e81bb623f, type: 3}
+      propertyPath: m_SortingOrder
+      value: 70
+      objectReference: {fileID: 0}
     - target: {fileID: 4610376636732461625, guid: d001fcfa1d21eb8409309b4e81bb623f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.8003998

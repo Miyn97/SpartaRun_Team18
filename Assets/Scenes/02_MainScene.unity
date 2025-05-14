@@ -4291,7 +4291,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68545ed675eb61745a5a03afa04f2d77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countPerPrefab: 2
+  countPerPrefab: 3
   prefabList:
   - {fileID: 7120145286101456948, guid: 09cc28c4f5e63824da3a2a35497a50a4, type: 3}
   - {fileID: 7120145286101456948, guid: c26ee84c00961d4459265e0947004ce3, type: 3}
