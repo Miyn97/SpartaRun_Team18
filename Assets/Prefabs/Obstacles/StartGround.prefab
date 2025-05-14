@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8760384214301640211}
   - component: {fileID: 8413758292907134556}
   m_Layer: 0
-  m_Name: TsetGround
+  m_Name: Ground
   m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
