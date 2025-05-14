@@ -1,223 +1,228 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
 
 [RequireComponent(typeof(PlayerView))]
 public class PlayerController : MonoBehaviour
 {
-    //ÇÃ·¹ÀÌ¾î ¾Ö´Ï¸ŞÀÌ¼Ç + ¹°¸®Ã³¸® µîÀ» °ÔÀÌ¸Ó°¡ Á¶ÀÛÇÒ ¼ö ÀÖµµ·Ï ¿¬°á
-    //[SerializeField] Àá½Ã ÁÖ¼®Ã³¸®
+    //í”Œë ˆì´ì–´ ì• ë‹ˆë©”ì´ì…˜ + ë¬¼ë¦¬ì²˜ë¦¬ ë“±ì„ ê²Œì´ë¨¸ê°€ ì¡°ì‘í•  ìˆ˜ ìˆë„ë¡ ì—°ê²°
+    //[SerializeField] ì ì‹œ ì£¼ì„ì²˜ë¦¬
     private PlayerView playerView;
 
-    //ÇÃ·¹ÀÌ¾î°¡ ¼Óµµ up, µ¥¹ÌÁö ÀÔÀ½ µîÀ» ÆÇ´ÜÇÏ¸é ¿©±â´Ù°¡ ¹İ¿µ
+    //í”Œë ˆì´ì–´ê°€ ì†ë„ up, ë°ë¯¸ì§€ ì…ìŒ ë“±ì„ íŒë‹¨í•˜ë©´ ì—¬ê¸°ë‹¤ê°€ ë°˜ì˜
     private PlayerModel model;
 
-    //ÇÃ·¹ÀÌ¾î ÃÖ´ë Ã¼·Â
-    //initialHealth´Â ÃÊ±â°ªÀ» [°áÁ¤]ÇØ¼­ [Àü´Ş]ÇÏ´Â ±¸Á¶
-    //PlayerModel¿¡ MaxHealth´Â ÃÊ±â°ªÀ» [º¸À¯]ÇÏ´Â ±¸Á¶
-    //ÇÑ¸¶µğ·Î ¿ÜºÎ¿¡¼­ ÃÊ±â°ªÀ» ÁÖ±âÀ§ÇØ = ½ºÅ×ÀÌÁöº°·Î Ã¼·ÂÀÌ ´Ù¸¦ ¼ö ÀÖ´Ù´Â°É °í·Á
-    [Header("Model ÃÊ±â°ª")]
-    [SerializeField] private int initialHealth = 6; // Ã¼·Â 6Ä­ _ryang
-    //±âº» ÀÌµ¿ ¼Óµµ
+    //í”Œë ˆì´ì–´ ìµœëŒ€ ì²´ë ¥
+    //initialHealthëŠ” ì´ˆê¸°ê°’ì„ [ê²°ì •]í•´ì„œ [ì „ë‹¬]í•˜ëŠ” êµ¬ì¡°
+    //PlayerModelì— MaxHealthëŠ” ì´ˆê¸°ê°’ì„ [ë³´ìœ ]í•˜ëŠ” êµ¬ì¡°
+    //í•œë§ˆë””ë¡œ ì™¸ë¶€ì—ì„œ ì´ˆê¸°ê°’ì„ ì£¼ê¸°ìœ„í•´ = ìŠ¤í…Œì´ì§€ë³„ë¡œ ì²´ë ¥ì´ ë‹¤ë¥¼ ìˆ˜ ìˆë‹¤ëŠ”ê±¸ ê³ ë ¤
+    [Header("Model ì´ˆê¸°ê°’")]
+    [SerializeField] private int initialHealth = 6; // ì²´ë ¥ 6ì¹¸ _ryang
+    //ê¸°ë³¸ ì´ë™ ì†ë„
     [SerializeField] private float initialSpeed = 5f;
 
     [Header("Jump/Slide")]
-    //Á¡ÇÁÇÒ ¶§ À§·Î °¡ÇØÁö´Â Èû
+    //ì í”„í•  ë•Œ ìœ„ë¡œ ê°€í•´ì§€ëŠ” í˜
     [SerializeField] private float jumpForce = 13f;
-    //½½¶óÀÌµå Áö¼Ó ½Ã°£
+    //ìŠ¬ë¼ì´ë“œ ì§€ì† ì‹œê°„
     [SerializeField] private float slideDuration = 1f;
 
-    private bool isGround = true; // ¶¥¿¡ ÀÖ´Â »óÅÂ
-    private bool isDoubleJump = false; //´õºí Á¡ÇÁ °¡´É »óÅÂ
+    private bool isGround = true; // ë•…ì— ìˆëŠ” ìƒíƒœ
+    private bool isDoubleJump = false; //ë”ë¸” ì í”„ ê°€ëŠ¥ ìƒíƒœ
 
-    //½½¶óÀÌµùÀ» Çß´Â°¡?
+    //ìŠ¬ë¼ì´ë”©ì„ í–ˆëŠ”ê°€?
     private bool isSliding = false;
-    //³²Àº ½½¶óÀÌµå ½Ã°£ ÀúÀå¿ë º¯¼ö
+    //ë‚¨ì€ ìŠ¬ë¼ì´ë“œ ì‹œê°„ ì €ì¥ìš© ë³€ìˆ˜
     private float slideTimer = 0f;
     public bool IsInvincible { get; private set; }
 
-    private void Awake() //updateº¸´Ù ¸ÕÀú ½ÇÇà
+    private void Awake() //updateë³´ë‹¤ ë¨¼ì € ì‹¤í–‰
     {
-        // ÇÃ·¹ÀÌ¾î ºä¸¦ °¡Á®¿È
+        // í”Œë ˆì´ì–´ ë·°ë¥¼ ê°€ì ¸ì˜´
         playerView = GetComponent<PlayerView>();
 
-        // ¸ğµ¨ »ı¼º ¹× ÃÊ±âÈ­ (Ã¼·Â°ú ¼Óµµ¸¦ ¼³Á¤)
+        // ëª¨ë¸ ìƒì„± ë° ì´ˆê¸°í™” (ì²´ë ¥ê³¼ ì†ë„ë¥¼ ì„¤ì •)
         model = new PlayerModel(initialHealth, initialSpeed);
     }
 
     private void Update()
     {
-        //GameOver »óÅÂ¸é ÀÔ·Â ¸·±â
+        //GameOver ìƒíƒœë©´ ì…ë ¥ ë§‰ê¸°
         if (GameManager.Instance.CurrentState == GameManager.GameState.GameOver)
             return;
-        //Å° ÀÔ·Â Ã³¸® È®ÀÎ
+        //í‚¤ ì…ë ¥ ì²˜ë¦¬ í™•ì¸
         HandleInput();
     }
 
-    //ÀÚµ¿ ÀÌµ¿À» À§ÇÑ FixedUpdate
+    //ìë™ ì´ë™ì„ ìœ„í•œ FixedUpdate
     private void FixedUpdate()
     {
-        //GameOver »óÅÂÀÏ ¶© ÀÚµ¿ ÀÌµ¿ ¸·±â
+        //GameOver ìƒíƒœì¼ ë• ìë™ ì´ë™ ë§‰ê¸°
         if (GameManager.Instance.CurrentState == GameManager.GameState.GameOver)
             return;
-        // View¿¡ ÀÌµ¿ ¿äÃ»
+        // Viewì— ì´ë™ ìš”ì²­
         playerView.Move(model.Speed);
     }
 
-    //Å° ÀÔ·Â Ã³¸®ÇÏ´Â ¸Ş¼­µå
+    //í‚¤ ì…ë ¥ ì²˜ë¦¬í•˜ëŠ” ë©”ì„œë“œ
     private void HandleInput()
     {
+        //ì í”„ ì…ë ¥ (ìŠ¬ë¼ì´ë“œ ì¤‘ì¼ ë• ì í”„ ê¸ˆì§€)
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            Jump(); //Á¡ÇÁÅ°´Â Space
+            if (!isSliding) // ìŠ¬ë¼ì´ë“œ ì¤‘ì´ ì•„ë‹ ë•Œë§Œ ì í”„ í—ˆìš©
+            {
+                Jump(); // ì í”„í‚¤ëŠ” Space
+            }
         }
 
+        //ìŠ¬ë¼ì´ë“œ ì‹œì‘
         if (Input.GetKey(KeyCode.LeftShift))
         {
-            if (!isSliding)
+            if (!isSliding && isGround) // ì§€ë©´ì¼ ë•Œë§Œ ìŠ¬ë¼ì´ë“œ í—ˆìš©
             {
-                Slide(); // Shift¸¦ ´©¸¥ ¼ø°£ ½½¶óÀÌµå ½ÃÀÛ
+                Slide(); // Shiftë¥¼ ëˆ„ë¥¸ ìˆœê°„ ìŠ¬ë¼ì´ë“œ ì‹œì‘
             }
         }
         else
         {
             if (isSliding)
             {
-                EndSlide(); // Shift¿¡¼­ ¼Õ ¶ÃÀ» ¶§ ½½¶óÀÌµå Á¾·á
+                EndSlide(); // Shiftì—ì„œ ì† ë—ì„ ë•Œ ìŠ¬ë¼ì´ë“œ ì¢…ë£Œ
             }
         }
 
 
-        //Ã¼·Â°¨¼Ò Å×½ºÆ®
+        //ì²´ë ¥ê°ì†Œ í…ŒìŠ¤íŠ¸
         if (Input.GetKeyDown(KeyCode.H))
         {
-            GameManager.Instance.TakeDamage(1); //Ã¼·Â °¨¼Ò Å×½ºÆ®
+            GameManager.Instance.TakeDamage(1); //ì²´ë ¥ ê°ì†Œ í…ŒìŠ¤íŠ¸
         }
-        //Á¡¼ö Áõ°¡ Å×½ºÆ®
+        //ì ìˆ˜ ì¦ê°€ í…ŒìŠ¤íŠ¸
         if (Input.GetKeyDown(KeyCode.S))
         {
-            GameManager.Instance.AddScore(36); //Á¡¼ö Áõ°¡ Å×½ºÆ®
+            GameManager.Instance.AddScore(36); //ì ìˆ˜ ì¦ê°€ í…ŒìŠ¤íŠ¸
         }
     }
 
-    //Á¡ÇÁ Á¶ÀÛ
+    //ì í”„ ì¡°ì‘
     private void Jump()
     {
         if (isGround)
         {
-            playerView.Jump(jumpForce); //Á¡ÇÁ ¾Ö´Ï¸ŞÀÌ¼Ç ¿äÃ»
-            playerView.SetGrounded(false); // Á¡ÇÁ Á÷ÈÄ °øÁß »óÅÂ Àü´Ş
-            // ºä¿¡°Ô Á¡ÇÁ ¾Ö´Ï¸ŞÀÌ¼Ç/¹°¸® Àû¿ë ¸í·É
-            isGround = false; //Á¡ÇÁ!
-            isDoubleJump = true; //´õºí Á¡ÇÁ °¡´É
+            playerView.Jump(jumpForce); //ì í”„ ì• ë‹ˆë©”ì´ì…˜ ìš”ì²­
+            playerView.SetGrounded(false); // ì í”„ ì§í›„ ê³µì¤‘ ìƒíƒœ ì „ë‹¬
+            // ë·°ì—ê²Œ ì í”„ ì• ë‹ˆë©”ì´ì…˜/ë¬¼ë¦¬ ì ìš© ëª…ë ¹
+            isGround = false; //ì í”„!
+            isDoubleJump = true; //ë”ë¸” ì í”„ ê°€ëŠ¥
         }
         else if (isDoubleJump)
         {
-            playerView.DoubleJump(jumpForce); //´õºí Á¡ÇÁ ¾Ö´Ï¸ŞÀÌ¼Ç ¿äÃ»
-            isDoubleJump = false; //´õºí Á¡ÇÁ!
-            playerView.SetGrounded(false); // ´õºí Á¡ÇÁ Á÷ÈÄ °øÁß »óÅÂ Àü´Ş
+            playerView.DoubleJump(jumpForce); //ë”ë¸” ì í”„ ì• ë‹ˆë©”ì´ì…˜ ìš”ì²­
+            isDoubleJump = false; //ë”ë¸” ì í”„!
+            playerView.SetGrounded(false); // ë”ë¸” ì í”„ ì§í›„ ê³µì¤‘ ìƒíƒœ ì „ë‹¬
         }
         else
         {
-            Debug.Log("´õºí Á¡ÇÁ±îÁö¸¸ °¡´ÉÇÕ´Ï´Ù.");
+            Debug.Log("ë”ë¸” ì í”„ê¹Œì§€ë§Œ ê°€ëŠ¥í•©ë‹ˆë‹¤.");
         }
     }
 
-    //½½¶óÀÌµå Á¶ÀÛ
+    //ìŠ¬ë¼ì´ë“œ ì¡°ì‘
     private void Slide()
     {
-        Debug.Log("½½¶óÀÌµå ÁßÀÔ´Ï´Ù.");
-        isSliding = true; //½½¶óÀÌµå Áß »óÅÂ
-        slideTimer = slideDuration; //½½¶óÀÌµå Áö¼Ó ½Ã°£ ¼³Á¤
-        playerView.Slide(); //½½¶óÀÌµå ¾Ö´Ï¸ŞÀÌ¼Ç ¿äÃ»
+        Debug.Log("ìŠ¬ë¼ì´ë“œ ì¤‘ì…ë‹ˆë‹¤.");
+        isSliding = true; //ìŠ¬ë¼ì´ë“œ ì¤‘ ìƒíƒœ
+        slideTimer = slideDuration; //ìŠ¬ë¼ì´ë“œ ì§€ì† ì‹œê°„ ì„¤ì •
+        playerView.Slide(); //ìŠ¬ë¼ì´ë“œ ì• ë‹ˆë©”ì´ì…˜ ìš”ì²­
     }
 
-    //½½¶óÀÌµå Á¾·á
+    //ìŠ¬ë¼ì´ë“œ ì¢…ë£Œ
     private void EndSlide()
     {
-        Debug.Log("½½¶óÀÌµå Á¾·á");
+        Debug.Log("ìŠ¬ë¼ì´ë“œ ì¢…ë£Œ");
         isSliding = false;
-        playerView.EndSlide(); // ¾Ö´Ï¸ŞÀÌ¼Ç Á¾·á
+        playerView.EndSlide(); // ì• ë‹ˆë©”ì´ì…˜ ì¢…ë£Œ
     }
 
-    // ¶¥¿¡ ´ê¾Ò´ÂÁö È®ÀÎ
+    // ë•…ì— ë‹¿ì•˜ëŠ”ì§€ í™•ì¸
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.collider.CompareTag("Ground"))
         {
-            isGround = true; //¶¥¿¡ ´ê¾ÒÀ» ¶§
-            isDoubleJump = false; //´õºí Á¡ÇÁ ÃÊ±âÈ­
-            playerView.SetGrounded(true); //ÂøÁöÇß´ÂÁö¸¦ PlayerView¿¡°Ô ¾Ë¸²
+            isGround = true; //ë•…ì— ë‹¿ì•˜ì„ ë•Œ
+            isDoubleJump = false; //ë”ë¸” ì í”„ ì´ˆê¸°í™”
+            playerView.SetGrounded(true); //ì°©ì§€í–ˆëŠ”ì§€ë¥¼ PlayerViewì—ê²Œ ì•Œë¦¼
         }
     }
 
-    // µ¥¹ÌÁö¸¦ ¹ŞÀ» °æ¿ì
+    // ë°ë¯¸ì§€ë¥¼ ë°›ì„ ê²½ìš°
     public void TakeDamage(int damage)
     {
 
         if (IsInvincible == true)
         {
-            Debug.Log("¹«ÀûÀÓ");
+            Debug.Log("ë¬´ì ì„");
             return;
         }
         else
         {
-            //µ¥¹ÌÁö¸¦ ¹Ş¾ÒÀ» ¶§ Ã¼·Â °¨¼Ò
+            //ë°ë¯¸ì§€ë¥¼ ë°›ì•˜ì„ ë•Œ ì²´ë ¥ ê°ì†Œ
             model.TakeDamage(damage);
             int updateHp = model.CurrentHealth;
 
-            UIManager.Instance.UpdateHealth(updateHp); //UI ¾÷µ¥ÀÌÆ®
+            UIManager.Instance.UpdateHealth(updateHp); //UI ì—…ë°ì´íŠ¸
 
-            //Ã¼·ÂÀÌ 0 ÀÌÇÏÀÌ¸é
+            //ì²´ë ¥ì´ 0 ì´í•˜ì´ë©´
             if (model.CurrentHealth == 0)
             {
-                Debug.Log("Á×¾ú½À´Ï´Ù.");
-                //Á×¾úÀ» ¶§ ¾Ö´Ï¸ŞÀÌ¼Ç ½ÇÇà
-                //playerView.PlayDeathAnimation(); //¾Ö´Ï¸ŞÀÌ¼Ç »ı¼º ½Ã ÁÖ¼®Ã³¸® ÇØÁ¦
-                //»ç¸ÁÃ³¸® ¸Ş¼­µå È£Ãâ
+                Debug.Log("ì£½ì—ˆìŠµë‹ˆë‹¤.");
+                //ì£½ì—ˆì„ ë•Œ ì• ë‹ˆë©”ì´ì…˜ ì‹¤í–‰
+                //playerView.PlayDeathAnimation(); //ì• ë‹ˆë©”ì´ì…˜ ìƒì„± ì‹œ ì£¼ì„ì²˜ë¦¬ í•´ì œ
+                //ì‚¬ë§ì²˜ë¦¬ ë©”ì„œë“œ í˜¸ì¶œ
                 Die();
             }
             else
             {
-                Debug.Log("Ã¼·Â : " + model.CurrentHealth);
+                Debug.Log("ì²´ë ¥ : " + model.CurrentHealth);
             }
         }
 
     }
 
-    //»ç¸ÁÃ³¸® ¸Ş¼­µå
+    //ì‚¬ë§ì²˜ë¦¬ ë©”ì„œë“œ
     private void Die()
     {
         //playerView.SetAnimatorSpeed(0f);
-        //Á×¾úÀ» ¶§ ¾Ö´Ï¸ŞÀÌ¼Ç ½ÇÇà
-        playerView.PlayDeathAnimation(); //¾Ö´Ï¸ŞÀÌ¼Ç »ı¼º ½Ã ÁÖ¼®Ã³¸® ÇØÁ¦
-        playerView.StopMovementAnimation(); // ¿òÁ÷ÀÓ °­Á¦ Á¤Áö
-        //View´Â Á×´Â ¿¬Ãâ + °ÔÀÓ¸Å´ÏÀú´Â »óÅÂº¯È­
+        //ì£½ì—ˆì„ ë•Œ ì• ë‹ˆë©”ì´ì…˜ ì‹¤í–‰
+        playerView.PlayDeathAnimation(); //ì• ë‹ˆë©”ì´ì…˜ ìƒì„± ì‹œ ì£¼ì„ì²˜ë¦¬ í•´ì œ
+        playerView.StopMovementAnimation(); // ì›€ì§ì„ ê°•ì œ ì •ì§€
+        //ViewëŠ” ì£½ëŠ” ì—°ì¶œ + ê²Œì„ë§¤ë‹ˆì €ëŠ” ìƒíƒœë³€í™”
         GameManager.Instance.ChangeState(GameManager.GameState.GameOver);
         playerView.StopMovementAnimation();
     }
 
-    // ¾ÆÀÌÅÛ È¹µæ µî ¿ÜºÎ¿¡¼­ È£Ãâ
+    // ì•„ì´í…œ íšë“ ë“± ì™¸ë¶€ì—ì„œ í˜¸ì¶œ
     public void AddScore(int score)
     {
-        //¸ğµ¨¿¡ Á¡¼ö¸¦ ´õÇÔ 
+        //ëª¨ë¸ì— ì ìˆ˜ë¥¼ ë”í•¨ 
         model.AddScore(score);
-        //°ÔÀÓ¸Å´ÏÀú AddScoreµµ ¾÷µ¥ÀÌÆ®
+        //ê²Œì„ë§¤ë‹ˆì € AddScoreë„ ì—…ë°ì´íŠ¸
         GameManager.Instance.AddScore(score);
     }
 
-    //È¸º¹¾ÆÀÌÅÛ °ü·Ã
+    //íšŒë³µì•„ì´í…œ ê´€ë ¨
     public void Heal(int amount)
     {
-        //È¸º¹ ¾ÆÀÌÅÛÀ» ¸Ô¾úÀ» ¶§ È¸º¹ Ã³¸®
+        //íšŒë³µ ì•„ì´í…œì„ ë¨¹ì—ˆì„ ë•Œ íšŒë³µ ì²˜ë¦¬
         model.Heal(amount);
 
         GameManager.Instance.Heal(amount);
     }
 
-    //¼Óµµ¾ÆÀÌÅÛ °ü·Ã
+    //ì†ë„ì•„ì´í…œ ê´€ë ¨
     public void SetSpeed(float newSpeed)
     {
-        //¼Óµµ ¾ÆÀÌÅÛÀ» ¸Ô¾úÀ» ¶§ ÇöÀç ÀÌµ¿ ¼Óµµ º¯°æ
+        //ì†ë„ ì•„ì´í…œì„ ë¨¹ì—ˆì„ ë•Œ í˜„ì¬ ì´ë™ ì†ë„ ë³€ê²½
         model.SetSpeed(newSpeed);
     }
     public void SetInvincible(bool value)

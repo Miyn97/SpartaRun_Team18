@@ -1,33 +1,33 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// ¾ÆÀÌÅÛ ¿ÀºêÁ§Æ® Ç®À» °ü¸®ÇÏ´Â Å¬·¡½º (MVVMÀÇ Model ¿ªÇÒ)
-/// ¾ÆÀÌÅÛ »ı¼º/È¸¼ö´Â ÀÌ Å¬·¡½º¿¡¼­¸¸ ´ã´ç
+/// ì•„ì´í…œ ì˜¤ë¸Œì íŠ¸ í’€ì„ ê´€ë¦¬í•˜ëŠ” í´ë˜ìŠ¤ (MVVMì˜ Model ì—­í• )
+/// ì•„ì´í…œ ìƒì„±/íšŒìˆ˜ëŠ” ì´ í´ë˜ìŠ¤ì—ì„œë§Œ ë‹´ë‹¹
 /// </summary>
 public class ItemManager : MonoBehaviour
 {
     [System.Serializable]
     public struct ItemPrefab
     {
-        public ItemEnum type;        // ¾ÆÀÌÅÛ Á¾·ù
-        public GameObject prefab;    // ÇØ´ç Á¾·ù¿¡ ´ëÀÀµÇ´Â ÇÁ¸®ÆÕ
-        public int preloadCount;     // »õ·Î Ãß°¡
+        public ItemEnum type;        // ì•„ì´í…œ ì¢…ë¥˜
+        public GameObject prefab;    // í•´ë‹¹ ì¢…ë¥˜ì— ëŒ€ì‘ë˜ëŠ” í”„ë¦¬íŒ¹
+        public int preloadCount;     // ìƒˆë¡œ ì¶”ê°€
     }
 
-    [Header("¾ÆÀÌÅÛ ¼³Á¤")]
-    [SerializeField] private List<ItemPrefab> itemPrefabs;   // ÇÁ¸®ÆÕ µî·Ï ¸®½ºÆ®
-    [SerializeField] private int poolSize = 8;               // Å¸ÀÔº° Ç® °³¼ö
+    [Header("ì•„ì´í…œ ì„¤ì •")]
+    [SerializeField] private List<ItemPrefab> itemPrefabs;   // í”„ë¦¬íŒ¹ ë“±ë¡ ë¦¬ìŠ¤íŠ¸
+    [SerializeField] private int poolSize = 8;               // íƒ€ì…ë³„ í’€ ê°œìˆ˜
 
-    private Dictionary<ItemEnum, Queue<GameObject>> poolDict = new(); // ¾ÆÀÌÅÛ Ç® µñ¼Å³Ê¸®
+    private Dictionary<ItemEnum, Queue<GameObject>> poolDict = new(); // ì•„ì´í…œ í’€ ë”•ì…”ë„ˆë¦¬
 
     private void Awake()
     {
-        InitializePools(); // Ç® ÃÊ±âÈ­
+        InitializePools(); // í’€ ì´ˆê¸°í™”
     }
 
     /// <summary>
-    /// Å¸ÀÔº° ¾ÆÀÌÅÛ Ç®À» ÃÊ±âÈ­ÇÏ°í »ı¼º
+    /// íƒ€ì…ë³„ ì•„ì´í…œ í’€ì„ ì´ˆê¸°í™”í•˜ê³  ìƒì„±
     /// </summary>
     private void InitializePools()
     {
@@ -37,33 +37,55 @@ public class ItemManager : MonoBehaviour
 
             for (int i = 0; i < poolSize; i++)
             {
-                GameObject obj = Instantiate(item.prefab, transform); // ºÎ¸ğ´Â ItemManager
-                obj.SetActive(false); // ÃÊ±â¿¡´Â ºñÈ°¼ºÈ­
-                queue.Enqueue(obj);   // Å¥¿¡ µî·Ï
+                GameObject obj = Instantiate(item.prefab, transform); // ë¶€ëª¨ëŠ” ItemManager
+                obj.SetActive(false); // ì´ˆê¸°ì—ëŠ” ë¹„í™œì„±í™”
+                queue.Enqueue(obj);   // íì— ë“±ë¡
             }
 
-            poolDict[item.type] = queue; // Ç® µî·Ï
+            poolDict[item.type] = queue; // í’€ ë“±ë¡
         }
     }
 
     /// <summary>
-    /// ¾ÆÀÌÅÛ Ç®¿¡¼­ ²¨³»±â
+    /// ì•„ì´í…œ í’€ì—ì„œ êº¼ë‚´ê¸°
     /// </summary>
     public GameObject Get(ItemEnum type)
     {
-        if (poolDict.TryGetValue(type, out var queue) && queue.Count > 0)
+        if (poolDict.TryGetValue(type, out var queue))
         {
-            var obj = queue.Dequeue();
-            obj.SetActive(true);
-            return obj;
+            while (queue.Count > 0)
+            {
+                var obj = queue.Dequeue();
+
+                // Destroy ë˜ì—ˆê±°ë‚˜ ì¡´ì¬í•˜ì§€ ì•Šìœ¼ë©´ ë‹¤ìŒ ê°ì²´ í™•ì¸
+                if (obj == null || obj.Equals(null))
+                {
+                    Debug.LogWarning($"[ItemManager] {type} ì•„ì´í…œì´ Destroy ìƒíƒœì…ë‹ˆë‹¤. ìŠ¤í‚µ.");
+                    continue;
+                }
+
+                obj.SetActive(true);
+                return obj;
+            }
         }
 
-        Debug.LogWarning($"[ItemManager] {type} ¾ÆÀÌÅÛÀÌ Ç®¿¡ ¾ø½À´Ï´Ù.");
+        //ëª¨ë“  ê°ì²´ê°€ Destroy ë˜ì—ˆê±°ë‚˜ ì—†ì„ ê²½ìš° ìƒˆë¡œ ìƒì„±
+        var prefab = itemPrefabs.Find(p => p.type == type).prefab;
+        if (prefab != null)
+        {
+            var newObj = Instantiate(prefab, transform);
+            newObj.SetActive(true);
+            Debug.LogWarning($"[ItemManager] {type} ìƒˆ ê°ì²´ë¥¼ ìƒì„±í–ˆìŠµë‹ˆë‹¤. í’€ ë¶€ì¡± ëŒ€ë¹„.");
+            return newObj;
+        }
+
+        Debug.LogError($"[ItemManager] {type} í”„ë¦¬íŒ¹ì„ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤!");
         return null;
     }
 
+
     /// <summary>
-    /// ¾ÆÀÌÅÛ Ç®¿¡ ¹İÈ¯ÇÏ±â
+    /// ì•„ì´í…œ í’€ì— ë°˜í™˜í•˜ê¸°
     /// </summary>
     public void ReturnToPool(ItemEnum type, GameObject obj)
     {

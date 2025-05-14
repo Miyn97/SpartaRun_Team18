@@ -28,7 +28,10 @@ public class PlayerView : MonoBehaviour
     private Rigidbody2D _rigidbody;
     //애니메이션 실행을 위한 컴포넌트
     private Animator animator;
-    
+
+    public bool IsSliding { get; private set; } // 외부에서 상태 확인 가능
+
+
 
     // 슬라이드용 크기 조절에 사용
     [SerializeField] private Transform spriteTransform;
@@ -91,6 +94,7 @@ public class PlayerView : MonoBehaviour
     //슬라이드 시작 처리
     public void Slide()
     {
+        IsSliding = true;
         //SpriteTransform이 있다면
         if (spriteTransform != null)
         {
@@ -118,6 +122,8 @@ public class PlayerView : MonoBehaviour
     //슬라이드 종료 처리
     public void EndSlide()
     {
+        IsSliding = false;
+
         //SpriteTransform이 있다면
         if (spriteTransform != null)
         {
