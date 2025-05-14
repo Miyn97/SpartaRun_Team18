@@ -1071,7 +1071,6 @@ GameObject:
   m_Component:
   - component: {fileID: 408840787}
   - component: {fileID: 408840786}
-  - component: {fileID: 408840788}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1108,14 +1107,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!81 &408840788
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 408840785}
-  m_Enabled: 1
 --- !u!1 &465285768
 GameObject:
   m_ObjectHideFlags: 0
@@ -3008,7 +2999,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 1083998791}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 6b38aa202441a3349b7055c26b57d8c1, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
