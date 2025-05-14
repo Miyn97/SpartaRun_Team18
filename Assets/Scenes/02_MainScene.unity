@@ -5327,7 +5327,7 @@ MonoBehaviour:
   player: {fileID: 1083998795}
   obstacleLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   spawnOffsetX: 15
   overlapRadius: 0.5
   fallbackOffset: {x: 1, y: 1}

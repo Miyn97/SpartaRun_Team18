@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: -8479679540842636536}
   - component: {fileID: -1390238271410642758}
   - component: {fileID: -5447214233756515568}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: UnhandledExceptionBox
   m_TagString: Obstacle
   m_Icon: {fileID: 0}

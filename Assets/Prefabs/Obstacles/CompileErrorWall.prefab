@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2850317872038008813}
   - component: {fileID: 9078703220555286906}
   - component: {fileID: 3043181980363966504}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CompileErrorWall
   m_TagString: Obstacle
   m_Icon: {fileID: 0}

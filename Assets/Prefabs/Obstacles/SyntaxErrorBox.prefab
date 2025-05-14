@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8570779664716801938}
   - component: {fileID: 5681905249001570130}
   - component: {fileID: 435714203545140960}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SyntaxErrorBox
   m_TagString: Obstacle
   m_Icon: {fileID: 0}

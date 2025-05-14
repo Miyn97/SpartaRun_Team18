@@ -14,8 +14,8 @@ public class ItemSpawnController : MonoBehaviour
 
     [Header("스폰 설정")]
     [SerializeField] private float spawnOffsetX = 15f; // 플레이어 기준 생성 위치 X
-    [SerializeField] private float overlapRadius = 0.5f; // 장애물 감지 범위
-    [SerializeField] private Vector2 fallbackOffset = new(1f, 1f); // 장애물 있을 때 보정 위치
+    [SerializeField] private float overlapRadius = 1f; // 장애물 감지 범위
+    [SerializeField] private Vector2 fallbackOffset = new(2f, 2f); // 장애물 있을 때 보정 위치
 
     private Coroutine spawnRoutine;
 

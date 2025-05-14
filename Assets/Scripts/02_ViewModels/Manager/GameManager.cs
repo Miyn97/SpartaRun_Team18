@@ -113,8 +113,8 @@ public class GameManager : MonoBehaviour
 
             if (itemSpawnController != null)
             {
-                StartCoroutine(itemSpawnController.SpawnCoinRoutine(5f));
-                StartCoroutine(itemSpawnController.SpawnRandomItemRoutine(15f));
+                StartCoroutine(itemSpawnController.SpawnCoinRoutine(1f));
+                StartCoroutine(itemSpawnController.SpawnRandomItemRoutine(8f));
                 Debug.Log("[GameManager] 아이템 스폰 코루틴 시작됨");
             }
             else
