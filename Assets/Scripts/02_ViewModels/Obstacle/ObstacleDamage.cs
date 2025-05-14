@@ -23,6 +23,7 @@ public class ObstacleDamage : MonoBehaviour
         var playerCtrl = other.GetComponent<PlayerController>();
         if (playerCtrl != null)
         {
+            GameManager.Instance.TakeDamage(damage);
             playerCtrl.TakeDamage(damage); // 플레이어에게 데미지 전달
         }
     }

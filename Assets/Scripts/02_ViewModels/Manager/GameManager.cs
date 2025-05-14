@@ -57,7 +57,8 @@ public class GameManager : MonoBehaviour
     {
         BestScore = PlayerPrefs.GetInt("BestScore", 0); // 최고 점수 불러오기
         Score = 0; // 점수 리셋
-        CurrentHp = 6; // 체력 리셋 (6으로 설정)
+        MaxHp = 6; // 체력 리셋 (6으로 설정)
+        CurrentHp = MaxHp;
 
         //게임이 시작되면 Intro 상태로 전환
         //ChangeState(GameState.Intro); // 최종본에서는 필요함
