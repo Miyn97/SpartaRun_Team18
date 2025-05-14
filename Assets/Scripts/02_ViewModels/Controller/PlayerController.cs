@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
+using System.Collections;
+
 
 [RequireComponent(typeof(PlayerView))]
 public class PlayerController : MonoBehaviour
@@ -33,12 +35,16 @@ public class PlayerController : MonoBehaviour
 
     private bool isGround = true; // 땅에 있는 상태
     private bool isDoubleJump = false; //더블 점프 가능 상태
+    private bool isDead = false;
+
 
     //슬라이딩을 했는가?
     private bool isSliding = false;
     //남은 슬라이드 시간 저장용 변수
     private float slideTimer = 0f;
     public bool IsInvincible { get; private set; }
+
+    private Coroutine deathCoroutine;
 
     private void Awake() //update보다 먼저 실행
     {
@@ -52,7 +58,7 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         //GameOver 상태면 입력 막기
-        if (GameManager.Instance.CurrentState == GameManager.GameState.GameOver)
+        if (GameManager.Instance.CurrentState == GameManager.GameState.GameOver || isDead)
             return;
         //키 입력 처리 확인
         HandleInput();
@@ -62,7 +68,7 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         //GameOver 상태일 땐 자동 이동 막기
-        if (GameManager.Instance.CurrentState == GameManager.GameState.GameOver)
+        if (isDead || GameManager.Instance.CurrentState == GameManager.GameState.GameOver)
             return;
         // View에 이동 요청
         playerView.Move(model.Speed);
@@ -112,6 +118,8 @@ public class PlayerController : MonoBehaviour
     //점프 조작
     private void Jump()
     {
+        if (isDead) return;
+
         if (isGround)
         {
             playerView.Jump(jumpForce); //점프 애니메이션 요청
@@ -202,10 +210,27 @@ public class PlayerController : MonoBehaviour
         SoundManager.Instance.PlaySFX(DieClip, 1f);
         playerView.PlayDeathAnimation(); //애니메이션 생성 시 주석처리 해제
         playerView.StopMovementAnimation(); // 움직임 강제 정지
-        //View는 죽는 연출 + 게임매니저는 상태변화
-        GameManager.Instance.ChangeState(GameManager.GameState.GameOver);
-        playerView.StopMovementAnimation();
+
+        isDead = true; //사망 처리 시작됨
+
+        // UI 지연 표시를 위해 코루틴 시작
+        if (deathCoroutine == null)
+            deathCoroutine = StartCoroutine(ShowGameOverUIWithDelay(1.0f)); // ← 3초 뒤 GameOver 상태로 진입
     }
+
+    private IEnumerator ShowGameOverUIWithDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        //View는 죽는 연출 + 게임매니저는 상태변화
+        GameManager.Instance.TriggerGameOver(
+        GameManager.Instance.Score,
+        GameManager.Instance.BestScore
+        );
+        deathCoroutine = null; // 코루틴 종료 후 null 처리
+    }
+
+
 
     // 아이템 획득 등 외부에서 호출
     public void AddScore(int score)
