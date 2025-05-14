@@ -134,13 +134,18 @@ public class PlayerView : MonoBehaviour
         //IsSliding 애니메이션 Bool을 꺼서 애니메이션 종료
         animator.SetBool("IsSliding", false); //애니메이션 생성 시 주석처리 해제
 
+        Invoke("BoxColliderSize", 0.3f); //콜라이더 복원 시간
+
+    }
+
+    private void BoxColliderSize()
+    {
         //콜라이더 복원
         if (boxCollider != null)
         {
             boxCollider.size = defaultColliderSize;
             boxCollider.offset = defaultColliderOffset;
         }
-
     }
 
     // 데미지를 입었을 때 애니메이션 실행

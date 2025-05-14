@@ -203,7 +203,7 @@ public class PlayerController : MonoBehaviour
     }
 
     //사망처리 메서드
-    private void Die()
+    public void Die()
     {
         //playerView.SetAnimatorSpeed(0f);
         //죽었을 때 애니메이션 실행

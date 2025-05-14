@@ -13,7 +13,7 @@ public class CameraManager : MonoBehaviour
     //Inspector에 보여줄 수 있는 카메라 설정값.
     //오프셋과 따라가는 속도 조정 가능 (이것도 배운내용)
     [Header("Camera Settings")]
-    [SerializeField] private Vector3 offset = new Vector3(0, 2f, -10f);
+    [SerializeField] private Vector3 offset = new Vector3(5, 2f, -10f);
     [SerializeField] private float followSpeed = 5f;
 
     private void Awake()
