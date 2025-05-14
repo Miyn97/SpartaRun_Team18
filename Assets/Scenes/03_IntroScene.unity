@@ -638,6 +638,7 @@ GameObject:
   - component: {fileID: 1182530658}
   - component: {fileID: 1182530657}
   - component: {fileID: 1182530656}
+  - component: {fileID: 1182530660}
   m_Layer: 5
   m_Name: Skip_Button
   m_TagString: Untagged
@@ -747,6 +748,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 200, y: 80}
   m_Pivot: {x: 1, y: 1}
+--- !u!114 &1182530660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1182530655}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dfa53ba20da4a047961f4ff45306c7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clickClip: {fileID: 8300000, guid: eed23b9104ce0724eab27e795ed3bf3f, type: 3}
 --- !u!1 &1398289879
 GameObject:
   m_ObjectHideFlags: 0
@@ -1275,6 +1289,7 @@ GameObject:
   - component: {fileID: 1759615191}
   - component: {fileID: 1759615190}
   - component: {fileID: 1759615189}
+  - component: {fileID: 1759615193}
   m_Layer: 5
   m_Name: Next_Button
   m_TagString: Untagged
@@ -1384,6 +1399,19 @@ RectTransform:
   m_AnchoredPosition: {x: 640, y: -400}
   m_SizeDelta: {x: 300, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1759615193
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1759615188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dfa53ba20da4a047961f4ff45306c7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clickClip: {fileID: 8300000, guid: eed23b9104ce0724eab27e795ed3bf3f, type: 3}
 --- !u!1 &2062175899
 GameObject:
   m_ObjectHideFlags: 0

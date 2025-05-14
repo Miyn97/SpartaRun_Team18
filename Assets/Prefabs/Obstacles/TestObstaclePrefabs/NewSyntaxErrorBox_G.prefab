@@ -119,7 +119,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2184221484011828788, guid: 88ec28c112ee0ed42b9f1a1da38a3606, type: 3}
       propertyPath: m_Name
-      value: SyntaxErrorBox
+      value: SyntaxErrorBox1
       objectReference: {fileID: 0}
     - target: {fileID: 5972855039604007785, guid: 88ec28c112ee0ed42b9f1a1da38a3606, type: 3}
       propertyPath: m_LocalPosition.x
@@ -181,7 +181,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2184221484011828788, guid: 88ec28c112ee0ed42b9f1a1da38a3606, type: 3}
       propertyPath: m_Name
-      value: SyntaxErrorBox (1)
+      value: SyntaxErrorBox2
       objectReference: {fileID: 0}
     - target: {fileID: 5972855039604007785, guid: 88ec28c112ee0ed42b9f1a1da38a3606, type: 3}
       propertyPath: m_LocalPosition.x
@@ -345,7 +345,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8194866152331925320, guid: d001fcfa1d21eb8409309b4e81bb623f, type: 3}
       propertyPath: m_Name
-      value: TsetGround
+      value: Ground
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
