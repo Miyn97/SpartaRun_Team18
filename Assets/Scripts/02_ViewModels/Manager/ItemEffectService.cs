@@ -20,7 +20,7 @@ public class ItemEffectService : MonoBehaviour
                 break;
 
             case ItemEnum.HealPotion:
-                GameManager.Instance.Heal((int)model.Value);
+                //GameManager.Instance.Heal((int)model.Value);
                 player.Heal(2);
                 break;
 
@@ -40,6 +40,7 @@ public class ItemEffectService : MonoBehaviour
 
     private IEnumerator SpeedEffect(ItemModel model)
     {
+        GameManager.Instance.SetInvincible(true);
         player.SetInvincible(true);
         player.SetSpeed(model.Value); // ex. 13f
 
@@ -53,10 +54,12 @@ public class ItemEffectService : MonoBehaviour
         StopCoroutine(blink);
         player.GetComponentInChildren<SpriteRenderer>().color = Color.white;
         player.SetInvincible(false);
+        GameManager.Instance.SetInvincible(false);
     }
 
     private IEnumerator GiantEffect(ItemModel model)
     {
+        GameManager.Instance.SetInvincible(true);
         player.SetInvincible(true);
         player.transform.localScale *= 2f;
 
@@ -70,6 +73,7 @@ public class ItemEffectService : MonoBehaviour
         StopCoroutine(blink);
         player.GetComponentInChildren<SpriteRenderer>().color = Color.white;
         player.SetInvincible(false);
+        GameManager.Instance.SetInvincible(false);
     }
 
     private IEnumerator MagnetEffect(ItemModel model)
