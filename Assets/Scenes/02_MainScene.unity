@@ -2674,6 +2674,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b21673e0848945e4e8128d5a0e411527, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  jumpClip: {fileID: 8300000, guid: 3d6154619e1f7ae4688ca2ebd913dca4, type: 3}
+  slideClip: {fileID: 8300000, guid: 49acb5538e24cce48a5bfe10de4d7401, type: 3}
+  damageCilp: {fileID: 8300000, guid: 45a3a57154780854ca5fe3bc1e2741e8, type: 3}
+  DieClip: {fileID: 8300000, guid: 38395a5c3e5c29940b789e23780deaeb, type: 3}
   initialHealth: 6
   initialSpeed: 8.5
   jumpForce: 25
