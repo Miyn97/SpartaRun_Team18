@@ -18,13 +18,13 @@
 ## 🖼️ 게임 화면 예시
 
 ### 🛏️ 인트로 씬
-![인트로 씬](./Assets/images/intro.JPG)
+<img src="./Assets/images/intro.JPG" alt="인트로 씬" width="500"/>
 
 ### 🎮 타이틀 씬
-![타이틀 씬](./Assets/images/title.JPG)
+<img src="./Assets/images/title.JPG" alt="타이틀 씬" width="500"/>
 
 ### 🏃‍♀️ 메인 게임 플레이
-![게임 화면](./Assets/images/main.JPG)
+<img src="./Assets/images/main.JPG" alt="게임 화면" width="500"/>
 
 ---
 
@@ -32,7 +32,7 @@
 
 - **게임 시작**: 인트로 씬 → 게임 시작 버튼 클릭
 - **조작 방법**:
-  - `Space bar`: 점프
+  - `Space bar`: 점프  
   - `Shift`: 슬라이드
 - **설정 메뉴**: 배경음 및 효과음 볼륨 조절 가능
 
