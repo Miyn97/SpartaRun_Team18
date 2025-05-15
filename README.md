@@ -18,13 +18,13 @@
 ## 🖼️ 게임 화면 예시
 
 ### 🛏️ 인트로 씬
-![인트로 씬](./assets/images/intro.jpg)
+![인트로 씬](./assets/images/intro.JPG)
 
 ### 🎮 타이틀 씬
-![타이틀 씬](./assets/images/title.jpg)
+![타이틀 씬](./assets/images/title.JPG)
 
 ### 🏃‍♀️ 메인 게임 플레이
-![게임 화면](./assets/images/main.jpg)
+![게임 화면](./assets/images/main.JPG)
 
 ---
 
