@@ -94,7 +94,7 @@ public class BackGroundLooper : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning($"풀 부족: {prefab.name} 추가 생성");
+            //Debug.LogWarning($"풀 부족: {prefab.name} 추가 생성");
             GameObject newChunk = Instantiate(prefab, transform); // 새로 생성
             newChunk.SetActive(false);                             // 즉시 사용하지 않음
             pool.Enqueue(newChunk);                                // 풀에 추가
@@ -111,7 +111,7 @@ public class BackGroundLooper : MonoBehaviour
 
         if (prefab == null)
         {
-            Debug.LogWarning("ReturnChunkToPool: 원본 프리팹을 찾지 못했습니다.");
+            //Debug.LogWarning("ReturnChunkToPool: 원본 프리팹을 찾지 못했습니다.");
             return;
         }
 
@@ -119,7 +119,7 @@ public class BackGroundLooper : MonoBehaviour
         if (!chunkPools.ContainsKey(prefab))
         {
             chunkPools[prefab] = new Queue<GameObject>();
-            Debug.Log($"[BackGroundLooper] 풀로 반환됨: {prefab.name}, 현재 수: {chunkPools[prefab].Count}");
+            //Debug.Log($"[BackGroundLooper] 풀로 반환됨: {prefab.name}, 현재 수: {chunkPools[prefab].Count}");
         }
 
         chunkPools[prefab].Enqueue(chunk);

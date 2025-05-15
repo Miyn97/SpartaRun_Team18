@@ -145,7 +145,7 @@ public class PlayerController : MonoBehaviour
     //슬라이드 조작
     private void Slide()
     {
-        Debug.Log("슬라이드 중입니다.");
+        //Debug.Log("슬라이드 중입니다.");
         SoundManager.Instance.PlaySFX(slideClip, 0.1f);
         isSliding = true; //슬라이드 중 상태
         slideTimer = slideDuration; //슬라이드 지속 시간 설정
@@ -155,7 +155,7 @@ public class PlayerController : MonoBehaviour
     //슬라이드 종료
     private void EndSlide()
     {
-        Debug.Log("슬라이드 종료");
+        //Debug.Log("슬라이드 종료");
         isSliding = false;
         playerView.EndSlide(); // 애니메이션 종료
     }
@@ -189,13 +189,13 @@ public class PlayerController : MonoBehaviour
             //체력이 0 이하이면
             if (model.CurrentHealth == 0)
             {
-                Debug.Log("죽었습니다.");
+                //Debug.Log("죽었습니다.");
                 //사망처리 메서드 호출
                 Die();
             }
             else
             {
-                Debug.Log("체력 : " + model.CurrentHealth);
+                //Debug.Log("체력 : " + model.CurrentHealth);
                 playerView.PlayDamageAnimation();
             }
         }

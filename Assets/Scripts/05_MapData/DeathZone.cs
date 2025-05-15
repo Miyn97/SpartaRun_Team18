@@ -19,7 +19,7 @@ public class DeathZone : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("낙사 판정: 플레이어 감지됨");
+            //Debug.Log("낙사 판정: 플레이어 감지됨");
             var dead = other.GetComponent<PlayerController>();
             if (dead != null)
             {

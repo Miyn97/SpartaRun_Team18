@@ -43,7 +43,7 @@ public class ItemEntity : MonoBehaviour
     /// </summary>
     public void Apply()
     {
-        Debug.Log($"아이템 효과 적용됨: {itemType}");
+        //Debug.Log($"아이템 효과 적용됨: {itemType}");
         GameManager.Instance.AddScore(100);
         effectService.ApplyEffect(model); // 효과 실행
         itemManager.ReturnToPool(itemType, gameObject); // 풀로 반환

@@ -115,7 +115,7 @@ public class GameManager : MonoBehaviour
             {
                 StartCoroutine(itemSpawnController.SpawnCoinRoutine(1f));
                 StartCoroutine(itemSpawnController.SpawnRandomItemRoutine(8f));
-                Debug.Log("[GameManager] 아이템 스폰 코루틴 시작됨");
+                //Debug.Log("[GameManager] 아이템 스폰 코루틴 시작됨");
             }
             else
             {
@@ -249,7 +249,7 @@ public class GameManager : MonoBehaviour
     {
         if (IsInvincible == true)
         {
-            Debug.Log("무적임");
+            //Debug.Log("무적임");
             return;
         }
         else

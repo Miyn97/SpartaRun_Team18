@@ -57,7 +57,7 @@ public class ItemSpawnController : MonoBehaviour
 
             if (Physics2D.OverlapCircle(spawnPos, overlapRadius, obstacleLayer))
             {
-                Debug.Log("아이템 생성 위치에 장애물이 존재하여 취소됨");
+                //Debug.Log("아이템 생성 위치에 장애물이 존재하여 취소됨");
                 itemManager.ReturnToPool(type, item);
                 return;
             }

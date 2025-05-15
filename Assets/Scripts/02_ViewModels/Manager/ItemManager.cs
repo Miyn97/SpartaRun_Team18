@@ -75,7 +75,7 @@ public class ItemManager : MonoBehaviour
         {
             var newObj = Instantiate(prefab, transform);
             newObj.SetActive(true);
-            Debug.LogWarning($"[ItemManager] {type} 새 객체를 생성했습니다. 풀 부족 대비.");
+            //Debug.LogWarning($"[ItemManager] {type} 새 객체를 생성했습니다. 풀 부족 대비.");
             return newObj;
         }
 
