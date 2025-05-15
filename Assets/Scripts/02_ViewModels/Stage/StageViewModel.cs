@@ -29,7 +29,7 @@ public class StageViewModel
                 return chunk.chunkPrefab; // 매칭되는 원본 반환
         }
 
-        Debug.LogWarning("원본 프리팹을 찾지 못했습니다."); // 디버그 경고
+        //Debug.LogWarning("원본 프리팹을 찾지 못했습니다."); // 디버그 경고
         return null; // 실패 시 null 반환
     }
 }

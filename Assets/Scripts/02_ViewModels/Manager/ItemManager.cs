@@ -60,7 +60,7 @@ public class ItemManager : MonoBehaviour
                 // Destroy 되었거나 존재하지 않으면 다음 객체 확인
                 if (obj == null || obj.Equals(null))
                 {
-                    Debug.LogWarning($"[ItemManager] {type} 아이템이 Destroy 상태입니다. 스킵.");
+                    //Debug.LogWarning($"[ItemManager] {type} 아이템이 Destroy 상태입니다. 스킵.");
                     continue;
                 }
 

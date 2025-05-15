@@ -44,7 +44,7 @@ public class ObstaclePool
     {
         if (!pool.ContainsKey(type) || pool[type].Count == 0)
         {
-            Debug.LogWarning($"풀 부족: {type} 추가 생성");
+            //Debug.LogWarning($"풀 부족: {type} 추가 생성");
             var newObj = UnityEngine.Object.Instantiate(prefabMap[type]);
             newObj.SetActive(false);
             return newObj;

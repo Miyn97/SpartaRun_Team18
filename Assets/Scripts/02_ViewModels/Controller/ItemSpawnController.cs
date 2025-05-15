@@ -42,7 +42,7 @@ public class ItemSpawnController : MonoBehaviour
     {
         if (itemManager == null || itemManager.Equals(null)) //방어 코드
         {
-            Debug.LogWarning("ItemManager가 존재하지 않아 SpawnItem 취소됨");
+            //Debug.LogWarning("ItemManager가 존재하지 않아 SpawnItem 취소됨");
             return;
         }
 
@@ -78,7 +78,7 @@ public class ItemSpawnController : MonoBehaviour
 
             if (itemManager == null || itemManager.Equals(null))
             {
-                Debug.LogWarning("ItemManager가 파괴되어 SpawnCoinRoutine을 중단합니다.");
+                //Debug.LogWarning("ItemManager가 파괴되어 SpawnCoinRoutine을 중단합니다.");
                 yield break;
             }
             SpawnItem(ItemEnum.Coin);
